@@ -1,0 +1,7 @@
+.htaccess
+.env
+app/config/local*
+logs/*
+storage/audio/*
+storage/images/*
+storage/videos/*
