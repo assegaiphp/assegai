@@ -14,6 +14,21 @@ class HttpStatusCode
   {
     return "{$this->code} - {$this->name}";
   }
+
+  public function code(): int
+  {
+    return $this->code;
+  }
+
+  public function name(): string
+  {
+    return $this->name;
+  }
+
+  public function description(): string
+  {
+    return $this->description;
+  }
 }
 
 class HttpStatus

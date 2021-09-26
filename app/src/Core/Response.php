@@ -12,7 +12,7 @@ class Response
     protected int $skip = 0,
     protected ResponseType|NULL $type = NULL,
     protected bool $data_only = false,
-    protected HttpStatus|NULL $status = NULL
+    protected HttpStatusCode|NULL $status = NULL
   ) {
     $this->type = ResponseType::JSON();
     $this->status = HttpStatus::OK();
@@ -45,7 +45,7 @@ class Response
     return $this->data;
   }
 
-  public function status(HttpStatus $status = NULL): HttpStatus
+  public function status(HttpStatus $status = NULL): HttpStatusCode
   {
     if (!is_null($status))
     {

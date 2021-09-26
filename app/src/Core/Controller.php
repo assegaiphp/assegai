@@ -19,7 +19,9 @@ abstract class Controller
   ];
   protected array $url = [];
 
-  public function __construct()
+  public function __construct(
+    protected Request $request
+  )
   {
   }
 

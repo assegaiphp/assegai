@@ -6,10 +6,18 @@ class App
 {
     private string $path = '/';
     private array $url = [];
+    private Request $request;
 
     public function __construct(
         private array $config = []
-    ) {}
+    ) {
+        $this->request = new Request( app: $this );
+        if ($this->request->method() === RequestMethod::OPTIONS)
+        {
+            http_response_code(HttpStatus::OK()->code());
+            exit;
+        }
+    }
 
     /**
      * Gets or sets the application configuration.
@@ -92,7 +100,7 @@ class App
             $route_controller = $routes[$endpoint];
         }
 
-        return new $route_controller();
+        return new $route_controller( request: $this->request );
     }
 }
 

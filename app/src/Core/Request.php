@@ -2,22 +2,80 @@
 
 namespace LifeRaft\Core;
 
+class RequestMethod
+{
+  const GET = 'GET';
+  const POST = 'POST';
+  const PUT = 'PUT';
+  const PATCH = 'PATCH';
+  const DELETE = 'DELETE';
+  const OPTIONS = 'OPTIONS';
+  const HEAD = 'HEAD';
+}
+
 /**
  * 
  */
 class Request
 {
   protected mixed $body;
-  protected array $headers = [];
+  protected array $all_headers = [];
 
   public function __construct(
     public App $app
   ) {
-    $this->body = match ($this->method()) {};
+    $this->body = match ($this->method()) {
+      RequestMethod::GET      => $_GET,
+      RequestMethod::POST     => !empty($_POST) ? $_POST : ( !empty($_FILES) ? $_FILES : file_get_contents('php://input') ),
+      RequestMethod::PUT      => file_get_contents('php://input'),
+      RequestMethod::PATCH    => file_get_contents('php://input'),
+      RequestMethod::DELETE   => !empty($_GET) ? $_GET : file_get_contents('php://input'),
+      RequestMethod::HEAD     => NULL,
+      RequestMethod::OPTIONS  => NULL,
+    };
+
+    if (isset($this->body['path']))
+    {
+      unset($this->body['path']);
+    }
+
     foreach ($_SERVER as $key => $value)
     {
-
+      if (str_starts_with($key, 'HTTP_'))
+      {
+        $this->all_headers[$key] = $value;
+      }
     }
+  }
+
+  public function to_array(): array
+  {
+    return [
+      'app'       => $this->app,
+      'body'      => $this->body(),
+      'cookies'   => $this->cookies(),
+      'fresh'     => $this->fresh(),
+      'headers'   => $this->all_headers(),
+      'host_name' => $this->host_name(),
+      'method'    => $this->method(),
+      'remote_ip' => $this->remote_ip(),
+      'uri'       => $this->uri(),
+    ];
+  }
+
+  public function to_json(): string
+  {
+    return json_encode($this->to_array());
+  }
+
+  public function __toString(): string
+  {
+    return $this->to_json();
+  }
+
+  public function __serialize(): array
+  {
+    return $this->to_array();
   }
 
   public function header(string $name): string|null
@@ -35,6 +93,11 @@ class Request
     }
 
     return null;
+  }
+
+  public function all_headers(): array
+  {
+    return $this->all_headers;
   }
 
   public function uri(): string
