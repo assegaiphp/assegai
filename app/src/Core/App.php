@@ -27,6 +27,11 @@ class App
     public function run(): void
     {
         $this->parse_url();
+        $controller = $this->route();
+        $response = $controller->handle_request( url: $this->url );
+        header('Content-Type: ' . $response->type());
+        echo $response;
+        exit;
     }
 
     private function parse_url(): void
@@ -44,7 +49,7 @@ class App
 
         if (empty($this->url) || $this->url[0] == 'index.php')
         {
-            $this->url = ['/'];
+            $this->url = ['home'];
         }
     }
 
@@ -65,6 +70,29 @@ class App
     public function url(): array
     {
         return $this->url;
+    }
+
+    /**
+     * Returns a `LifeRaft\Core\Controller` that best matches the requested endpoint
+     */
+    private function route(): Controller
+    {
+        $controller = null;
+
+        # Get route base
+        $endpoint = $this->url()[0];
+
+        # Load routes
+        $routes = require_once('app/routes.php');
+        $route_controller = isset($routes['/']) ? $routes['/'] : LifeRaft\Modules\Home\HomeController::class;
+
+        # If route base matches registered route call controller else call Home controller
+        if (isset($routes[$endpoint]))
+        {
+            $route_controller = $routes[$endpoint];
+        }
+
+        return new $route_controller();
     }
 }
 

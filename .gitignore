@@ -1,6 +1,7 @@
 .htaccess
 .env
 app/config/local*
+cli
 logs/*
 storage/audio/*
 storage/images/*
