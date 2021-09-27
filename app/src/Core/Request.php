@@ -60,6 +60,7 @@ class Request
       'method'    => $this->method(),
       'remote_ip' => $this->remote_ip(),
       'uri'       => $this->uri(),
+      'protocol'  => $this->protocol()
     ];
   }
 
@@ -138,6 +139,11 @@ class Request
   public function remote_ips(): string
   {
     return ''; 
+  }
+
+  public function protocol(): string
+  {
+    return $_SERVER['REQUEST_SCHEME'];
   }
 }
 
