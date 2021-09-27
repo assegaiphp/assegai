@@ -2,7 +2,7 @@
 
 namespace LifeRaft\Core;
 
-class UnuthorisedErrorResponse extends ErrorResponse
+class UnauthorisedErrorResponse extends ErrorResponse
 {
   public function __construct(
     protected string $message = ''
