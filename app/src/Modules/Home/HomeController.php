@@ -11,9 +11,10 @@ class HomeController extends Controller
   {
     $data = [
       'name' => 'Social Navigator API.',
-      'description' => 'Social Navigator powered by Life Raft API'
+      'description' => 'Social Navigator powered by Life Raft API',
+      'version' => '1.0.0',
+      'copyright' => '© ' . date('Y') . ' Life Raft',
     ];
-    // $data = $_SERVER;
 
     return new Response( data: $data, data_only: true );
   }
