@@ -10,12 +10,12 @@ namespace LifeRaft\Core;
 abstract class Controller
 {
   protected array $handlers = [
-    'get' => [],
-    'post' => [],
-    'put' => [],
-    'patch' => [],
-    'delete' => [],
-    'options' => [],
+    RequestMethod::GET => [],
+    RequestMethod::POST => [],
+    RequestMethod::PUT => [],
+    RequestMethod::PATCH => [],
+    RequestMethod::DELETE => [],
+    RequestMethod::OPTIONS => [],
   ];
   protected array $url = [];
 
@@ -23,9 +23,18 @@ abstract class Controller
     protected Request $request
   )
   {
+    var_export(strtolower($request->method()));
+    exit;
   }
 
-  public abstract function handle_request(array $url): Response;
+  public function handle_request(array $url): Response
+  {
+    # Check if handle exists
+
+    # Else respond with Unknow error
+
+    return new Response( data: [] );
+  }
 }
 
 ?>

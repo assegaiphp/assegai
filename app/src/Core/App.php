@@ -12,6 +12,8 @@ class App
         private array $config = []
     ) {
         $this->request = new Request( app: $this );
+        echo new BadRequestErrorResponse();
+        exit;
         if ($this->request->method() === RequestMethod::OPTIONS)
         {
             http_response_code(HttpStatus::OK()->code());

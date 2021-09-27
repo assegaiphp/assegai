@@ -7,15 +7,24 @@ class Response
   protected int $total = 0;
 
   public function __construct(
-    protected mixed $data = NULL,
-    protected int $limit = 100,
-    protected int $skip = 0,
-    protected ResponseType|NULL $type = NULL,
-    protected bool $data_only = false,
-    protected HttpStatusCode|NULL $status = NULL
+    protected mixed                  $data = null,
+    protected int                    $limit = 100,
+    protected int                    $skip = 0,
+    protected ResponseType|null      $type = null,
+    protected bool                   $data_only = false,
+    protected HttpStatusCode|null    $status = null
   ) {
-    $this->type = ResponseType::JSON();
-    $this->status = HttpStatus::OK();
+    if (is_null($this->type()))
+    {
+      $this->type = ResponseType::JSON();
+    }
+    if (is_null($this->status))
+    {
+      $this->status = HttpStatus::OK();
+    }
+
+    header("Content-Type: {$this->type()}");
+    http_response_code($this->status()->code());
     $this->data(data: $data);
   }
 
@@ -45,7 +54,7 @@ class Response
     return $this->data;
   }
 
-  public function status(HttpStatus $status = NULL): HttpStatusCode
+  public function status(HttpStatus|null $status = null): HttpStatusCode
   {
     if (!is_null($status))
     {

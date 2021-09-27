@@ -13,6 +13,19 @@ class ResponseType
     return $this->type;
   }
 
+  public function __serialize(): array
+  {
+    return ['type' => strval($this)];
+  }
+
+  public function __unserialize(array $data): void
+  {
+    if (isset($data['type']))
+    {
+      $this->type = $data['type'];
+    }
+  }
+
   public static function TEXT(string $type): ResponseType
   {
     return new ResponseType("text/{$type}");
