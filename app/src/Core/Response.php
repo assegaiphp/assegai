@@ -64,7 +64,7 @@ class Response
     return $this->status;
   }
 
-  public function type(): ResponseType
+  public function type(): ResponseType|null
   {
     return $this->type;
   }

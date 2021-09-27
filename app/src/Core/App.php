@@ -38,6 +38,7 @@ class App
         $controller = $this->route();
         $response = $controller->handle_request( url: $this->url );
         header('Content-Type: ' . $response->type());
+        http_response_code( response_code: $response->status()->code() );
         echo $response;
         exit;
     }
