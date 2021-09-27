@@ -6,3 +6,5 @@ logs/*
 storage/audio/*
 storage/images/*
 storage/videos/*
+.idea
+.vscode
