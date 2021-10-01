@@ -2,7 +2,7 @@
 
 namespace LifeRaft\Core;
 
-class ForbiddenErrorResponse extends ErrorResponse
+class NotImplementedErrorResponse extends ErrorResponse
 {
   public function __construct(
     protected string $message = ''
