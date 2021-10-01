@@ -2,6 +2,9 @@
 
 namespace LifeRaft\Core;
 
+/**
+ * The **RequestMethod** class enumerates the multiple HTTP request methods.
+ */
 class RequestMethod
 {
   const GET = 'GET';
@@ -14,7 +17,8 @@ class RequestMethod
 }
 
 /**
- * 
+ * The **Request** class represents the HTTP request and has properties for
+ *  the request query string, parameters, HTTP headers, and body
  */
 class Request
 {
@@ -144,6 +148,11 @@ class Request
   public function protocol(): string
   {
     return $_SERVER['REQUEST_SCHEME'];
+  }
+
+  public function query(): string
+  {
+    return $_SERVER['QUERY_STRING'];
   }
 }
 
