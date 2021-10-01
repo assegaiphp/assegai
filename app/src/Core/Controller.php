@@ -12,12 +12,14 @@ use ReflectionClass;
 use LifeRaft\Core\Handler;
 
 /**
- * Controllers are responsible for handling incoming requests and returning responses to the client.
+ * Controllers are responsible for handling incoming requests and returning 
+ * responses to the client.
  */
-abstract class Controller
+class Controller
 {
   protected string $prefix = '';
   protected Handler $handler;
+  protected array $forbidden_methods = [];
 
   public function __construct(
     protected Request $request
@@ -51,6 +53,12 @@ abstract class Controller
 
   protected function get_activated_handler(): Handler|null
   {
+    # Check if forbidden method
+    if (in_array($this->request->method(), $this->forbidden_methods))
+    {
+      $this->respond(new MethodNotAllowedErrorResponse());
+    }
+
     $activated_attribute_class = match ($this->request->method()) {
       RequestMethod::GET      => Get::class,
       RequestMethod::POST     => POST::class,
@@ -65,11 +73,7 @@ abstract class Controller
     $methods = $reflection->getMethods();
     $handler = NULL;
 
-    # Check if we have handlers for request_method
-    if (empty($methods))
-    {
-      
-    }
+    $attributes_found = false;
 
     foreach ($methods as $method)
     {
@@ -77,6 +81,8 @@ abstract class Controller
 
       if (!empty($attributes))
       {
+        $attributes_found = true;
+
         foreach ($attributes as $attribute)
         {
           $instance = $attribute->newInstance();
@@ -100,6 +106,12 @@ abstract class Controller
       {
         break;
       }
+    }
+
+    # Check if we have handlers for request_method
+    if (!$attributes_found)
+    {
+      $this->respond(new NotImplementedErrorResponse());
     }
 
     return $handler;
