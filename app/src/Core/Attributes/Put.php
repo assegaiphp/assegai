@@ -3,7 +3,7 @@
 namespace LifeRaft\Core\Attributes;
 
 #[\Attribute]
-class Get
+class Put
 {
   public array $tokens = [];
   public function __construct(

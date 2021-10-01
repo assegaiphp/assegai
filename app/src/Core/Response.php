@@ -7,12 +7,12 @@ class Response
   protected int $total = 0;
 
   public function __construct(
-    protected mixed                  $data = null,
-    protected int                    $limit = 100,
-    protected int                    $skip = 0,
-    protected ResponseType|null      $type = null,
-    protected bool                   $data_only = false,
-    protected HttpStatusCode|null    $status = null
+    protected mixed                   $data = null,
+    protected int                     $limit = 100,
+    protected int                     $skip = 0,
+    protected ?ResponseType           $type = null,
+    protected bool                    $data_only = false,
+    protected ?HttpStatusCode         $status = null
   ) {
     if (is_null($this->type()))
     {
