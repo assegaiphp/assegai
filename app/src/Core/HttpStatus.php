@@ -192,6 +192,19 @@ class HttpStatus
   }
 
   /**
+   * The request method is not supported by the server and cannot be handled. 
+   * The only methods that servers are required to support (and therefore 
+   * that must not return this code) are GET and HEAD.
+   */
+  public static function NotImplemented(): HttpStatusCode {
+    return new HttpStatusCode(
+      code: 501,
+      name: 'Not Implemented',
+      description: 'The request method is not supported by the server and cannot be handled. The only methods that servers are required to support (and therefore that must not return this code) are GET and HEAD.'
+    );
+  }
+
+  /**
    * The server is not ready to handle the request. Common causes are a 
    * server that is down for maintenance or that is overloaded. Note 
    * that together with this response, a user-friendly page explaining 
