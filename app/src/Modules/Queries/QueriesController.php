@@ -5,6 +5,7 @@ namespace LifeRaft\Modules\Queries;
 use LifeRaft\Core\Controller;
 use LifeRaft\Core\Response;
 use LifeRaft\Core\Attributes\Get;
+use LifeRaft\Core\Attributes\Post;
 
 class QueriesController extends Controller
 {
@@ -16,12 +17,18 @@ class QueriesController extends Controller
     ]);
   }
 
-  #[Get]
+  #[Get(path: '/*')]
   public function find_all(): Response
   {
     return new Response(data: [
-      'name' => 'List all queries'
+      'name' => 'This action returns all queries'
     ]);
+  }
+
+  #[Post]
+  public function create(): Response
+  {
+    return new Response(data: ['name' => 'This action adds a new query']);
   }
 }
 

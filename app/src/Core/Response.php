@@ -98,7 +98,7 @@ class Response
 
     if ($this->total() === 1)
     {
-      return json_encode( is_array($this->data()) ? $this->data()[0] : $this->data() );
+      return json_encode( ! is_array($this->data()) ? $this->data() : $this->data()[array_key_first( $this->data() )] );
     }
 
     return json_encode($this->to_array());

@@ -9,7 +9,6 @@ use LifeRaft\Core\Attributes\PATCH;
 use LifeRaft\Core\Attributes\DELETE;
 use LifeRaft\Core\Attributes\OPTIONS;
 use ReflectionClass;
-use LifeRaft\Core\Handler;
 
 /**
  * Controllers are responsible for handling incoming requests and returning 
