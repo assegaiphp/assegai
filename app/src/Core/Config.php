@@ -2,7 +2,6 @@
 
 namespace LifeRaft\Core;
 
-use stdClass;
 
 /**
  * The Config class provides methods for retrieving or setting configuration
@@ -10,6 +9,31 @@ use stdClass;
  */
 class Config
 {
+  public static function hydrate(): void
+  {
+    if (file_exists('.env'))
+    {
+      $config = [];
+      $env = file('.env');
+      foreach ($env as $line)
+      {
+        list($key, $value) = explode('=', $line);
+        
+        # Remove carriage return and/or end line character
+        $key = trim($key);
+
+        # Filter out blank lines
+        if (!empty($key))
+        {
+          $commentPos = strpos($value, ';');
+          $config[$key] = $commentPos !== false ? trim(substr($value, 0, $commentPos)) : trim($value);
+        }
+      }
+
+      $_ENV = array_merge($_ENV, $config);
+    }
+  }
+ 
   public static function get(string $name): mixed
   {
     return isset($GLOBALS['config'][$name]) ? $GLOBALS['config'][$name] : NULL;
@@ -53,7 +77,7 @@ class Config
    * @return mixed Returns the configuration value of given name if it exists, 
    * or `NULL` if the `assegai.json` file or configuration doesn't exist.
    */
-  public static function workspace(string $name, ?string $value): mixed
+  public static function workspace(string $name): mixed
   {
     if (!file_exists('assegai.json'))
     {
