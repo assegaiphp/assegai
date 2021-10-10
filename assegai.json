@@ -1,0 +1,9 @@
+{
+  "name": "rest-api",
+  "description": "",
+  "version": "1.0.0",
+  "projectType": "application",
+  "root": "",
+  "sourceRoot": "src",
+  "prefix": "app"
+}

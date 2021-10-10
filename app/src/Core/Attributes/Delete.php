@@ -2,7 +2,9 @@
 
 namespace LifeRaft\Core\Attributes;
 
-#[\Attribute]
+use Attribute;
+
+#[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
 class Delete
 {
   public array $tokens = [];

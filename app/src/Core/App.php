@@ -34,16 +34,16 @@ class App
 
     public function run(): void
     {
-        $this->parse_url();
-        $controller = $this->route();
-        $response = $controller->handle_request( url: $this->url );
+        $this->parseURL();
+        $response = ($this->getActivatedController())->handleRequest( url: $this->url );
+
         header('Content-Type: ' . $response->type());
         http_response_code( response_code: $response->status()->code() );
         echo $response;
         exit;
     }
 
-    private function parse_url(): void
+    private function parseURL(): void
     {
         if (isset($_GET['path']) && !empty($_GET['path']))
         {
@@ -82,9 +82,10 @@ class App
     }
 
     /**
+     * 
      * Returns a `LifeRaft\Core\Controller` that best matches the requested endpoint
      */
-    private function route(): Controller
+    private function getActivatedController(): Controller
     {
         $controller = null;
 

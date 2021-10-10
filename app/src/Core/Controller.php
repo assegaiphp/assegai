@@ -9,6 +9,7 @@ use LifeRaft\Core\Attributes\PATCH;
 use LifeRaft\Core\Attributes\DELETE;
 use LifeRaft\Core\Attributes\OPTIONS;
 use ReflectionClass;
+use ReflectionParameter;
 
 /**
  * Controllers are responsible for handling incoming requests and returning 
@@ -30,10 +31,10 @@ class Controller
     }
   }
 
-  public function handle_request(array $url): Response
+  public function handleRequest(array $url): Response
   {
     try {
-      $handler = $this->get_activated_handler();
+      $handler = $this->getActivatedHandler();
 
       # Check if handler is defined
       if (empty($handler))
@@ -50,7 +51,7 @@ class Controller
     }
   }
 
-  protected function get_activated_handler(): Handler|null
+  protected function getActivatedHandler(): Handler|null
   {
     # Check if forbidden method
     if (in_array($this->request->method(), $this->forbidden_methods))
@@ -90,9 +91,9 @@ class Controller
           $path = str_replace('//', '/', $path);
           $pattern = preg_replace('/(:[\w]+)/', '.+', $path);
           $pattern = "(^$pattern$)";
-          
-          $can_activate = preg_match( pattern: $pattern, subject: $this->request->uri() );
-          
+          $subject = str_ends_with($this->request->uri(), '/') ? $this->request->uri() : $this->request->uri() . '/';
+
+          $can_activate = preg_match( pattern: $pattern, subject: $subject );
           if ($can_activate)
           {
             $handler = new Handler( method: $method, attribute: $instance);
@@ -116,7 +117,7 @@ class Controller
     return $handler;
   }
 
-  protected function is_match(string $pattern, string $path): bool
+  protected function isMatch(string $pattern, string $path): bool
   {
     return false;
   }

@@ -2,7 +2,7 @@
 
 namespace LifeRaft\Util;
 
-function is_match(string $pattern, string $subject, string $delimiter = '/'): bool
+function isMatch(string $pattern, string $subject, string $delimiter = '/'): bool
 {
   if ($pattern === $subject)
   {
