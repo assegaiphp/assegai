@@ -1,6 +1,12 @@
 <?php
 
 $config_file_name = 'default';
+
+if (file_exists('app/config/local.php'))
+{
+  $config_file_name = 'local';
+}
+
 $GLOBALS['config'] = require_once("config/{$config_file_name}.php");
 
 # Load utilitiy functions

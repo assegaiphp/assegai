@@ -1,0 +1,20 @@
+<?php
+
+namespace LifeRaft\Core\Attributes;
+
+use Attribute;
+
+#[Attribute]
+class Module
+{
+  public function __construct(
+    public ?array $providers = [],
+    public ?array $controllers = [],
+    public ?array $imports = [],
+    public ?array $exports = [],
+  )
+  {
+  }
+}
+
+?>
