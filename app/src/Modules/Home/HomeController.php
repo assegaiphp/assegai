@@ -2,12 +2,12 @@
 
 namespace LifeRaft\Modules\Home;
 
-use LifeRaft\Core\Controller;
+use LifeRaft\Core\BaseController;
 use LifeRaft\Core\Response;
 use LifeRaft\Core\Attributes\Get;
 use LifeRaft\Core\RequestMethod;
 
-class HomeController extends Controller
+class HomeController extends BaseController
 {
   protected array $forbidden_methods = [
     RequestMethod::DELETE,

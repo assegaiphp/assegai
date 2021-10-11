@@ -1,31 +1,14 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace LifeRaft\Modules\Home;
 
 use LifeRaft\Core\Attributes\Injectable;
+use LifeRaft\Core\Result;
+use LifeRaft\Core\Service;
 
 #[Injectable]
-class Service
+class HomeService extends Service
 {
-  protected static ?Service $instance;
-
-  protected string $id;
-
-  public function __construct()
-  {
-    $this->id = uniqid();
-
-    if (is_null(Service::$instance))
-    {
-      Service::$instance = $this;
-    }
-  }
-
-  public static function instance(): Service|null
-  {
-    return Service::$instance;
-  }
-
   public function findAll(): Result
   {
     return new Result();
@@ -56,5 +39,3 @@ class Service
     return new Result();
   }
 }
-
-?>

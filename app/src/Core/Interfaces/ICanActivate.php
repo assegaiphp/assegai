@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace LifeRaft\Core\Interfaces;
 
 interface ICanActivate
 {

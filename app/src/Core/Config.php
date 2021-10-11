@@ -17,16 +17,19 @@ class Config
       $env = file('.env');
       foreach ($env as $line)
       {
-        list($key, $value) = explode('=', $line);
-        
-        # Remove carriage return and/or end line character
-        $key = trim($key);
-
-        # Filter out blank lines
-        if (!empty($key))
+        if (str_contains($line, '='))
         {
-          $commentPos = strpos($value, ';');
-          $config[$key] = $commentPos !== false ? trim(substr($value, 0, $commentPos)) : trim($value);
+          list($key, $value) = explode('=', $line);
+          
+          # Remove carriage return and/or end line character
+          $key = trim($key);
+  
+          # Filter out blank lines
+          if (!empty($key))
+          {
+            $commentPos = strpos($value, ';');
+            $config[$key] = $commentPos !== false ? trim(substr($value, 0, $commentPos)) : trim($value);
+          }
         }
       }
 

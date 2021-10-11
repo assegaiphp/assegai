@@ -7,13 +7,13 @@ use LifeRaft\Modules\Trackings;
 
 return [
   '/' => Home\HomeModule::class,
-  'authentication' => Queries\HomeModule::class,
-  'trackings' => Trackings\HomeModule::class,
-  'queries' => Queries\HomeModule::class,
-  'people' => Queries\HomeModule::class,
-  'subjects' => Queries\HomeModule::class,
-  'followings' => Queries\HomeModule::class,
-  'users' => Users\HomeModule::class,
+  'authentication' => Home\HomeModule::class,
+  'trackings' => Home\HomeModule::class,
+  'queries' => Home\HomeModule::class,
+  'people' => Home\HomeModule::class,
+  'subjects' => Home\HomeModule::class,
+  'followings' => Home\HomeModule::class,
+  'users' => Home\HomeModule::class,
 ];
 
 ?>

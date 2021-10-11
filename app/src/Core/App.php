@@ -83,26 +83,26 @@ class App
 
     /**
      * 
-     * Returns a `LifeRaft\Core\Controller` that best matches the requested endpoint
+     * Returns a `LifeRaft\Core\BaseController` that best matches the requested endpoint
      */
-    private function getActivatedController(): Controller
+    private function getActivatedController(): BaseController
     {
-        $controller = null;
-
         # Get route base
         $endpoint = $this->url()[0];
 
         # Load routes
         $routes = require_once('app/routes.php');
-        $route_controller = isset($routes['/']) ? $routes['/'] : LifeRaft\Modules\Home\HomeController::class;
+        $module = isset($routes['/']) ? $routes['/'] : LifeRaft\Modules\Home\HomeModule::class;
 
         # If route base matches registered route call controller else call Home controller
         if (isset($routes[$endpoint]))
         {
-            $route_controller = $routes[$endpoint];
+            $module = $routes[$endpoint];
         }
 
-        return new $route_controller( request: $this->request );
+        $module = new $module();
+
+        return new $controller( request: $this->request );
     }
 }
 
