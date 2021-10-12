@@ -3,11 +3,11 @@
 namespace LifeRaft\Modules\Home;
 
 use LifeRaft\Core\Attributes\Injectable;
+use LifeRaft\Core\BaseService;
 use LifeRaft\Core\Result;
-use LifeRaft\Core\Service;
 
 #[Injectable]
-class HomeService extends Service
+class HomeService extends BaseService
 {
   public function findAll(): Result
   {

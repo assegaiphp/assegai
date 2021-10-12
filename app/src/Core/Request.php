@@ -110,6 +110,16 @@ class Request
     return $_SERVER['REQUEST_URI']; 
   }
 
+  public function limit(): int
+  {
+    return isset($_GET['limit']) ? $_GET['limit'] : Config::get('request')['DEFAULT_LIMIT'];
+  }
+
+  public function skip(): int
+  {
+    return isset($_GET['skip']) ? $_GET['skip'] : Config::get('request')['DEFAULT_SKIP'];
+  }
+
   public function body(): mixed
   {
     return $this->body;

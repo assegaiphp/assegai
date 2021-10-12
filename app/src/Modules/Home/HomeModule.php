@@ -4,7 +4,7 @@ namespace LifeRaft\Modules\Home;
 
 use LifeRaft\Core\Attributes\Module;
 use LifeRaft\Core\BaseModule;
-use LifeRaft\Module\Service\HomeService;
+use LifeRaft\Modules\Home\HomeService;
 
 #[Module(
   controllers: [HomeController::class],

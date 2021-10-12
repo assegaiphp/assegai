@@ -19,6 +19,10 @@ return [
     'postgresql' => [],
     'sqlite' => [],
     'mongodb' => [],
+  ],
+  'request' => [
+    'DEFAULT_LIMIT' => 100,
+    'DEFAULT_SKIP' => 0,
   ]
 ];
 

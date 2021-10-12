@@ -2,11 +2,16 @@
 
 namespace LifeRaft\Core;
 
+use LifeRaft\Core\Attributes\Injectable;
 use LifeRaft\Core\Attributes\Module;
+use LifeRaft\Core\Interfaces\IModule;
+use ReflectionClass;
 
-class BaseModule
+class BaseModule implements IModule
 {
   protected string $id;
+  protected array $injectables = [];
+  protected ReflectionClass $reflectionClass;
 
   public function __construct(
     protected ?array $providers = [],
@@ -30,37 +35,10 @@ class BaseModule
       $this->exports = $attribute_instance->exports;
     }
 
-    $this->resolveDependencies();
-  }
-
-  public function resolveDependencies(): void
-  {
-    // if (!empty($this->controllers()))
-    // {
-    //   $controller = $this->controllers()[0];
-    //   $controller_reflection = new \ReflectionClass($controller);
-    //   $params = $controller_reflection->getConstructor()->getParameters();
-      
-    //   foreach ($params as $param)
-    //   {
-    //     echo $param->getName();
-    //   }
-    // }
-
-    # Load imports
-    foreach ($this->imports as $import)
-    {
-      echo $import . "\n";
-    }
-
-    # Load service providers
-    foreach ($this->providers as $provider)
-    {
-      echo $provider . "\n";
-      // new $provider();
-    }
-
-    exit;
+    if (is_null($this->providers)) { $this->providers = []; }
+    if (is_null($this->controllers)) { $this->controllers = []; }
+    if (is_null($this->imports)) { $this->imports = []; }
+    if (is_null($this->exports)) { $this->exports = []; }
   }
 
   public function id(): string
@@ -68,20 +46,71 @@ class BaseModule
     return $this->id;
   }
 
-  public function injectables(): array
+  public function rootControllerName(): string|null
   {
-    return !is_null($this->providers) ? $this->providers : [];
+    if (!empty($this->controllers) && isset($this->controllers[0]))
+    {
+      return $this->controllers[0];
+    }
+
+    return null;
   }
 
-  public function controllers(): array
+  public function resolveInjectables(): array
   {
-    return !is_null($this->controllers) ? $this->controllers : [];
+    foreach ($this->providers as $provider)
+    {
+      $reflection = new \ReflectionClass($provider);
+      $attributes = $reflection->getAttributes(Injectable::class);
+
+      if (!empty($attributes))
+      {
+        $instance = $reflection->newInstance();
+        $this->injectables[$reflection->getName()] = $instance;
+      }
+    }
+
+    return !is_null($this->injectables) ? $this->injectables : [];
+  }
+
+  public function injectables(): array
+  {
+    return !is_null($this->injectables) ? $this->injectables : [];
   }
 
   public function exports(): array
   {
-    return !is_null($this->exports) ? $this->exports : [];
+    return $this->exports;
   }
+
+  public function resolveDependencies(string $classname): array
+  {
+    global $app;
+
+    $reflection = new \ReflectionClass($classname);
+    $constructor = $reflection->getConstructor();
+    $dependencies = [];
+
+    if ($constructor instanceof \ReflectionMethod)
+    {
+      $params = $constructor->getParameters();
+
+      foreach ($params as $param)
+      {
+        if ($param->getName() === 'request')
+        {
+          $dependencies['request'] = $app->request();
+        }
+        else if (isset($this->injectables()[$param->getType()->getName()]))
+        {
+          $dependencies[$param->getName()] = $this->injectables()[$param->getType()->getName()];
+        }
+      }
+    }
+
+    return $dependencies;
+  }
+
 }
 
 ?>

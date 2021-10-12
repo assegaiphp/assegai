@@ -10,7 +10,6 @@ use LifeRaft\Core\Attributes\PATCH;
 use LifeRaft\Core\Attributes\DELETE;
 use LifeRaft\Core\Attributes\OPTIONS;
 use ReflectionClass;
-use ReflectionParameter;
 
 /**
  * Controllers are responsible for handling incoming requests and returning 
@@ -34,7 +33,8 @@ class BaseController implements IController
 
   public function handleRequest(array $url): Response
   {
-    try {
+    try
+    {
       $handler = $this->getActivatedHandler();
 
       # Check if handler is defined
@@ -42,7 +42,7 @@ class BaseController implements IController
       {
         return new NotFoundErrorResponse();
       }
-      # Else respond with Unknow error
+      # Else respond with Unknown error
 
       return call_user_func_array([$this, $handler->method()->name], $handler->attribute()->args);
     }
@@ -54,6 +54,13 @@ class BaseController implements IController
 
   protected function getActivatedHandler(): Handler|null
   {
+    global $app;
+
+    if (!isset($this->request))
+    {
+      $this->request = $app->request();
+    }
+
     # Check if forbidden method
     if (in_array($this->request->method(), $this->forbidden_methods))
     {
@@ -89,12 +96,19 @@ class BaseController implements IController
           $instance = $attribute->newInstance();
 
           $path = '/' . $this->prefix . '/' . $instance->path;
+          $path = str_replace('///', '/', $path);
           $path = str_replace('//', '/', $path);
+          if ($path === '/')
+          {
+            $path = '.+';
+          }
+
           $pattern = preg_replace('/(:[\w]+)/', '.+', $path);
           $pattern = "(^$pattern$)";
           $subject = str_ends_with($this->request->uri(), '/') ? $this->request->uri() : $this->request->uri() . '/';
 
           $can_activate = preg_match( pattern: $pattern, subject: $subject );
+
           if ($can_activate)
           {
             $handler = new Handler( method: $method, attribute: $instance);
@@ -123,13 +137,9 @@ class BaseController implements IController
     return false;
   }
 
-  /**
-   * 
-   */
   public function respond(Response $response): void
   {
     http_response_code( response_code: $response->status()->code());
-    echo $response;
-    exit;
+    exit($response);
   }
 }

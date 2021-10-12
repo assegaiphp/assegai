@@ -5,6 +5,7 @@ namespace LifeRaft\Core;
 class Response
 {
   protected int $total = 0;
+  protected Request $request;
 
   public function __construct(
     protected mixed                   $data = null,
@@ -14,6 +15,9 @@ class Response
     protected bool                    $data_only = false,
     protected ?HttpStatusCode         $status = null
   ) {
+    global $app;
+    $this->request = $app->request();
+
     if (is_null($this->type()))
     {
       $this->type = ResponseType::JSON();
@@ -22,6 +26,8 @@ class Response
     {
       $this->status = HttpStatus::OK();
     }
+    $this->limit = $this->request->limit();
+    $this->skip = $this->request->skip();
 
     header("Content-Type: {$this->type()}");
     http_response_code($this->status()->code());
