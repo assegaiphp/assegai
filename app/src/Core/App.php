@@ -10,12 +10,12 @@ class App
 {
   private string $path = '/';
   private array $url = [];
-  private Request $request;
 
   public function __construct(
+    private Request $request,
     private array $config = []
   ) {
-    $this->request = new Request( app: $this );
+    $request->set_app(app: $this);
     if ($this->request->method() === RequestMethod::OPTIONS)
     {
       http_response_code(HttpStatus::OK()->code());
@@ -51,6 +51,11 @@ class App
 
     header('Content-Type: ' . $response->type());
     http_response_code( response_code: $response->status()->code() );
+    $this->respond(response: $response);  
+  }
+
+  public function respond(string|Response $response): void
+  {
     exit($response);
   }
 

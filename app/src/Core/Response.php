@@ -15,8 +15,7 @@ class Response
     protected bool                    $data_only = false,
     protected ?HttpStatusCode         $status = null
   ) {
-    global $app;
-    $this->request = $app->request();
+    $this->request = Request::instance();
 
     if (is_null($this->type()))
     {
@@ -29,7 +28,10 @@ class Response
     $this->limit = $this->request->limit();
     $this->skip = $this->request->skip();
 
-    header("Content-Type: {$this->type()}");
+    if (!headers_sent())
+    {
+      header("Content-Type: {$this->type()}");
+    }
     http_response_code($this->status()->code());
     $this->data(data: $data);
   }
@@ -57,7 +59,7 @@ class Response
       $this->total = is_countable($this->data) ? count($this->data) : 1;
     }
 
-    return $this->data;
+    return !is_null($this->data) ? $this->data : [];
   }
 
   public function status(HttpStatus|null $status = null): HttpStatusCode
