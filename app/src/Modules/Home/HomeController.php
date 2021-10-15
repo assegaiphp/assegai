@@ -3,9 +3,11 @@
 namespace LifeRaft\Modules\Home;
 
 use LifeRaft\Core\BaseController;
-use LifeRaft\Core\Response;
 use LifeRaft\Core\Attributes\Get;
+use LifeRaft\Core\Config;
 use LifeRaft\Core\RequestMethod;
+use LifeRaft\Core\Responses\Response;
+use LifeRaft\Database\Queries\SQLQuery;
 
 class HomeController extends BaseController
 {
@@ -44,6 +46,7 @@ class HomeController extends BaseController
       'description' => 'Social Navigator powered by Life Raft API',
       'version'     => '1.0.0',
       'copyright'   => '© ' . date('Y') . ' Life Raft',
+      'db'          => $db
     ];
 
     return new Response( data: $data, data_only: true );

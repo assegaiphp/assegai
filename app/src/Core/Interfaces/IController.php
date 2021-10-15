@@ -2,7 +2,8 @@
 
 namespace LifeRaft\Core\Interfaces;
 
-use LifeRaft\Core\Response;
+use LifeRaft\Core\Responses;
+use LifeRaft\Core\Responses\Response;
 
 interface IController
 {

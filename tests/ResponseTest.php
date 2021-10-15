@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 use LifeRaft\Core\App;
-use LifeRaft\Core\HttpStatusCode;
 use LifeRaft\Core\Request;
-use LifeRaft\Core\Response;
-use LifeRaft\Core\ResponseType;
+use LifeRaft\Core\Responses\HttpStatusCode;
+use LifeRaft\Core\Responses\Response;
+use LifeRaft\Core\Responses\ResponseType;
 use PHPUnit\Framework\TestCase;
 
 final class ResponseTest extends TestCase

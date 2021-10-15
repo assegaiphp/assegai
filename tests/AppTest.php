@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use LifeRaft\Core\App;
-use LifeRaft\Core\Interfaces\IModule;
 use LifeRaft\Core\Request;
 use PHPUnit\Framework\TestCase;
 

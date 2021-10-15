@@ -35,10 +35,32 @@ class Config
 
       $_ENV = array_merge($_ENV, $config);
     }
+
+    if (!isset($GLOBALS['config']))
+    {
+      $config = require('app/config/default.php');
+
+      if (Config::environment('ENVIRONMENT') === 'PROD' && file_exists('app/config/production.php'))
+      {
+        $config = array_merge($config, require('app/config/production.php'));
+      }
+
+      if (file_exists('app/config/local.php'))
+      {
+        $config = array_merge($config, require('app/config/local.php'));
+      }
+
+      $GLOBALS['config'] = $config;
+    }
   }
  
   public static function get(string $name): mixed
   {
+    if (!isset($GLOBALS['config']))
+    {
+      Config::hydrate();
+    }
+
     return isset($GLOBALS['config'][$name]) ? $GLOBALS['config'][$name] : NULL;
   }
 
