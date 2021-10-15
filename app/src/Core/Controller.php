@@ -8,6 +8,10 @@ use LifeRaft\Core\Attributes\PUT;
 use LifeRaft\Core\Attributes\PATCH;
 use LifeRaft\Core\Attributes\DELETE;
 use LifeRaft\Core\Attributes\OPTIONS;
+use LifeRaft\Core\Responses\MethodNotAllowedErrorResponse;
+use LifeRaft\Core\Responses\NotFoundErrorResponse;
+use LifeRaft\Core\Responses\NotImplementedErrorResponse;
+use LifeRaft\Core\Responses\Response;
 use ReflectionClass;
 use LifeRaft\Core\Handler;
 

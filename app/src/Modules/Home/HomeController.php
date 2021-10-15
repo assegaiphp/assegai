@@ -11,6 +11,21 @@ class HomeController extends Controller
   #[Get]
   public function default(): Response
   {
+    extract(Config::get('databases')['mysql']['assegai_test']);
+    $dsn = "mysql:dbname=$name;host=$host";
+
+    try
+    {
+      $db = new \PDO( dsn: $dsn, username: $user, password: $password );
+    }
+    catch (\Exception $e)
+    {
+      die($e->getMessage());
+    }
+
+    $query = new SQLQuery( db: $db );
+    // $query->select()->from();
+
     $data = [
       'name' => 'Social Navigator API.',
       'description' => 'Social Navigator powered by Life Raft API',
