@@ -2,13 +2,17 @@
 
 namespace LifeRaft\Core\Attributes;
 
+use Attribute;
 use LifeRaft\Core\HttpStatus;
 use LifeRaft\Core\HttpStatusCode;
+use stdClass;
 
-#[\Attribute]
+#[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
 class Post
 {
   public array $tokens = [];
+  public stdClass $body;
+
   public function __construct(
     public string $path = '',
     public array $args = [],
@@ -22,20 +26,25 @@ class Post
     }
     http_response_code($this->status->code());
 
-    foreach ($this->tokens as $index => $token)
-    {
-      if (str_starts_with($token, ':'))
-      {
-        # Get variable at path
-        $value = null;
+    $body = $_POST;
 
-        if (isset($requested_uri[$index + 1]))
-        {
-          $value = $requested_uri[$index + 1];
-        }
-        $this->args[trim($token, ':')] = $value;
-      }
+    if (empty($body))
+    {
+      $body = $_FILES;
     }
+
+    if (empty($body))
+    {
+      $body = file_get_contents('php://input');
+    }
+
+    $this->body = match( gettype($body) ) {
+      'array' => json_decode( json_encode($body) ),
+      'string' => json_decode( $body ),
+      default => $body
+    };
+
+    $this->args['body'] = $this->body;
   }
 }
 

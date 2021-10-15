@@ -2,6 +2,7 @@
 
 namespace LifeRaft\Core;
 
+use LifeRaft\Core\Interfaces\IController;
 use LifeRaft\Core\Attributes\Get;
 use LifeRaft\Core\Attributes\POST;
 use LifeRaft\Core\Attributes\PUT;
@@ -13,13 +14,12 @@ use LifeRaft\Core\Responses\NotFoundErrorResponse;
 use LifeRaft\Core\Responses\NotImplementedErrorResponse;
 use LifeRaft\Core\Responses\Response;
 use ReflectionClass;
-use LifeRaft\Core\Handler;
 
 /**
  * Controllers are responsible for handling incoming requests and returning 
  * responses to the client.
  */
-class Controller
+class BaseController implements IController
 {
   protected string $prefix = '';
   protected Handler $handler;
@@ -35,17 +35,18 @@ class Controller
     }
   }
 
-  public function handle_request(array $url): Response
+  public function handleRequest(array $url): Response
   {
-    try {
-      $handler = $this->get_activated_handler();
+    try
+    {
+      $handler = $this->getActivatedHandler();
 
       # Check if handler is defined
       if (empty($handler))
       {
         return new NotFoundErrorResponse();
       }
-      # Else respond with Unknow error
+      # Else respond with Unknown error
 
       return call_user_func_array([$this, $handler->method()->name], $handler->attribute()->args);
     }
@@ -55,8 +56,15 @@ class Controller
     }
   }
 
-  protected function get_activated_handler(): Handler|null
+  protected function getActivatedHandler(): Handler|null
   {
+    global $app;
+
+    if (!isset($this->request))
+    {
+      $this->request = $app->request();
+    }
+
     # Check if forbidden method
     if (in_array($this->request->method(), $this->forbidden_methods))
     {
@@ -92,12 +100,19 @@ class Controller
           $instance = $attribute->newInstance();
 
           $path = '/' . $this->prefix . '/' . $instance->path;
+          $path = str_replace('///', '/', $path);
           $path = str_replace('//', '/', $path);
+          if ($path === '/')
+          {
+            $path = '.+';
+          }
+
           $pattern = preg_replace('/(:[\w]+)/', '.+', $path);
           $pattern = "(^$pattern$)";
-          
-          $can_activate = preg_match( pattern: $pattern, subject: $this->request->uri() );
-          
+          $subject = str_ends_with($this->request->uri(), '/') ? $this->request->uri() : $this->request->uri() . '/';
+
+          $can_activate = preg_match( pattern: $pattern, subject: $subject );
+
           if ($can_activate)
           {
             $handler = new Handler( method: $method, attribute: $instance);
@@ -121,18 +136,14 @@ class Controller
     return $handler;
   }
 
-  protected function is_match(string $pattern, string $path): bool
+  protected function isMatch(string $pattern, string $path): bool
   {
     return false;
   }
 
-  /**
-   * 
-   */
-  protected function respond(Response $response): void
+  public function respond(Response $response): void
   {
     http_response_code( response_code: $response->status()->code());
-    echo $response;
-    exit;
+    exit($response);
   }
 }

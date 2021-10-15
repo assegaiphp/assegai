@@ -6,4 +6,8 @@ logs/*
 storage/audio/*
 storage/images/*
 storage/videos/*
-.idea
+.idea/
+.vscode/
+
+/vendor/
+composer-installer

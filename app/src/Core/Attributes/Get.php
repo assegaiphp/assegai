@@ -2,12 +2,14 @@
 
 namespace LifeRaft\Core\Attributes;
 
-#[\Attribute]
+use Attribute;
+
+#[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
 class Get
 {
   public array $tokens = [];
   public function __construct(
-    public string $path = '',
+    public string $path = '/',
     public array $args = []
   ) {
     $this->tokens = explode('/', trim($path, '/'));

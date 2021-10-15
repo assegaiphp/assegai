@@ -24,10 +24,11 @@ class Request
 {
   protected mixed $body;
   protected array $all_headers = [];
+  protected ?App $app = null;
 
-  public function __construct(
-    public App $app
-  ) {
+  protected static Request $instance;
+
+  public function __construct() {
     $this->body = match ($this->method()) {
       RequestMethod::GET      => $_GET,
       RequestMethod::POST     => !empty($_POST) ? $_POST : ( !empty($_FILES) ? $_FILES : file_get_contents('php://input') ),
@@ -50,6 +51,26 @@ class Request
         $this->all_headers[$key] = $value;
       }
     }
+
+    if (isset(Request::$instance) || empty(Request::$instance))
+    {
+      Request::$instance = $this;
+    }
+  }
+
+  public static function instance(): Request
+  {
+    return Request::$instance;
+  }
+
+  public function app(): App
+  {
+    return $this->app;
+  }
+
+  public function set_app(App $app): void
+  {
+    $this->app = $app;
   }
 
   public function to_array(): array
@@ -83,7 +104,7 @@ class Request
     return $this->to_array();
   }
 
-  public function header(string $name): string|null
+  public function header(string $name): string
   {
     $key = strtoupper($name);
 
@@ -97,7 +118,7 @@ class Request
       return $_SERVER[$key];
     }
 
-    return null;
+    return '';
   }
 
   public function all_headers(): array
@@ -107,7 +128,17 @@ class Request
 
   public function uri(): string
   {
-    return $_SERVER['REQUEST_URI']; 
+    return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/'; 
+  }
+
+  public function limit(): int
+  {
+    return isset($_GET['limit']) ? $_GET['limit'] : Config::get('request')['DEFAULT_LIMIT'];
+  }
+
+  public function skip(): int
+  {
+    return isset($_GET['skip']) ? $_GET['skip'] : Config::get('request')['DEFAULT_SKIP'];
   }
 
   public function body(): mixed
@@ -127,17 +158,17 @@ class Request
 
   public function host_name(): string
   {
-    return $_SERVER['HTTP_HOST']; 
+    return isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost'; 
   }
 
   public function method(): string
   {
-    return $_SERVER['REQUEST_METHOD'];
+    return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
   }
 
   public function remote_ip(): string
   {
-    return $_SERVER['REMOTE_ADDR'];
+    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '::1';
   }
 
   public function remote_ips(): string
@@ -147,12 +178,12 @@ class Request
 
   public function protocol(): string
   {
-    return $_SERVER['REQUEST_SCHEME'];
+    return isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
   }
 
   public function query(): string
   {
-    return $_SERVER['QUERY_STRING'];
+    return isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
   }
 }
 
