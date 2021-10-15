@@ -5,11 +5,11 @@ use LifeRaft\Core\Config;
 
 Config::hydrate();
 
-$GLOBALS['config'] = require_once("config/default.php");
+$GLOBALS['config'] = require("config/default.php");
 
 if (Config::environment('ENVIORNMENT') === 'PROD' && file_exists('app/config/production.php'))
 {
-  $prod_config = require_once("config/production.php");
+  $prod_config = require("config/production.php");
   if (is_array($prod_config))
   {
     $GLOBALS['config'] = array_merge($GLOBALS['config'], $prod_config);
@@ -18,7 +18,7 @@ if (Config::environment('ENVIORNMENT') === 'PROD' && file_exists('app/config/pro
 
 if (file_exists('app/config/local.php'))
 {
-  $local_config = require_once("config/local.php");
+  $local_config = require("config/local.php");
   if (is_array($local_config))
   {
     $GLOBALS['config'] = array_merge($GLOBALS['config'], $local_config);
