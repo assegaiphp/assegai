@@ -20,7 +20,15 @@ return [
         'port' => 3306,
       ]
     ],
-    'pgsql' => [],
+    'pgsql' => [
+      'navigator_local_db' => [
+        'host' => 'localhost',
+        'user' => 'navigator',
+        'password' => '2m80tina',
+        'name' => 'navigator_local_db',
+        'port' => 5432,
+      ]
+    ],
     'sqlite' => [],
     'mongodb' => [],
   ],
