@@ -19,7 +19,7 @@ final class ResponseTest extends TestCase
     $this->assertInstanceOf(Response::class, new Response());
   }
 
-  public function testReadMemberVariableNamedTotalOfTypeInt(): void
+  public function testReadPropertyNamedTotalOfTypeInt(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -29,7 +29,7 @@ final class ResponseTest extends TestCase
     $this->assertIsInt((new Response())->total());
   }
 
-  public function testReadMemberVariableNamedLimitOfTypeInt(): void
+  public function testReadPropertyNamedLimitOfTypeInt(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -39,7 +39,7 @@ final class ResponseTest extends TestCase
     $this->assertIsInt((new Response())->limit());
   }
 
-  public function testReadMemberVariableNamedSkipOfTypeInt(): void
+  public function testReadPropertyNamedSkipOfTypeInt(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -49,7 +49,7 @@ final class ResponseTest extends TestCase
     $this->assertIsInt((new Response())->skip());
   }
 
-  public function testReadNonNullMemberVariableNamedData(): void
+  public function testReadNonNullPropertyNamedData(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -59,7 +59,7 @@ final class ResponseTest extends TestCase
     $this->assertNotNull((new Response())->data());
   }
 
-  public function testReadMemberVariableNamedStatusOfTypeHttpstatuscode(): void
+  public function testReadPropertyNamedStatusOfTypeHttpstatuscode(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -69,7 +69,7 @@ final class ResponseTest extends TestCase
     $this->assertInstanceOf(HttpStatusCode::class, (new Response())->status());
   }
 
-  public function testReadMemberVariableNamedStatusOfTypeType(): void
+  public function testReadPropertyNamedStatusOfTypeType(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));

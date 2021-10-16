@@ -8,6 +8,7 @@ storage/images/*
 storage/videos/*
 .idea/
 .vscode/
+.data/
 
 /vendor/
 composer-installer

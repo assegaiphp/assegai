@@ -6,6 +6,10 @@ use LifeRaft\Core\Config;
 use LifeRaft\Core\Responses\InternalServerErrorResponse;
 use PDO;
 
+/**
+ * The `DBFactory` class houses static methods for creating **Database 
+ * connection objects**.
+ */
 final class DBFactory
 {
   public static function getMySQLConnection(string $dbName): PDO
@@ -93,11 +97,7 @@ final class DBFactory
     try
     {
       extract($config);
-      return new PDO(
-        dsn: "sqlite:host=$host;port=$port;dbname=$name",
-        username: $user,
-        password: $password
-      );
+      return new PDO( dsn: "sqlite:$path" );
     }
     catch (\Exception $e)
     {

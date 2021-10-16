@@ -29,7 +29,11 @@ return [
         'port' => 5432,
       ]
     ],
-    'sqlite' => [],
+    'sqlite' => [
+      'assegai_test' => [
+        'path' => '.data/assegai_test.sq3'
+      ]
+    ],
     'mongodb' => [],
   ],
   'request' => [
