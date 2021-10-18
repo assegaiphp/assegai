@@ -3,7 +3,7 @@
 namespace LifeRaft\Database\Attributes;
 
 use Attribute;
-use LifeRaft\Database\SQLDataTypes;
+use LifeRaft\Database\Queries\SQLDataTypes;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Column
@@ -18,18 +18,18 @@ class Column
 
   public function __construct(
     public string $name,
-    public ?string $alias,
+    public string $alias = "",
     public string $dataType = SQLDataTypes::INT,
     public bool $allowNull = true,
     public bool $signed = true,
     public bool $zeroFilled = false,
-    public mixed $defaultValue,
+    public mixed $defaultValue = "",
     public bool $autoIncrement = false,
-    public ?string $onUpdate,
+    public string $onUpdate = "",
     public bool $isUnique = false,
-    public ?string $uniqueKey,
+    public string $uniqueKey = "",
     public bool $isPrimaryKey = false,
-    public ?string $comment,
+    public string $comment = "",
   )
   {
     $this->value = "$dataType ";

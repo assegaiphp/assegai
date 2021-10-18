@@ -6,18 +6,33 @@ final class SQLCreateDefinition
 {
   public function __construct(
     protected SQLQuery $query
-  )
-  {
-  }
+  ) {}
 
-  public function table(string $name): SQLTableOptions
+  public function table(
+    string $tableName,
+    array $columns,
+    bool $isTemporary = false,
+    bool $checkIfNotExists = true
+  ): SQLTableOptions
   {
-    $this->query->appendSQL("TABLE $name");
-    return new SQLTableOptions( query: $this->query );
+    $sql = "CREATE ";
+    if ($isTemporary)
+    {
+      $sql .= "TEMPORARY ";
+    }
+    $sql .= "TABLE ";
+    if ($checkIfNotExists)
+    {
+      $sql .= "IF NOT EXISTS ";
+    }
+    $sql .= "$tableName";
+    $this->query->setSQL($sql);
+    return new SQLTableOptions( query: $this->query, columns: $columns );
   }
   
-  public function database(string $name): mixed
+  public function database(string $dbName): mixed
   {
+    $this->query->setSQL("CREATE DATABASE $dbName");
     return null;
   }
 

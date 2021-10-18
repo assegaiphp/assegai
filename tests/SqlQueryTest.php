@@ -42,7 +42,13 @@ final class SqlQueryTest extends TestCase
   public function testCreateAndRenameAMysqlDatabase(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->create()->database(name: 'test_db')->execute();
+    $result = $query->create()->database(dbName: 'test_db')->execute();
+    $this->assertTrue( condition: $result->isOK() );
+  }
+
+  public function testSelectADatabase(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
   }
 
   public function testDropDatabase(): void
@@ -55,7 +61,6 @@ final class SqlQueryTest extends TestCase
 
   public function testDropTable(): void
   {
-
   }
 
   public function testInsertASingleRowIntoATable(): void
@@ -97,13 +102,6 @@ final class SqlQueryTest extends TestCase
   public function testDeleteMultipleRowsFromTheTable(): void
   {
   }
-
-  // public function testCreateInstance(): void
-  // {
-  //   $query = new SQLQuery;
-  //   $query->select()->from(['users' => 'u'])->where();
-  //   $this->assertInstanceOf(SQLQuery::class, new SQLQuery);
-  // }
 }
 
 ?>
