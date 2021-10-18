@@ -2,14 +2,14 @@
 
 namespace LifeRaft\Database\Queries;
 
-final class SQLColumnDefinition
+class SQLColumnDefinition
 {
   private string $sql = "";
 
   public function __construct(
     private string $name,
     private string $dataType = SQLDataTypes::INT,
-    private ?string $dataTypeSize = null,
+    private string|int|null $dataTypeSize = null,
     private mixed $defaultValue = null,
     private bool $allowNull = true,
     private bool $autoIncrement = false,

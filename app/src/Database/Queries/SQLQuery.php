@@ -6,8 +6,8 @@ use stdClass;
 
 final class SQLQuery
 {
-  private string $sql;
-  private string $type;
+  private string $sql = '';
+  private string $type = '';
   private array $params = [];
 
   public function __construct(
@@ -50,6 +50,17 @@ final class SQLQuery
     return new SQLCreateDefinition( query: $this );
   }
 
+  public function drop(): SQLDropDefinition
+  {
+    $this->type = SQLQueryType::DROP;
+    return new SQLDropDefinition( query: $this );
+  }
+
+  public function rename(): SQLRenameStatement
+  {
+    return new SQLRenameStatement( query: $this );
+  }
+
   public function use(string $dbName): SQLUseStatement
   {
     $this->type = SQLQueryType::USE;
@@ -62,10 +73,10 @@ final class SQLQuery
     return new SQLDescribeStatement( query: $this, subject: $subject );
   }
 
-  public function insert(): SQLQuery
+  public function insertInto(string $tableName, array $columns = []): SQLInsertIntoStatement
   {
     $this->type = SQLQueryType::INSERT;
-    return $this;
+    return new SQLInsertIntoStatement( query: $this, tableName: $tableName, columns: $columns );
   }
 
   public function update(): SQLQuery

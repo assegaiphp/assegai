@@ -10,30 +10,32 @@ final class SQLCreateDefinition
 
   public function table(
     string $tableName,
-    array $columns,
     bool $isTemporary = false,
     bool $checkIfNotExists = true
-  ): SQLTableOptions
+  ): SQLCreateTableStatement
   {
-    $sql = "CREATE ";
-    if ($isTemporary)
-    {
-      $sql .= "TEMPORARY ";
-    }
-    $sql .= "TABLE ";
-    if ($checkIfNotExists)
-    {
-      $sql .= "IF NOT EXISTS ";
-    }
-    $sql .= "$tableName";
-    $this->query->setSQL($sql);
-    return new SQLTableOptions( query: $this->query, columns: $columns );
+    return new SQLCreateTableStatement(
+      query: $this->query,
+      tableName: $tableName,
+      isTemporary: $isTemporary,
+      checkIfNotExists: $checkIfNotExists
+    );
   }
   
-  public function database(string $dbName): mixed
+  public function database(
+    string $dbName,
+    string $defaultCharacterSet = 'utf8mb4',
+    string $defaultCollation = 'utf8mb4_general_ci',
+    bool $defaultEncryption = true,
+  ): SQLCreateDatabaseStatement
   {
-    $this->query->setSQL("CREATE DATABASE $dbName");
-    return null;
+    return new SQLCreateDatabaseStatement(
+      query: $this->query,
+      dbName: $dbName,
+      defaultCharacterSet: $defaultCharacterSet,
+      defaultCollation: $defaultCollation,
+      defaultEncryption: $defaultEncryption
+    );
   }
 
   public function execute(): SQLQueryResult
