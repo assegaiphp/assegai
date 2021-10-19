@@ -11,7 +11,7 @@ final class SQLUpdateDefinition
     private bool $ignore =  false
   )
   {
-    $sql = "UPDATE ";
+    $queryString = "UPDATE ";
     if ($lowPriority)
     {
       $sql .= "LOW_PRIORITY ";
@@ -20,8 +20,8 @@ final class SQLUpdateDefinition
     {
       $sql .= "IGNORE ";
     }
-    $sql = trim($sql);
-    $this->query->setSQL(sql: "$sql `$tableName`");
+    $queryString = trim($sql);
+    $this->query->setQueryString(sql: "$sql `$tableName`");
   }
 
   public function set(array $assignmentList): SQLAssignmentList

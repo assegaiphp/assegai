@@ -21,20 +21,20 @@ final class SQLInsertIntoMultipleStatement
     private array $columns
   )
   {
-    $sql = "";
+    $queryString = "";
     
     if (!empty($columns))
     {
-      $sql = "(" . implode(', ', $columns) . ") ";
+      $queryString = "(" . implode(', ', $columns) . ") ";
       $this->hashableIndexes = array_keys( array_intersect( $columns, $this->query->passwordHashFields() ) );
     }
 
-    $this->query->appendSQL($sql);
+    $this->query->appendQueryString($sql);
   }
 
   public function rows(array $rows_list): SQLInsertIntoMultipleStatement
   {
-    $sql = "VALUES ";
+    $queryString = "VALUES ";
     $separator = ', ';
 
     foreach ($rows_list as $row)
@@ -48,11 +48,11 @@ final class SQLInsertIntoMultipleStatement
         }
         $sql .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
       }
-      $sql = trim($sql, $separator);
+      $queryString = trim($sql, $separator);
       $sql .= ")$separator";
     }
-    $sql = trim($sql, $separator);
-    $this->query->appendSQL(tail: $sql);
+    $queryString = trim($sql, $separator);
+    $this->query->appendQueryString(tail: $sql);
     return $this;
   }
 }

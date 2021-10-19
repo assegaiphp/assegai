@@ -13,7 +13,7 @@ final class SQLAssignmentList
     private array $assignmentList
   )
   {
-    $sql = 'SET ';
+    $queryString = 'SET ';
     $separator = ', ';
     foreach ($assignmentList as $key => $value)
     {
@@ -25,8 +25,8 @@ final class SQLAssignmentList
         ? "$key=${value}${separator}"
         : "$key='$value'${separator}";
     }
-    $sql = trim($sql, $separator);
-    $this->query->appendSQL( tail: $sql );
+    $queryString = trim($sql, $separator);
+    $this->query->appendQueryString( tail: $sql );
   }
 
   public function where(string $condition): SQLWhereClause

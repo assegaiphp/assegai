@@ -14,8 +14,8 @@ final class SQLLimitClause
     private ?int $offset = null,
   )
   {
-    $sql = "LIMIT " . (!is_null($offset) ? "$offset,$limit" : "$limit");
-    $this->query->appendSQL($sql);
+    $queryString = "LIMIT " . (!is_null($offset) ? "$offset,$limit" : "$limit");
+    $this->query->appendQueryString($sql);
   }
 }
 

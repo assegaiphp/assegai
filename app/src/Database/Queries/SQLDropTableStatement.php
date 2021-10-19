@@ -17,13 +17,13 @@ final class SQLDropTableStatement
     private bool $checkIfExists = true
   )
   {
-    $sql = "DROP TABLE ";
+    $queryString = "DROP TABLE ";
     if ($checkIfExists)
     {
       $sql .= "IF EXISTS ";
     }
     $sql .= "`$tableName`";
-    $this->query->setSQL(sql: $sql);
+    $this->query->setQueryString(queryString: $queryString);
   }
 }
 

@@ -4,7 +4,7 @@ namespace LifeRaft\Database\Queries;
 
 final class SQLKeyPart
 {
-  private string $sql = '';
+  private string $queryString = '';
   /**
    * @param string $key The name of the key part
    * @param bool|null $ascending Sort specifier. If set to `true`, appends 

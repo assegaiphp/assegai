@@ -10,14 +10,14 @@ final class SQLDropDatabaseStatement
     private bool $checkIfExists = false
   )
   {
-    $sql = "DROP DATABASE ";
+    $queryString = "DROP DATABASE ";
     if ($checkIfExists)
     {
       $sql .= "IF EXISTS ";
     }
     $sql .= "`$dbName`";
 
-    $this->query->setSQL(sql: $sql);
+    $this->query->setQueryString(queryString: $queryString);
   }
 
   public function execute(): SQLQueryResult

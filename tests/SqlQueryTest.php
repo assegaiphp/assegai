@@ -30,7 +30,7 @@ final class SqlQueryTest extends TestCase
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $str = 'Hello World';
-    $query->setSQL($str);
+    $query->setQueryString($str);
     $this->assertEquals($str, strval($query));
   }
 
@@ -38,9 +38,9 @@ final class SqlQueryTest extends TestCase
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $str = 'SELECT *';
-    $query->setSQL($str);
+    $query->setQueryString($str);
     $tail = 'FROM `users`';
-    $query->appendSQL($tail);
+    $query->appendQueryString($tail);
     $this->assertEquals($str . ' ' . $tail, $query->sql());
   }
 
@@ -89,6 +89,10 @@ final class SqlQueryTest extends TestCase
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $result = $query->rename()->table(from: $table_name, to: $table_name . '_renamed')->execute();
     $this->assertTrue( condition: $result->isOK() );
+  }
+
+  public function testAlterATable(): void
+  {
   }
 
   public function testDropTable(): void

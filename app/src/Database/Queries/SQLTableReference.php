@@ -14,7 +14,7 @@ final class SQLTableReference
     private SQLQuery $query,
     private array|string $table_references
   ) {
-    $sql = "FROM ";
+    $queryString = "FROM ";
     $separate = ', ';
 
     if (is_string($table_references))
@@ -35,9 +35,9 @@ final class SQLTableReference
           $sql .= "`${reference}` AS ${alias}${separate}";
         }
       }
-      $sql = trim($sql, $separate);
+      $queryString = trim($sql, $separate);
     }
-    $this->query->appendSQL(tail: $sql);
+    $this->query->appendQueryString(tail: $sql);
   }
 
   public function where(string $condition): SQLWhereClause

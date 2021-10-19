@@ -4,7 +4,7 @@ namespace LifeRaft\Database\Queries;
 
 final class SQLRenameTableStatement
 {
-  private string $sql = '';
+  private string $queryString = '';
 
   public function __construct(
     private SQLQuery $query,
@@ -13,7 +13,7 @@ final class SQLRenameTableStatement
   )
   {
     $this->sql = "RENAME TABLE `$oldTableName` TO `$newTableName`";
-    $this->query->setSQL($this->sql);
+    $this->query->setQueryString($this->sql);
   }
 
   public function execute(): SQLQueryResult

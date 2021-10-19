@@ -11,7 +11,7 @@ final class SQLCreateTableStatement
     private bool $checkIfNotExists
   )
   {
-    $sql = "CREATE ";
+    $queryString = "CREATE ";
     if ($isTemporary)
     {
       $sql .= "TEMPORARY ";
@@ -22,7 +22,7 @@ final class SQLCreateTableStatement
       $sql .= "IF NOT EXISTS ";
     }
     $sql .= "$tableName";
-    $this->query->setSQL(sql: $sql);
+    $this->query->setQueryString(queryString: $queryString);
   }
 
   public function columns(array $columns): SQLTableOptions

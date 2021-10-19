@@ -13,18 +13,18 @@ final class SQLWhereClause
     private string $condition
   )
   {
-    $this->query->appendSQL("WHERE $condition");
+    $this->query->appendQueryString("WHERE $condition");
   }
 
   public function or(string $condition): SQLWhereClause
   {
-    $this->query->appendSQL("OR $condition");
+    $this->query->appendQueryString("OR $condition");
     return $this;
   }
 
   public function and(string $condition): SQLWhereClause
   {
-    $this->query->appendSQL("AND $condition");
+    $this->query->appendQueryString("AND $condition");
     return $this;
   }
 }

@@ -10,7 +10,7 @@ final class SQLUseStatement
 
   public function __construct( private SQLQuery $query, private string $dbName )
   {
-    $this->query->appendSQL("USE $this->dbName");
+    $this->query->appendQueryString("USE $this->dbName");
   }
 }
 

@@ -13,18 +13,18 @@ final class SQLHavingClause
     private string $condition
   )
   {
-    $this->query->appendSQL("HAVING $condition");
+    $this->query->appendQueryString("HAVING $condition");
   }
 
   public function or(string $condition): SQLHavingClause
   {
-    $this->query->appendSQL("OR $condition");
+    $this->query->appendQueryString("OR $condition");
     return $this;
   }
 
   public function and(string $condition): SQLHavingClause
   {
-    $this->query->appendSQL("AND $condition");
+    $this->query->appendQueryString("AND $condition");
     return $this;
   }
 }

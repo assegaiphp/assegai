@@ -10,7 +10,7 @@ final class SQLDescribeStatement
 
   public function __construct( private SQLQuery $query, private string $subject )
   {
-    $this->query->appendSQL("DESCRIBE $this->subject");
+    $this->query->appendQueryString("DESCRIBE $this->subject");
   }
 }
 

@@ -7,7 +7,7 @@ use stdClass;
 
 final class SQLQuery
 {
-  private string $sql;
+  private string $queryString;
   private string $type;
   private array $params;
 
@@ -58,12 +58,12 @@ final class SQLQuery
     return $this->type;
   }
 
-  public function setSQL(string $sql): void
+  public function setQueryString(string $queryString): void
   {
     $this->sql = $sql;
   }
 
-  public function appendSQL(string $tail): void
+  public function appendQueryString(string $tail): void
   {
     $this->sql = trim($this->sql) . " $tail";
   }

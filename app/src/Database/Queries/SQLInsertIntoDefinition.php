@@ -9,9 +9,9 @@ final class SQLInsertIntoDefinition
     private string $tableName
   )
   {
-    $sql = "INSERT INTO `$tableName` ";
+    $queryString = "INSERT INTO `$tableName` ";
 
-    $this->query->setSQL($sql);
+    $this->query->setQueryString($sql);
   }
 
   public function singleRow(array $columns = []): SQLInsertIntoStatement

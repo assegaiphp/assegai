@@ -7,13 +7,13 @@ final class SQLSelectDefinition
   public function __construct(
     private SQLQuery $query
   ) {
-    $sql = "SELECT ";
-    $this->query->setSQL(sql: $sql);
+    $queryString = "SELECT ";
+    $this->query->setQueryString(queryString: $queryString);
   }
 
   public function all(array $columns = []): SQLSelectExpression
   {
-    $sql = "";
+    $queryString = "";
     $separator = ', ';
 
     if (empty($columns))
@@ -27,9 +27,9 @@ final class SQLSelectDefinition
         $sql .= is_numeric($key) ? "${value}${separator}" : "$value as ${key}${separator}";
       }
     }
-    $sql = trim($sql, $separator);
+    $queryString = trim($sql, $separator);
 
-    $this->query->appendSQL($sql);
+    $this->query->appendQueryString($sql);
 
     return new SQLSelectExpression( query: $this->query );
   }

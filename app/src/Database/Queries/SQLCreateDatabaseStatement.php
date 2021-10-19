@@ -4,7 +4,7 @@ namespace LifeRaft\Database\Queries;
 
 final class SQLCreateDatabaseStatement
 {
-  private string $sql = '';
+  private string $queryString = '';
 
   public function __construct(
     private SQLQuery $query,
@@ -37,7 +37,7 @@ final class SQLCreateDatabaseStatement
     }
 
     $this->sql = trim($this->sql);
-    $this->query->setSQL(sql: $this->sql);
+    $this->query->setQueryString(sql: $this->sql);
   }
 
   public function execute(): SQLQueryResult

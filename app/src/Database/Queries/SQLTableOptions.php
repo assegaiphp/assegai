@@ -15,7 +15,7 @@ final class SQLTableOptions
   )
   {
     $primaryKeyAlreadySet = false;
-    $sql = "(";
+    $queryString = "(";
     foreach ($this->columns as $column)
     {
       $column = strval($column);
@@ -31,8 +31,8 @@ final class SQLTableOptions
       }
       $sql .= $column . ", ";
     }
-    $sql = trim(string: $sql, characters: ", ") . ")";
-    $this->query->appendSQL($sql);
+    $queryString = trim(string: $sql, characters: ", ") . ")";
+    $this->query->appendQueryString($sql);
   }
 }
 

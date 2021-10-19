@@ -24,20 +24,20 @@ final class SQLInsertIntoStatement
     private array $columns = []
   )
   {
-    $sql = "";
+    $queryString = "";
 
     if (!empty($columns))
     {
-      $sql = "(" . implode(', ', $columns) . ") ";
+      $queryString = "(" . implode(', ', $columns) . ") ";
       $this->hashableIndexes = array_keys( array_intersect( $columns, $this->query->passwordHashFields() ) );
     }
 
-    $this->query->appendSQL($sql);
+    $this->query->appendQueryString($sql);
   }
 
   public function values(array $values_list): SQLInsertIntoStatement
   {
-    $sql = "VALUES(";
+    $queryString = "VALUES(";
     $separator = ', ';
 
     foreach ($values_list as $index => $value)
@@ -49,8 +49,8 @@ final class SQLInsertIntoStatement
       $sql .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
     }
 
-    $sql = trim(string: $sql, characters: $separator) . ") ";
-    $this->query->appendSQL($sql);
+    $queryString = trim(string: $sql, characters: $separator) . ") ";
+    $this->query->appendQueryString($sql);
     return $this;
   }
 

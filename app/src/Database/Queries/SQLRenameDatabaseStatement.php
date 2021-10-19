@@ -4,7 +4,7 @@ namespace LifeRaft\Database\Queries;
 
 final class SQLRenameDatabaseStatement
 {
-  private string $sql = '';
+  private string $queryString = '';
 
   public function __construct(
     private SQLQuery $query,
@@ -13,7 +13,7 @@ final class SQLRenameDatabaseStatement
   )
   {
     $this->sql = "CREATE DATABASE `$newDbName` / DROP DATABASE `$oldDbName`";
-    $this->query->setSQL($this->sql);
+    $this->query->setQueryString($this->sql);
   }
 
   public function execute(): SQLQueryResult

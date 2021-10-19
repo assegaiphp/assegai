@@ -4,7 +4,7 @@ namespace LifeRaft\Database\Queries;
 
 class SQLColumnDefinition
 {
-  private string $sql = "";
+  private string $queryString = "";
 
   public function __construct(
     private string $name,
@@ -20,7 +20,7 @@ class SQLColumnDefinition
     private string $comment = "",
   )
   {
-    $sql = "$this->name ";
+    $queryString = "$this->name ";
     if (is_null($this->dataTypeSize))
     {
       $this->dataTypeSize = match($this->dataType) {

@@ -9,7 +9,7 @@ trait DuplicateKeyUpdateableTrait
 {
   public function onDuplicateKeyUpdate(array $assignment_list): SQLInsertIntoStatement|SQLInsertIntoMultipleStatement
   {
-    $sql = "";
+    $queryString = "";
     if (!empty($assignment_list))
     {
       $sql .= "ON DUPLICATE KEY UPDATE ";
@@ -18,8 +18,8 @@ trait DuplicateKeyUpdateableTrait
         $sql .= "$assignment ";
       }
     }
-    $sql = trim($sql);
-    $this->query->appendSQL($sql);
+    $queryString = trim($sql);
+    $this->query->appendQueryString($sql);
     return $this;
   }
 }

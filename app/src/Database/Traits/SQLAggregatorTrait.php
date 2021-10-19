@@ -27,8 +27,8 @@ trait SQLAggregatorTrait
   {
     if (property_exists($this, 'query'))
     {
-      $sql = "ORDER BY " . implode(', ', $key_parts);
-      $this->query->appendSQL($sql);
+      $queryString = "ORDER BY " . implode(', ', $key_parts);
+      $this->query->appendQueryString($sql);
     }
     return $this;
   }
@@ -37,8 +37,8 @@ trait SQLAggregatorTrait
   {
     if (property_exists($this, 'query'))
     {
-      $sql = "GROUP BY " . implode(', ', $column_names);
-      $this->query->appendSQL($sql);
+      $queryString = "GROUP BY " . implode(', ', $column_names);
+      $this->query->appendQueryString($sql);
     }
     return $this;
   }
