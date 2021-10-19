@@ -37,7 +37,7 @@ final class SQLCreateDatabaseStatement
     }
 
     $this->queryString = trim($this->queryString);
-    $this->query->setQueryString(sql: $this->queryString);
+    $this->query->setQueryString(queryString: $this->queryString);
   }
 
   public function execute(): SQLQueryResult

@@ -21,7 +21,7 @@ final class SQLUpdateDefinition
       $queryString .= "IGNORE ";
     }
     $queryString = trim($queryString);
-    $this->query->setQueryString(sql: "$queryString `$tableName`");
+    $this->query->setQueryString(queryString: "$queryString `$tableName`");
   }
 
   public function set(array $assignmentList): SQLAssignmentList
