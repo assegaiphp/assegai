@@ -112,8 +112,7 @@ final class SQLQuery
   public function select(): SQLSelectDefinition
   {
     $this->type = SQLQueryType::SELECT;
-    $expression = new SQLSelectDefinition( query: $this );
-    return $expression;
+    return new SQLSelectDefinition( query: $this );
   }
 
   public function delete(): SQLQuery

@@ -20,20 +20,25 @@ trait SQLAggregatorTrait
     return $this;
   }
 
-  public function orderBy(array $column_list): mixed
+  /**
+   * @param array $key_parts A list of **SQLKeyPart** objects.
+   */
+  public function orderBy(array $key_parts): mixed
   {
     if (property_exists($this, 'query'))
     {
-
+      $sql = "ORDER BY " . implode(', ', $key_parts);
+      $this->query->appendSQL($sql);
     }
     return $this;
   }
 
-  public function groupBy(): mixed
+  public function groupBy(array $column_names): mixed
   {
     if (property_exists($this, 'query'))
     {
-      
+      $sql = "GROUP BY " . implode(', ', $column_names);
+      $this->query->appendSQL($sql);
     }
     return $this;
   }

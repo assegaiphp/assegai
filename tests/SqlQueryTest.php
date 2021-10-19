@@ -4,6 +4,7 @@ declare(strict_types=1);
 use LifeRaft\Database\DBFactory;
 use LifeRaft\Database\Queries\SQLColumnDefinition as Column;
 use LifeRaft\Database\Queries\SQLDataTypes;
+use LifeRaft\Database\Queries\SQLKeyPart;
 use LifeRaft\Database\Queries\SQLPrimaryGeneratedColumn as PrimaryColumn;
 use LifeRaft\Database\Queries\SQLQuery;
 use PHPUnit\Framework\TestCase;
@@ -191,16 +192,44 @@ final class SqlQueryTest extends TestCase
   public function testSelectARowByPredicate(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-  }
-
-  public function testGroupSelectedRows(): void
-  {
-    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query
+        ->select()
+        ->all()
+        ->from( table_references: SqlQueryTest::TEST_TABLE_NAME )
+        ->where("`email` LIKE '%04%'")
+        ->and('id IN (1,2,3,4)')
+        ->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 
   public function testOrderSelectedRows(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query
+        ->select()
+        ->all()
+        ->from( table_references: SqlQueryTest::TEST_TABLE_NAME )
+        ->orderBy([
+          new SQLKeyPart( 'password', ascending: true ),
+          new SQLKeyPart( 'id', ascending: false ),
+          new SQLKeyPart( 'email' ),
+        ])->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testGroupSelectedRows(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query
+        ->select()
+        ->all()
+        ->from( table_references: SqlQueryTest::TEST_TABLE_NAME )
+        ->orderBy(['email'])
+        ->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 
   public function testUpdateARowWithGivenId(): void
