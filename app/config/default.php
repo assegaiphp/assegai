@@ -1,6 +1,9 @@
 <?php
 
 return [
+  'app_name' => 'Assegai',
+  'version' => '0.0.1',
+  'default_password_hash_algo' => PASSWORD_DEFAULT,
   'databases' => [
     'mysql' => [
       'navigator_local_db' => [

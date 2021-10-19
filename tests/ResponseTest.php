@@ -19,7 +19,7 @@ final class ResponseTest extends TestCase
     $this->assertInstanceOf(Response::class, new Response());
   }
 
-  public function testReadPropertyNamedTotalOfTypeInt(): void
+  public function testGetPropertyNamedTotalOfTypeInt(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -29,7 +29,7 @@ final class ResponseTest extends TestCase
     $this->assertIsInt((new Response())->total());
   }
 
-  public function testReadPropertyNamedLimitOfTypeInt(): void
+  public function testGetPropertyNamedLimitOfTypeInt(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -39,7 +39,7 @@ final class ResponseTest extends TestCase
     $this->assertIsInt((new Response())->limit());
   }
 
-  public function testReadPropertyNamedSkipOfTypeInt(): void
+  public function testGetPropertyNamedSkipOfTypeInt(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -49,7 +49,7 @@ final class ResponseTest extends TestCase
     $this->assertIsInt((new Response())->skip());
   }
 
-  public function testReadNonNullPropertyNamedData(): void
+  public function testGetNonNullPropertyNamedData(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -59,7 +59,7 @@ final class ResponseTest extends TestCase
     $this->assertNotNull((new Response())->data());
   }
 
-  public function testReadPropertyNamedStatusOfTypeHttpstatuscode(): void
+  public function testGetPropertyNamedStatusOfTypeHttpstatuscode(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
@@ -69,7 +69,7 @@ final class ResponseTest extends TestCase
     $this->assertInstanceOf(HttpStatusCode::class, (new Response())->status());
   }
 
-  public function testReadPropertyNamedStatusOfTypeType(): void
+  public function testGetPropertyNamedStatusOfTypeType(): void
   {
     $request = new Request;
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));

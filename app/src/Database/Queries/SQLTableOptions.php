@@ -2,8 +2,12 @@
 
 namespace LifeRaft\Database\Queries;
 
+use LifeRaft\Database\Traits\ExecutableTrait;
+
 final class SQLTableOptions
 {
+  use ExecutableTrait;
+
   public function __construct(
     private SQLQuery $query,
     private array $columns,
@@ -29,16 +33,6 @@ final class SQLTableOptions
     }
     $sql = trim(string: $sql, characters: ", ") . ")";
     $this->query->appendSQL($sql);
-  }
-
-  public function query(): SQLQuery
-  {
-    return $this->query;
-  }
-
-  public function execute(): SQLQueryResult
-  {
-    return $this->query->execute();
   }
 }
 

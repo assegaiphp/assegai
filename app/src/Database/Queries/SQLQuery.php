@@ -2,24 +2,48 @@
 
 namespace LifeRaft\Database\Queries;
 
+use LifeRaft\Core\Config;
 use stdClass;
 
 final class SQLQuery
 {
-  private string $sql = '';
-  private string $type = '';
-  private array $params = [];
+  private string $sql;
+  private string $type;
+  private array $params;
 
   public function __construct(
     private \PDO $db,
     private string $fetchClass = stdClass::class,
     private int $fetchMode = \PDO::FETCH_ASSOC,
-    private array $fetchClassParams = []
+    private array $fetchClassParams = [],
+    private array $passwordHashFields = ['password'],
+    private string $passwordHashAlgorithm = ''
   ) {
-    $this->sql = '';
+    if (empty($this->passwordHashAlgorithm))
+    {
+      $this->passwordHashAlgorithm = Config::get('default_password_hash_algo');
+    }
+    $this->init();
   }
 
-  public function __toString()
+  public function init(): void
+  {
+    $this->sql = '';
+    $this->type = '';
+    $this->params = [];
+  }
+
+  public function passwordHashFields(): array
+  {
+    return $this->passwordHashFields;
+  }
+
+  public function passwordHashAlgorithm(): string
+  {
+    return $this->passwordHashAlgorithm;
+  }
+
+  public function __toString(): string
   {
     return $this->sql;
   }
@@ -73,10 +97,10 @@ final class SQLQuery
     return new SQLDescribeStatement( query: $this, subject: $subject );
   }
 
-  public function insertInto(string $tableName, array $columns = []): SQLInsertIntoStatement
+  public function insertInto(string $tableName): SQLInsertIntoDefinition
   {
     $this->type = SQLQueryType::INSERT;
-    return new SQLInsertIntoStatement( query: $this, tableName: $tableName, columns: $columns );
+    return new SQLInsertIntoDefinition( query: $this, tableName: $tableName );
   }
 
   public function update(): SQLQuery
@@ -135,6 +159,11 @@ final class SQLQuery
     {
       die($e->getMessage());
     }
+  }
+
+  public function debug(): void
+  {
+    exit($this);
   }
 }
 

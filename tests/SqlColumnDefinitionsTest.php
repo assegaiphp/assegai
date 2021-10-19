@@ -26,7 +26,7 @@ final class SqlColumnDefinitionsTest extends TestCase
     $this->assertEquals($sql, strval($column));
   }
 
-  public function testToString(): void
+  public function testConvertToString(): void
   {
     $column = new Column(
       name: 'id',

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class AppTest extends TestCase
 {
-  public function testCreateWithParams(): void
+  public function testCreateInstanceWithParams(): void
   {
     $request = new Request();
     $config = require_once('app/config/default.php');
@@ -16,7 +16,7 @@ final class AppTest extends TestCase
     $this->assertInstanceOf(App::class, new App( request: $request, config: $config ));
   }
 
-  public function testCreateWithEmptyConfig(): void
+  public function testCreateInstanceWithEmptyConfig(): void
   {
     $request = new Request();
     $config = [];
@@ -24,14 +24,14 @@ final class AppTest extends TestCase
     $this->assertInstanceOf(App::class, new App( request: $request, config: $config ));
   }
 
-  public function testReadConfigArray(): void
+  public function testGetConfigArray(): void
   {
     $app = new App( request: new Request, config: [] );
     $this->assertClassHasAttribute(attributeName: 'config', className: App::class);
     $this->assertIsArray($app->config());
   }
 
-  public function testReadRequestObject(): void
+  public function testGetRequestObject(): void
   {
     $app = new App( request: new Request, config: [] );
     $this->assertClassHasAttribute(attributeName: 'request', className: App::class);

@@ -78,31 +78,76 @@ final class SqlQueryTest extends TestCase
       new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
       new Column(name: 'password', dataType: SQLDataTypes::TEXT)
     ])->execute();
-    $this->assertTrue($result->isOK());
+    $this->assertTrue( condition: $result->isOK() );
   }
   
   public function testRenameATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $result = $query->rename()->table(from: 'unit_test_table', to: 'unit_test_table_renamed')->execute();
-    $this->assertTrue($result->isOK());
+    $this->assertTrue( condition: $result->isOK() );
   }
 
   public function testDropTable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $result = $query->drop()->table( tableName: 'unit_test_table_renamed' )->execute();
-    $this->assertTrue($result->isOK());
+    $this->assertTrue( condition: $result->isOK() );
   }
 
   public function testInsertASingleRowIntoATable(): void
   {
-    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $query = new SQLQuery(
+      db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ),
+      passwordHashAlgorithm: PASSWORD_ARGON2I
+    );
+
+    $result = $query->create()->table(
+      tableName: 'unit_test_table',
+    )->columns(columns: [
+      new PrimaryColumn(),
+      new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
+      new Column(name: 'password', dataType: SQLDataTypes::TEXT)
+    ])->execute();
+
+    if ($result->isOK())
+    {
+      $query->init();
+      $result =
+        $query->insertInto(tableName: 'unit_test_table')
+          ->singleRow(columns: ['email', 'password'])
+          ->values( [ 'user01@liferaftdev.com', 'liferaft' ] )->execute();
+      $this->assertTrue( condition: $result->isOK() );
+    }
   }
 
   public function testInsertMultipleRowsIntoATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+
+    $result = $query->create()->table(
+      tableName: 'unit_test_table',
+    )->columns(columns: [
+      new PrimaryColumn(),
+      new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
+      new Column(name: 'password', dataType: SQLDataTypes::TEXT)
+    ])->execute();
+
+    if ($result->isOK())
+    {
+      $query->init();
+      $result =
+        $query->insertInto(tableName: 'unit_test_table')
+          ->multipleRows(columns: ['email', 'password'])
+          ->rows( [
+              [ 'user02@liferaftdev.com', 'liferaft' ],
+              [ 'user03@liferaftdev.com', 'liferaft' ],
+              [ 'user04@liferaftdev.com', 'liferaft' ],
+              [ 'user05@liferaftdev.com', 'liferaft' ],
+            ] )
+          ->execute();
+      $this->assertTrue( condition: $result->isOK() );
+    }
   }
 
   public function testSelectAllRowsInATable(): void

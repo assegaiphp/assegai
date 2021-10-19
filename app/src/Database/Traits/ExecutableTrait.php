@@ -10,6 +10,11 @@ trait ExecutableTrait
   {
     return $this->query->execute();
   }
+
+  public function debug(): void
+  {
+    $this->query->debug();
+  }
 }
 
 ?>

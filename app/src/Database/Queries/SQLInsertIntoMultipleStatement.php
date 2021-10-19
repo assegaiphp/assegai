@@ -5,10 +5,7 @@ namespace LifeRaft\Database\Queries;
 use LifeRaft\Database\Traits\DuplicateKeyUpdateableTrait;
 use LifeRaft\Database\Traits\ExecutableTrait;
 
-/**
- * Inserts new rows into an existing table.
- */
-final class SQLInsertIntoStatement
+final class SQLInsertIntoMultipleStatement
 {
   use DuplicateKeyUpdateableTrait;
   use ExecutableTrait;
@@ -21,11 +18,11 @@ final class SQLInsertIntoStatement
    */
   public function __construct(
     private SQLQuery $query,
-    private array $columns = []
+    private array $columns
   )
   {
     $sql = "";
-
+    
     if (!empty($columns))
     {
       $sql = "(" . implode(', ', $columns) . ") ";
@@ -35,25 +32,29 @@ final class SQLInsertIntoStatement
     $this->query->appendSQL($sql);
   }
 
-  public function values(array $values_list): SQLInsertIntoStatement
+  public function rows(array $rows_list): SQLInsertIntoMultipleStatement
   {
-    $sql = "VALUES(";
+    $sql = "VALUES ";
     $separator = ', ';
 
-    foreach ($values_list as $index => $value)
+    foreach ($rows_list as $row)
     {
-      if (in_array($index, $this->hashableIndexes))
+      $sql .= "ROW(";
+      foreach ($row as $index => $value)
       {
-        $value = password_hash($value, $this->query->passwordHashAlgorithm());
+        if (in_array($index, $this->hashableIndexes))
+        {
+          $value = password_hash($value, $this->query->passwordHashAlgorithm());
+        }
+        $sql .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
       }
-      $sql .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
+      $sql = trim($sql, $separator);
+      $sql .= ")$separator";
     }
-
-    $sql = trim(string: $sql, characters: $separator) . ") ";
-    $this->query->appendSQL($sql);
+    $sql = trim($sql, $separator);
+    $this->query->appendSQL(tail: $sql);
     return $this;
   }
-
 }
 
 ?>
