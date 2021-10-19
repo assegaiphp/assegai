@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class SqlQueryTest extends TestCase
 {
   const TEST_DB_NAME = 'assegai_test';
+  const TEST_TABLE_NAME = 'unit_test';
 
   public function testEstablishDbConnection(): void
   {
@@ -56,10 +57,10 @@ final class SqlQueryTest extends TestCase
   //   $this->assertTrue( condition: $result->isOK() );
   // }
 
-  public function testSelectADatabase(): void
-  {
-    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-  }
+  // public function testSelectADatabase(): void
+  // {
+  //   $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+  // }
 
   public function testDropDatabase(): void
   {
@@ -72,7 +73,7 @@ final class SqlQueryTest extends TestCase
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $result = $query->create()->table(
-      tableName: 'unit_test_table',
+      tableName: SqlQueryTest::TEST_TABLE_NAME,
     )->columns(columns: [
       new PrimaryColumn(),
       new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
@@ -83,15 +84,17 @@ final class SqlQueryTest extends TestCase
   
   public function testRenameATable(): void
   {
+    $table_name = SqlQueryTest::TEST_TABLE_NAME;
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->rename()->table(from: 'unit_test_table', to: 'unit_test_table_renamed')->execute();
+    $result = $query->rename()->table(from: $table_name, to: $table_name . '_renamed')->execute();
     $this->assertTrue( condition: $result->isOK() );
   }
 
   public function testDropTable(): void
   {
+    $table_name = SqlQueryTest::TEST_TABLE_NAME;
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->drop()->table( tableName: 'unit_test_table_renamed' )->execute();
+    $result = $query->drop()->table( tableName: $table_name . '_renamed' )->execute();
     $this->assertTrue( condition: $result->isOK() );
   }
 
@@ -103,7 +106,7 @@ final class SqlQueryTest extends TestCase
     );
 
     $result = $query->create()->table(
-      tableName: 'unit_test_table',
+      tableName: SqlQueryTest::TEST_TABLE_NAME,
     )->columns(columns: [
       new PrimaryColumn(),
       new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
@@ -114,7 +117,7 @@ final class SqlQueryTest extends TestCase
     {
       $query->init();
       $result =
-        $query->insertInto(tableName: 'unit_test_table')
+        $query->insertInto(tableName: SqlQueryTest::TEST_TABLE_NAME)
           ->singleRow(columns: ['email', 'password'])
           ->values( [ 'user01@liferaftdev.com', 'liferaft' ] )->execute();
       $this->assertTrue( condition: $result->isOK() );
@@ -126,7 +129,7 @@ final class SqlQueryTest extends TestCase
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
 
     $result = $query->create()->table(
-      tableName: 'unit_test_table',
+      tableName: SqlQueryTest::TEST_TABLE_NAME,
     )->columns(columns: [
       new PrimaryColumn(),
       new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
@@ -137,7 +140,7 @@ final class SqlQueryTest extends TestCase
     {
       $query->init();
       $result =
-        $query->insertInto(tableName: 'unit_test_table')
+        $query->insertInto(tableName: SqlQueryTest::TEST_TABLE_NAME)
           ->multipleRows(columns: ['email', 'password'])
           ->rows( [
               [ 'user02@liferaftdev.com', 'liferaft' ],
@@ -153,11 +156,36 @@ final class SqlQueryTest extends TestCase
   public function testSelectAllRowsInATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testSelectFirstTwoRowsInATable(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2)->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testSelectTwoRowsSkippingOneRowInATable(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2, offset: 1)->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testSelectAllRowsWithSpecificColumnsInATable(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = $query->select()->all(columns: ['id', 'email'])->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 
   public function testSelectARowById(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = $query->select()->all()->from( table_references: SqlQueryTest::TEST_TABLE_NAME )->where('id=1')->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 
   public function testSelectARowByPredicate(): void
@@ -165,7 +193,7 @@ final class SqlQueryTest extends TestCase
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
   }
 
-  public function testLimitAndOffsetSelectedRows(): void
+  public function testGroupSelectedRows(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
   }

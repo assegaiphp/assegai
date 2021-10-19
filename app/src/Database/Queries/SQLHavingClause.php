@@ -4,7 +4,7 @@ namespace LifeRaft\Database\Queries;
 
 use LifeRaft\Database\Traits\ExecutableTrait;
 
-final class SQLWhereClause
+final class SQLHavingClause
 {
   use ExecutableTrait;
 
@@ -13,16 +13,16 @@ final class SQLWhereClause
     private string $condition
   )
   {
-    $this->query->appendSQL("WHERE $condition");
+    $this->query->appendSQL("HAVING $condition");
   }
 
-  public function or(string $condition): SQLWhereClause
+  public function or(string $condition): SQLHavingClause
   {
     $this->query->appendSQL("OR $condition");
     return $this;
   }
 
-  public function and(string $condition): SQLWhereClause
+  public function and(string $condition): SQLHavingClause
   {
     $this->query->appendSQL("AND $condition");
     return $this;

@@ -109,10 +109,10 @@ final class SQLQuery
     return $this;
   }
 
-  public function select( array $columns = [] ): SQLSelectExpression
+  public function select(): SQLSelectDefinition
   {
     $this->type = SQLQueryType::SELECT;
-    $expression = new SQLSelectExpression( query: $this );
+    $expression = new SQLSelectDefinition( query: $this );
     return $expression;
   }
 
