@@ -111,7 +111,10 @@ final class SqlQueryTest extends TestCase
     )->columns(columns: [
       new PrimaryColumn(),
       new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
-      new Column(name: 'password', dataType: SQLDataTypes::TEXT)
+      new Column(name: 'password', dataType: SQLDataTypes::TEXT),
+      new Column(name: 'isVerified', dataType: SQLDataTypes::BOOLEAN, defaultValue: 0, allowNull: false),
+      new Column(name: 'created_at', dataType: SQLDataTypes::DATETIME, defaultValue: 'CURRENT_TIMESTAMP'),
+      new Column(name: 'updated_at', dataType: SQLDataTypes::DATETIME, defaultValue: 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP'),
     ])->execute();
 
     if ($result->isOK())
@@ -120,7 +123,7 @@ final class SqlQueryTest extends TestCase
       $result =
         $query->insertInto(tableName: SqlQueryTest::TEST_TABLE_NAME)
           ->singleRow(columns: ['email', 'password'])
-          ->values( [ 'user01@liferaftdev.com', 'liferaft' ] )->execute();
+          ->values( [ 'user01@local.liferaftdev.com', 'liferaft' ] )->execute();
       $this->assertTrue( condition: $result->isOK() );
     }
   }
@@ -128,30 +131,18 @@ final class SqlQueryTest extends TestCase
   public function testInsertMultipleRowsIntoATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-
-    $result = $query->create()->table(
-      tableName: SqlQueryTest::TEST_TABLE_NAME,
-    )->columns(columns: [
-      new PrimaryColumn(),
-      new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
-      new Column(name: 'password', dataType: SQLDataTypes::TEXT)
-    ])->execute();
-
-    if ($result->isOK())
-    {
-      $query->init();
-      $result =
-        $query->insertInto(tableName: SqlQueryTest::TEST_TABLE_NAME)
-          ->multipleRows(columns: ['email', 'password'])
-          ->rows( [
-              [ 'user02@liferaftdev.com', 'liferaft' ],
-              [ 'user03@liferaftdev.com', 'liferaft' ],
-              [ 'user04@liferaftdev.com', 'liferaft' ],
-              [ 'user05@liferaftdev.com', 'liferaft' ],
-            ] )
-          ->execute();
-      $this->assertTrue( condition: $result->isOK() );
-    }
+    $query->init();
+    $result =
+      $query->insertInto(tableName: SqlQueryTest::TEST_TABLE_NAME)
+        ->multipleRows(columns: ['email', 'password'])
+        ->rows( [
+            [ 'user02@local.liferaftdev.com', 'liferaft' ],
+            [ 'user03@local.liferaftdev.com', 'liferaft' ],
+            [ 'user04@local.liferaftdev.com', 'liferaft' ],
+            [ 'user05@local.liferaftdev.com', 'liferaft' ],
+          ] )
+        ->execute();
+    $this->assertTrue( condition: $result->isOK() );
   }
 
   public function testSelectAllRowsInATable(): void
@@ -235,11 +226,24 @@ final class SqlQueryTest extends TestCase
   public function testUpdateARowWithGivenId(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query
+        ->update(tableName: SqlQueryTest::TEST_TABLE_NAME)
+        ->set(['email' => 'user06@local.liferaftdev.com', 'password' => 'liferaft06'])
+        ->where('id=5')
+        ->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 
   public function testUpdateMultipleRows(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query
+        ->update(tableName: SqlQueryTest::TEST_TABLE_NAME)
+        ->set(['password' => true])
+        ->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 
   public function testDeleteASingleRowFromTheTable(): void

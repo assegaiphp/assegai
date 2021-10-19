@@ -53,10 +53,11 @@ class SQLColumnDefinition
       $sql .= "$this->dataType ";
     }
 
-    if (!empty($this->defaultValue))
+    if (!is_null($this->defaultValue))
     {
       $sql .= "DEFAULT " . match(gettype($this->defaultValue)) {
-        'object' => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue), 
+        'object' => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue),
+        'boolean' => intval($this->defaultValue),
         default => $this->defaultValue
       } . " ";
     }

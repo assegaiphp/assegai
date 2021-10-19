@@ -103,10 +103,19 @@ final class SQLQuery
     return new SQLInsertIntoDefinition( query: $this, tableName: $tableName );
   }
 
-  public function update(): SQLQuery
+  public function update(
+    string $tableName,
+    bool $lowPriority = false,
+    bool $ignore = false,
+  ): SQLUpdateDefinition
   {
     $this->type = SQLQueryType::UPDATE;
-    return $this;
+    return new SQLUpdateDefinition(
+      query: $this,
+      tableName: $tableName,
+      lowPriority: $lowPriority,
+      ignore: $ignore
+    );
   }
 
   public function select(): SQLSelectDefinition
