@@ -21,12 +21,12 @@ final class SQLAssignmentList
       {
         $value = password_hash($value, $this->query->passwordHashAlgorithm());
       }
-      $sql .= is_numeric($value)
+      $queryString .= is_numeric($value)
         ? "$key=${value}${separator}"
         : "$key='$value'${separator}";
     }
-    $queryString = trim($sql, $separator);
-    $this->query->appendQueryString( tail: $sql );
+    $queryString = trim($queryString, $separator);
+    $this->query->appendQueryString( tail: $queryString );
   }
 
   public function where(string $condition): SQLWhereClause

@@ -32,7 +32,7 @@ final class SQLInsertIntoStatement
       $this->hashableIndexes = array_keys( array_intersect( $columns, $this->query->passwordHashFields() ) );
     }
 
-    $this->query->appendQueryString($sql);
+    $this->query->appendQueryString($queryString);
   }
 
   public function values(array $values_list): SQLInsertIntoStatement
@@ -46,11 +46,11 @@ final class SQLInsertIntoStatement
       {
         $value = password_hash($value, $this->query->passwordHashAlgorithm());
       }
-      $sql .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
+      $queryString .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
     }
 
-    $queryString = trim(string: $sql, characters: $separator) . ") ";
-    $this->query->appendQueryString($sql);
+    $queryString = trim(string: $queryString, characters: $separator) . ") ";
+    $this->query->appendQueryString($queryString);
     return $this;
   }
 

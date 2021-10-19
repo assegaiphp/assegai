@@ -28,7 +28,7 @@ final class SQLQuery
 
   public function init(): void
   {
-    $this->sql = '';
+    $this->queryString = '';
     $this->type = '';
     $this->params = [];
   }
@@ -45,12 +45,12 @@ final class SQLQuery
 
   public function __toString(): string
   {
-    return $this->sql;
+    return $this->queryString;
   }
 
-  public function sql(): string
+  public function queryString(): string
   {
-    return $this->sql;
+    return $this->queryString;
   }
 
   public function type(): string
@@ -60,12 +60,12 @@ final class SQLQuery
 
   public function setQueryString(string $queryString): void
   {
-    $this->sql = $sql;
+    $this->queryString = $queryString;
   }
 
   public function appendQueryString(string $tail): void
   {
-    $this->sql = trim($this->sql) . " $tail";
+    $this->queryString = trim($this->queryString) . " $tail";
   }
 
   public function create(): SQLCreateDefinition
@@ -134,7 +134,7 @@ final class SQLQuery
   {
     try
     {
-      $statement = $this->db->prepare($this->sql);
+      $statement = $this->db->prepare($this->queryString);
 
       switch ($this->type())
       {

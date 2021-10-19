@@ -12,14 +12,14 @@ trait DuplicateKeyUpdateableTrait
     $queryString = "";
     if (!empty($assignment_list))
     {
-      $sql .= "ON DUPLICATE KEY UPDATE ";
+      $queryString .= "ON DUPLICATE KEY UPDATE ";
       foreach ($assignment_list as $assignment)
       {
-        $sql .= "$assignment ";
+        $queryString .= "$assignment ";
       }
     }
-    $queryString = trim($sql);
-    $this->query->appendQueryString($sql);
+    $queryString = trim($queryString);
+    $this->query->appendQueryString($queryString);
     return $this;
   }
 }

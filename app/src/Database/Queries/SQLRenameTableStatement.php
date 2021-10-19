@@ -12,8 +12,8 @@ final class SQLRenameTableStatement
     private string $newTableName,
   )
   {
-    $this->sql = "RENAME TABLE `$oldTableName` TO `$newTableName`";
-    $this->query->setQueryString($this->sql);
+    $this->queryString = "RENAME TABLE `$oldTableName` TO `$newTableName`";
+    $this->query->setQueryString($this->queryString);
   }
 
   public function execute(): SQLQueryResult

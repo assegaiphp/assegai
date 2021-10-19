@@ -13,9 +13,9 @@ final class SQLDropDatabaseStatement
     $queryString = "DROP DATABASE ";
     if ($checkIfExists)
     {
-      $sql .= "IF EXISTS ";
+      $queryString .= "IF EXISTS ";
     }
-    $sql .= "`$dbName`";
+    $queryString .= "`$dbName`";
 
     $this->query->setQueryString(queryString: $queryString);
   }

@@ -14,14 +14,14 @@ final class SQLUpdateDefinition
     $queryString = "UPDATE ";
     if ($lowPriority)
     {
-      $sql .= "LOW_PRIORITY ";
+      $queryString .= "LOW_PRIORITY ";
     }
     if ($ignore)
     {
-      $sql .= "IGNORE ";
+      $queryString .= "IGNORE ";
     }
-    $queryString = trim($sql);
-    $this->query->setQueryString(sql: "$sql `$tableName`");
+    $queryString = trim($queryString);
+    $this->query->setQueryString(sql: "$queryString `$tableName`");
   }
 
   public function set(array $assignmentList): SQLAssignmentList

@@ -16,16 +16,16 @@ final class SQLKeyPart
     private ?bool $ascending = null
   )
   {
-    $this->sql = "$this->key";
+    $this->queryString = "$this->key";
     if (!is_null($this->ascending))
     {
-      $this->sql .= $this->ascending ? ' ASC' : ' DESC';
+      $this->queryString .= $this->ascending ? ' ASC' : ' DESC';
     }
   }
 
   public function __toString(): string
   {
-    return $this->sql;
+    return $this->queryString;
   }
 }
 

@@ -29,7 +29,7 @@ final class SQLInsertIntoMultipleStatement
       $this->hashableIndexes = array_keys( array_intersect( $columns, $this->query->passwordHashFields() ) );
     }
 
-    $this->query->appendQueryString($sql);
+    $this->query->appendQueryString($queryString);
   }
 
   public function rows(array $rows_list): SQLInsertIntoMultipleStatement
@@ -39,20 +39,20 @@ final class SQLInsertIntoMultipleStatement
 
     foreach ($rows_list as $row)
     {
-      $sql .= "ROW(";
+      $queryString .= "ROW(";
       foreach ($row as $index => $value)
       {
         if (in_array($index, $this->hashableIndexes))
         {
           $value = password_hash($value, $this->query->passwordHashAlgorithm());
         }
-        $sql .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
+        $queryString .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
       }
-      $queryString = trim($sql, $separator);
-      $sql .= ")$separator";
+      $queryString = trim($queryString, $separator);
+      $queryString .= ")$separator";
     }
-    $queryString = trim($sql, $separator);
-    $this->query->appendQueryString(tail: $sql);
+    $queryString = trim($queryString, $separator);
+    $this->query->appendQueryString(tail: $queryString);
     return $this;
   }
 }

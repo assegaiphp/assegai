@@ -29,10 +29,10 @@ final class SQLTableOptions
 
         $primaryKeyAlreadySet = true;
       }
-      $sql .= $column . ", ";
+      $queryString .= $column . ", ";
     }
-    $queryString = trim(string: $sql, characters: ", ") . ")";
-    $this->query->appendQueryString($sql);
+    $queryString = trim(string: $queryString, characters: ", ") . ")";
+    $this->query->appendQueryString($queryString);
   }
 }
 

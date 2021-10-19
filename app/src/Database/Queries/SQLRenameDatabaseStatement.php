@@ -12,8 +12,8 @@ final class SQLRenameDatabaseStatement
     private string $newDbName,
   )
   {
-    $this->sql = "CREATE DATABASE `$newDbName` / DROP DATABASE `$oldDbName`";
-    $this->query->setQueryString($this->sql);
+    $this->queryString = "CREATE DATABASE `$newDbName` / DROP DATABASE `$oldDbName`";
+    $this->query->setQueryString($this->queryString);
   }
 
   public function execute(): SQLQueryResult

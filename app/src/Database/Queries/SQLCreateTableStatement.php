@@ -14,14 +14,14 @@ final class SQLCreateTableStatement
     $queryString = "CREATE ";
     if ($isTemporary)
     {
-      $sql .= "TEMPORARY ";
+      $queryString .= "TEMPORARY ";
     }
-    $sql .= "TABLE ";
+    $queryString .= "TABLE ";
     if ($checkIfNotExists)
     {
-      $sql .= "IF NOT EXISTS ";
+      $queryString .= "IF NOT EXISTS ";
     }
-    $sql .= "$tableName";
+    $queryString .= "$tableName";
     $this->query->setQueryString(queryString: $queryString);
   }
 

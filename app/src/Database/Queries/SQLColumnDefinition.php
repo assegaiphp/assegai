@@ -42,20 +42,20 @@ class SQLColumnDefinition
         case SQLDataTypes::BIGINT:
         case SQLDataTypes::BIGINT_UNSIGNED:
         case SQLDataTypes::VARCHAR:
-          $sql .= $this->dataType . "(" . $this->dataTypeSize . ") ";
+          $queryString .= $this->dataType . "(" . $this->dataTypeSize . ") ";
           break;
   
-        default: $sql .= "$this->dataType ";
+        default: $queryString .= "$this->dataType ";
       }
     }
     else
     {
-      $sql .= "$this->dataType ";
+      $queryString .= "$this->dataType ";
     }
 
     if (!is_null($this->defaultValue))
     {
-      $sql .= "DEFAULT " . match(gettype($this->defaultValue)) {
+      $queryString .= "DEFAULT " . match(gettype($this->defaultValue)) {
         'object' => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue),
         'boolean' => intval($this->defaultValue),
         default => $this->defaultValue
@@ -63,38 +63,38 @@ class SQLColumnDefinition
     }
     if ($this->autoIncrement && SQLDataTypes::isNumeric($this->dataType))
     {
-      $sql .= "AUTO_INCREMENT ";
+      $queryString .= "AUTO_INCREMENT ";
     }
-    $sql .= $this->allowNull && !$this->isPrimaryKey ? "NULL " : "NOT NULL ";
+    $queryString .= $this->allowNull && !$this->isPrimaryKey ? "NULL " : "NOT NULL ";
     if ($this->isPrimaryKey)
     {
-      $sql .= "PRIMARY KEY ";
+      $queryString .= "PRIMARY KEY ";
     }
     else if ($this->isUnique)
     {
-      $sql .= trim("UNIQUE " . $this->uniqueKey) . ' ';
+      $queryString .= trim("UNIQUE " . $this->uniqueKey) . ' ';
     }
 
     if (!empty($this->onUpdate))
     {
-      $sql .= "ON UPDATE CURRENT_TIMESTAMP ";
+      $queryString .= "ON UPDATE CURRENT_TIMESTAMP ";
     }
 
     if (!empty($this->comment))
     {
-      $sql .= "COMMENT $this->comment ";
+      $queryString .= "COMMENT $this->comment ";
     }
     
-    $this->sql = trim($sql);
+    $this->queryString = trim($queryString);
   }
 
-  public function sql(): string
+  public function queryString(): string
   {
-    return $this->sql;
+    return $this->queryString;
   }
 
   public function __toString(): string
   {
-    return $this->sql();
+    return $this->queryString();
   }
 }

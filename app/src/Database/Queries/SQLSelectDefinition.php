@@ -18,18 +18,18 @@ final class SQLSelectDefinition
 
     if (empty($columns))
     {
-      $sql .= "*";
+      $queryString .= "*";
     }
     else
     {
       foreach ($columns as $key => $value)
       {
-        $sql .= is_numeric($key) ? "${value}${separator}" : "$value as ${key}${separator}";
+        $queryString .= is_numeric($key) ? "${value}${separator}" : "$value as ${key}${separator}";
       }
     }
-    $queryString = trim($sql, $separator);
+    $queryString = trim($queryString, $separator);
 
-    $this->query->appendQueryString($sql);
+    $this->query->appendQueryString($queryString);
 
     return new SQLSelectExpression( query: $this->query );
   }

@@ -11,7 +11,7 @@ final class SQLInsertIntoDefinition
   {
     $queryString = "INSERT INTO `$tableName` ";
 
-    $this->query->setQueryString($sql);
+    $this->query->setQueryString($queryString);
   }
 
   public function singleRow(array $columns = []): SQLInsertIntoStatement

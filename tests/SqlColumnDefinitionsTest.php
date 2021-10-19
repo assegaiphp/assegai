@@ -23,7 +23,7 @@ final class SqlColumnDefinitionsTest extends TestCase
       dataType: SQLDataTypes::BIGINT_UNSIGNED
     );
     $queryString = "id BIGINT UNSIGNED NULL";
-    $this->assertEquals($sql, strval($column));
+    $this->assertEquals($queryString, strval($column));
   }
 
   public function testConvertToString(): void

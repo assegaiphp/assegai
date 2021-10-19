@@ -20,9 +20,9 @@ final class SQLDropTableStatement
     $queryString = "DROP TABLE ";
     if ($checkIfExists)
     {
-      $sql .= "IF EXISTS ";
+      $queryString .= "IF EXISTS ";
     }
-    $sql .= "`$tableName`";
+    $queryString .= "`$tableName`";
     $this->query->setQueryString(queryString: $queryString);
   }
 }

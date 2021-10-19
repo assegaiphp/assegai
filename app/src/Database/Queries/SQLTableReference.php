@@ -19,7 +19,7 @@ final class SQLTableReference
 
     if (is_string($table_references))
     {
-      $sql .= "`$table_references`";
+      $queryString .= "`$table_references`";
     }
     else
     {
@@ -28,16 +28,16 @@ final class SQLTableReference
         if (is_numeric($alias))
         {
           # We don't have an alias
-          $sql .= "`${reference}`${separate}";
+          $queryString .= "`${reference}`${separate}";
         }
         else
         {
-          $sql .= "`${reference}` AS ${alias}${separate}";
+          $queryString .= "`${reference}` AS ${alias}${separate}";
         }
       }
-      $queryString = trim($sql, $separate);
+      $queryString = trim($queryString, $separate);
     }
-    $this->query->appendQueryString(tail: $sql);
+    $this->query->appendQueryString(tail: $queryString);
   }
 
   public function where(string $condition): SQLWhereClause

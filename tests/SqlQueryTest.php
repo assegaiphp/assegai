@@ -41,7 +41,7 @@ final class SqlQueryTest extends TestCase
     $query->setQueryString($str);
     $tail = 'FROM `users`';
     $query->appendQueryString($tail);
-    $this->assertEquals($str . ' ' . $tail, $query->sql());
+    $this->assertEquals($str . ' ' . $tail, $query->queryString());
   }
 
   public function testCreateAMysqlDatabase(): void
