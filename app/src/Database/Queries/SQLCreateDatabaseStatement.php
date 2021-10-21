@@ -2,8 +2,12 @@
 
 namespace LifeRaft\Database\Queries;
 
+use LifeRaft\Database\Traits\ExecutableTrait;
+
 final class SQLCreateDatabaseStatement
 {
+  use ExecutableTrait;
+
   private string $queryString = '';
 
   public function __construct(
@@ -38,11 +42,6 @@ final class SQLCreateDatabaseStatement
 
     $this->queryString = trim($this->queryString);
     $this->query->setQueryString(queryString: $this->queryString);
-  }
-
-  public function execute(): SQLQueryResult
-  {
-    return $this->query->execute();
   }
 }
 

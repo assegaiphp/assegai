@@ -14,7 +14,7 @@ final class SqlQueryTest extends TestCase
   const TEST_DB_NAME = 'assegai_test';
   const TEST_TABLE_NAME = 'unit_test';
 
-  public function testEstablishDbConnection(): void
+  public function testEstablishDatabaseConnection(): void
   {
     $db = DBFactory::getMySQLConnection( dbName: SqlQueryTest::TEST_DB_NAME );
     $this->assertInstanceOf(\PDO::class, $db);
@@ -34,7 +34,7 @@ final class SqlQueryTest extends TestCase
     $this->assertEquals($str, strval($query));
   }
 
-  public function testAppendQueryString(): void
+  public function testAppendAStringToTheQueryString(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $str = 'SELECT *';
@@ -44,17 +44,17 @@ final class SqlQueryTest extends TestCase
     $this->assertEquals($str . ' ' . $tail, $query->queryString());
   }
 
-  public function testCreateAMysqlDatabase(): void
+  public function testCreateADatabase(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->create()->database(dbName: SqlQueryTest::TEST_DB_NAME . '_unit_test' )->execute();
+    $result = $query->create()->database(dbName: SqlQueryTest::TEST_DB_NAME . '_ut' )->execute();
     $this->assertTrue( condition: $result->isOK() );
   }
 
   // public function testRenameAMysqlDatabase(): void
   // {
   //   $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-  //   $result = $query->rename()->database( from: SqlQueryTest::TEST_DB_NAME . '_unit_test', to: SqlQueryTest::TEST_DB_NAME . '_unit_test_renamed' )->execute();
+  //   $result = $query->rename()->database( from: SqlQueryTest::TEST_DB_NAME . '_ut', to: SqlQueryTest::TEST_DB_NAME . '_ut_renamed' )->execute();
   //   $this->assertTrue( condition: $result->isOK() );
   // }
 
@@ -63,10 +63,10 @@ final class SqlQueryTest extends TestCase
   //   $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
   // }
 
-  public function testDropDatabase(): void
+  public function testDropADatabase(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->drop()->database(dbName: SqlQueryTest::TEST_DB_NAME . '_unit_test')->execute();
+    $result = $query->drop()->database(dbName: SqlQueryTest::TEST_DB_NAME . '_ut')->execute();
     $this->assertTrue( condition: $result->isOK() );
   }
 
@@ -91,11 +91,7 @@ final class SqlQueryTest extends TestCase
     $this->assertTrue( condition: $result->isOK() );
   }
 
-  public function testAlterATable(): void
-  {
-  }
-
-  public function testDropTable(): void
+  public function testDropATable(): void
   {
     $table_name = SqlQueryTest::TEST_TABLE_NAME;
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
@@ -156,14 +152,14 @@ final class SqlQueryTest extends TestCase
     $this->assertTrue(condition: $result->isOK());
   }
 
-  public function testSelectFirstTwoRowsInATable(): void
+  public function testSelectTheFirstTwoRowsInATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2)->execute();
     $this->assertTrue(condition: $result->isOK());
   }
 
-  public function testSelectTwoRowsSkippingOneRowInATable(): void
+  public function testSelectARangeOfRowsUsingOffsetAndLimit(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
     $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2, offset: 1)->execute();
@@ -253,11 +249,49 @@ final class SqlQueryTest extends TestCase
   public function testDeleteASingleRowFromTheTable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query->deleteFrom(tableName: SqlQueryTest::TEST_TABLE_NAME )->where('id=5')->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 
   public function testDeleteMultipleRowsFromTheTable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query->deleteFrom(tableName: SqlQueryTest::TEST_TABLE_NAME )->where('id=5')->or('id=2')->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testAlterTableByAddingAColumn(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = 
+      $query->alter()->table( tableName: SqlQueryTest::TEST_TABLE_NAME )->addColumn( dataType: new Column( name: 'born_day', dataType: SQLDataTypes::DATE, defaultValue: date('Y-m-d'), allowNull: false ))->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testAlterTableByModifyingAColumn(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = 
+      $query->alter()->table( tableName: SqlQueryTest::TEST_TABLE_NAME )->modifyColumn( dataType: new Column( name: 'born_day', dataType: SQLDataTypes::DATE, defaultValue: '1970-01-01', allowNull: false ))->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testAlterTableByRenamingAColumn(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = 
+      $query->alter()->table( tableName: SqlQueryTest::TEST_TABLE_NAME )->renameColumn( oldColumnName: 'born_day', newColumnName: 'date_of_birth' )->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testAlterTableByDropingAColumn(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = 
+      $query->alter()->table( tableName: SqlQueryTest::TEST_TABLE_NAME )->dropColumn( columnName: 'date_of_birth' )->execute();
+    $this->assertTrue(condition: $result->isOK());
   }
 }
 

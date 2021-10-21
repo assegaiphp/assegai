@@ -20,7 +20,7 @@ class SQLColumnDefinition
     private string $comment = "",
   )
   {
-    $queryString = "$this->name ";
+    $queryString = "`$this->name` ";
     if (is_null($this->dataTypeSize))
     {
       $this->dataTypeSize = match($this->dataType) {
@@ -55,9 +55,14 @@ class SQLColumnDefinition
 
     if (!is_null($this->defaultValue))
     {
+      $temporal_datatypes = [
+        SQLDataTypes::DATE,
+        // SQLDataTypes::DATETIME
+      ];
       $queryString .= "DEFAULT " . match(gettype($this->defaultValue)) {
         'object' => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue),
         'boolean' => intval($this->defaultValue),
+        'string' => ( in_array($this->dataType, $temporal_datatypes) ) ? "'" . $this->defaultValue . "'" : $this->defaultValue,
         default => $this->defaultValue
       } . " ";
     }

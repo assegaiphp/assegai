@@ -11,9 +11,14 @@ final class SQLDeleteFromStatement
   public function __construct(
     private SQLQuery $query,
     private string $tableName,
+    private ?string $alias = null
   )
   {
     $queryString = "DELETE FROM $tableName";
+    if (!is_null($alias))
+    {
+      $queryString .= "AS $alias";
+    }
     $this->query->setQueryString(queryString: $queryString);
   }
 

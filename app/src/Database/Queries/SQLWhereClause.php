@@ -3,10 +3,12 @@
 namespace LifeRaft\Database\Queries;
 
 use LifeRaft\Database\Traits\ExecutableTrait;
+use LifeRaft\Database\Traits\SQLAggregatorTrait;
 
 final class SQLWhereClause
 {
   use ExecutableTrait;
+  use SQLAggregatorTrait;
 
   public function __construct(
     private SQLQuery $query,

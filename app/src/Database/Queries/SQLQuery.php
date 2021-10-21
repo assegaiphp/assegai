@@ -68,6 +68,11 @@ final class SQLQuery
     $this->queryString = trim($this->queryString) . " $tail";
   }
 
+  public function alter(): SQLAlterDefinition
+  {
+    return new SQLAlterDefinition( query: $this );
+  }
+
   public function create(): SQLCreateDefinition
   {
     $this->type = SQLQueryType::CREATE;
@@ -124,10 +129,14 @@ final class SQLQuery
     return new SQLSelectDefinition( query: $this );
   }
 
-  public function delete(): SQLQuery
+  public function deleteFrom(string $tableName, ?string $alias = null): SQLDeleteFromStatement
   {
     $this->type = SQLQueryType::DELETE;
-    return $this;
+    return new SQLDeleteFromStatement(
+      query: $this,
+      tableName: $tableName,
+      alias: $alias
+    );
   }
 
   public function execute(): SQLQueryResult
