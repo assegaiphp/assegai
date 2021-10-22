@@ -48,9 +48,9 @@ class App
   {
     $this->parseURL();
 
-    $activated_module = $this->getActivatedModule();
-    $activated_controller = $this->getActivatedController( module: $activated_module );
-    $response = $activated_controller->handleRequest( url: $this->url );
+    $activatedModule = $this->getActivatedModule();
+    $activatedController = $this->getActivatedController( module: $activatedModule );
+    $response = $activatedController->handleRequest( url: $this->url );
 
     header('Content-Type: ' . $response->type());
     http_response_code( response_code: $response->status()->code() );
@@ -124,9 +124,9 @@ class App
    */
   private function getActivatedController(IModule $module): IController
   {
-    $activated_controller = $module->rootControllerName();
+    $activatedController = $module->rootControllerName();
     
-    if (is_null($activated_controller))
+    if (is_null($activatedController))
     {
       Debugger::log_error('Missing contrller: ' . get_called_class());
       exit(new BadRequestErrorResponse());
@@ -134,9 +134,9 @@ class App
 
     $module->resolveInjectables();
 
-    $dependencies = $module->resolveDependencies(classname: $activated_controller);
+    $dependencies = $module->resolveDependencies(classname: $activatedController);
 
-    $reflection = new ReflectionClass($activated_controller);
+    $reflection = new ReflectionClass($activatedController);
 
     return $reflection->newInstanceArgs( args: $dependencies );
   }

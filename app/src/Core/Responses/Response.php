@@ -14,7 +14,7 @@ class Response
     protected int                     $limit = 100,
     protected int                     $skip = 0,
     protected ?ResponseType           $type = null,
-    protected bool                    $data_only = false,
+    protected bool                    $dataOnly = false,
     protected ?HttpStatusCode         $status = null
   ) {
     $this->request = Request::instance();
@@ -101,7 +101,7 @@ class Response
 
   public function to_json(): string
   {
-    if ($this->data_only)
+    if ($this->dataOnly)
     {
       return json_encode( $this->data() );
     }

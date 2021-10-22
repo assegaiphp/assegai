@@ -27,14 +27,14 @@ final class DBFactory
     }
     catch (\Exception $e)
     {
-      $error_message = strval(new InternalServerErrorResponse());
+      $errorMessage = strval(new InternalServerErrorResponse());
 
       if (Config::environment('ENVIORNMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
       {
-        $error_message .= "\n" . $e->getMessage();
+        $errorMessage .= "\n" . $e->getMessage();
       }
 
-      die($error_message);
+      die($errorMessage);
     }
   }
 
@@ -53,14 +53,14 @@ final class DBFactory
     }
     catch (\Exception $e)
     {
-      $error_message = strval(new InternalServerErrorResponse());
+      $errorMessage = strval(new InternalServerErrorResponse());
 
       if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
       {
-        $error_message .= "\n" . $e->getMessage();
+        $errorMessage .= "\n" . $e->getMessage();
       }
 
-      die($error_message);
+      die($errorMessage);
     }
   }
 
@@ -79,14 +79,14 @@ final class DBFactory
     }
     catch (\Exception $e)
     {
-      $error_message = strval(new InternalServerErrorResponse());
+      $errorMessage = strval(new InternalServerErrorResponse());
 
       if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
       {
-        $error_message .= "\n" . $e->getMessage();
+        $errorMessage .= "\n" . $e->getMessage();
       }
 
-      die($error_message);
+      die($errorMessage);
     }
   }
 
@@ -101,14 +101,14 @@ final class DBFactory
     }
     catch (\Exception $e)
     {
-      $error_message = strval(new InternalServerErrorResponse());
+      $errorMessage = strval(new InternalServerErrorResponse());
 
       if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
       {
-        $error_message .= "\n" . $e->getMessage();
+        $errorMessage .= "\n" . $e->getMessage();
       }
 
-      die($error_message);
+      die($errorMessage);
     }
   }
 
@@ -122,14 +122,14 @@ final class DBFactory
     }
     catch (\Exception $e)
     {
-      $error_message = strval(new InternalServerErrorResponse());
+      $errorMessage = strval(new InternalServerErrorResponse());
 
       if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
       {
-        $error_message .= "\n" . $e->getMessage();
+        $errorMessage .= "\n" . $e->getMessage();
       }
 
-      die($error_message);
+      die($errorMessage);
     }
   }
 }

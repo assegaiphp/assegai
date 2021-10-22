@@ -26,7 +26,7 @@ final class RequestTest extends TestCase
     $request = new Request;
     $_SERVER['HTTP_HOST'] = 'localhost';
     $this->assertIsString($request->header('host'));
-    $this->assertIsArray($request->all_headers());
+    $this->assertIsArray($request->allHeaders());
   }
 
   public function testGetUri(): void

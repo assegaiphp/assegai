@@ -9,19 +9,19 @@ $GLOBALS['config'] = require("config/default.php");
 
 if (Config::environment('ENVIORNMENT') === 'PROD' && file_exists('app/config/production.php'))
 {
-  $prod_config = require("config/production.php");
-  if (is_array($prod_config))
+  $prodConfig = require("config/production.php");
+  if (is_array($prodConfig))
   {
-    $GLOBALS['config'] = array_merge($GLOBALS['config'], $prod_config);
+    $GLOBALS['config'] = array_merge($GLOBALS['config'], $prodConfig);
   }
 }
 
 if (file_exists('app/config/local.php'))
 {
-  $local_config = require("config/local.php");
-  if (is_array($local_config))
+  $localConfig = require("config/local.php");
+  if (is_array($localConfig))
   {
-    $GLOBALS['config'] = array_merge($GLOBALS['config'], $local_config);
+    $GLOBALS['config'] = array_merge($GLOBALS['config'], $localConfig);
   }
 }
 

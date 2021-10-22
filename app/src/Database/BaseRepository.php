@@ -2,15 +2,21 @@
 
 namespace LifeRaft\Database;
 
+use LifeRaft\Database\Attributes\Repository;
 use LifeRaft\Database\Interfaces\IEntity;
 use LifeRaft\Database\Interfaces\IRepository;
 
-class Repository implements IRepository
+#[Repository]
+class BaseRepository implements IRepository
 {
   
   public function __construct(
     protected mixed $dbContext
-  ) { }
+  ) {
+    # Get db connection
+
+    # Handle Attribute meta data
+  }
 
   public function find(mixed $predicate): array
   {

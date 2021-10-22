@@ -35,12 +35,12 @@ final class SQLInsertIntoStatement
     $this->query->appendQueryString($queryString);
   }
 
-  public function values(array $values_list): SQLInsertIntoStatement
+  public function values(array $valuesList): SQLInsertIntoStatement
   {
     $queryString = "VALUES(";
     $separator = ', ';
 
-    foreach ($values_list as $index => $value)
+    foreach ($valuesList as $index => $value)
     {
       if (in_array($index, $this->hashableIndexes))
       {

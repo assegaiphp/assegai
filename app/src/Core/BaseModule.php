@@ -27,12 +27,12 @@ class BaseModule implements IModule
 
     foreach ($attributes as $attribute)
     {
-      $attribute_instance = $attribute->newInstance();
+      $attributeInstance = $attribute->newInstance();
 
-      $this->providers = $attribute_instance->providers;
-      $this->controllers = $attribute_instance->controllers;
-      $this->imports = $attribute_instance->imports;
-      $this->exports = $attribute_instance->exports;
+      $this->providers = $attributeInstance->providers;
+      $this->controllers = $attributeInstance->controllers;
+      $this->imports = $attributeInstance->imports;
+      $this->exports = $attributeInstance->exports;
     }
 
     if (is_null($this->providers)) { $this->providers = []; }

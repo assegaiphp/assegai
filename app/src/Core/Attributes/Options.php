@@ -13,7 +13,7 @@ class Options
     public array $args = []
   ) {
     $this->tokens = explode('/', trim($path, '/'));
-    $requested_uri = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
+    $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
 
     foreach ($this->tokens as $index => $token)
     {
@@ -22,9 +22,9 @@ class Options
         # Get variable at path
         $value = null;
 
-        if (isset($requested_uri[$index + 1]))
+        if (isset($requestedURI[$index + 1]))
         {
-          $value = $requested_uri[$index + 1];
+          $value = $requestedURI[$index + 1];
         }
         $this->args[trim($token, ':')] = $value;
       }

@@ -23,15 +23,15 @@ class BaseController implements IController
 {
   protected string $prefix = '';
   protected Handler $handler;
-  protected array $forbidden_methods = [];
+  protected array $forbiddenMethods = [];
 
   public function __construct(
     protected Request $request
   ) {
     if (!empty($request->uri()))
     {
-      $exploded_url = explode('/', trim($request->uri(), '/'));
-      $this->prefix = array_shift($exploded_url);
+      $explodedURI = explode('/', trim($request->uri(), '/'));
+      $this->prefix = array_shift($explodedURI);
     }
   }
 
@@ -66,12 +66,12 @@ class BaseController implements IController
     }
 
     # Check if forbidden method
-    if (in_array($this->request->method(), $this->forbidden_methods))
+    if (in_array($this->request->method(), $this->forbiddenMethods))
     {
       $this->respond(new MethodNotAllowedErrorResponse());
     }
 
-    $activated_attribute_class = match ($this->request->method()) {
+    $activatedAttributeClass = match ($this->request->method()) {
       RequestMethod::GET      => Get::class,
       RequestMethod::POST     => POST::class,
       RequestMethod::PUT      => PUT::class,
@@ -85,15 +85,15 @@ class BaseController implements IController
     $methods = $reflection->getMethods();
     $handler = NULL;
 
-    $attributes_found = false;
+    $attributesFound = false;
 
     foreach ($methods as $method)
     {
-      $attributes = $method->getAttributes($activated_attribute_class);
+      $attributes = $method->getAttributes($activatedAttributeClass);
 
       if (!empty($attributes))
       {
-        $attributes_found = true;
+        $attributesFound = true;
 
         foreach ($attributes as $attribute)
         {
@@ -111,9 +111,9 @@ class BaseController implements IController
           $pattern = "(^$pattern$)";
           $subject = str_ends_with($this->request->uri(), '/') ? $this->request->uri() : $this->request->uri() . '/';
 
-          $can_activate = preg_match( pattern: $pattern, subject: $subject );
+          $canActivate = preg_match( pattern: $pattern, subject: $subject );
 
-          if ($can_activate)
+          if ($canActivate)
           {
             $handler = new Handler( method: $method, attribute: $instance);
             break;
@@ -128,7 +128,7 @@ class BaseController implements IController
     }
 
     # Check if we have handlers for request_method
-    if (!$attributes_found)
+    if (!$attributesFound)
     {
       $this->respond(new NotImplementedErrorResponse());
     }

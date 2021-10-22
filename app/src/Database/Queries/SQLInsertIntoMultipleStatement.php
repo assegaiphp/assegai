@@ -32,12 +32,12 @@ final class SQLInsertIntoMultipleStatement
     $this->query->appendQueryString($queryString);
   }
 
-  public function rows(array $rows_list): SQLInsertIntoMultipleStatement
+  public function rows(array $rowsList): SQLInsertIntoMultipleStatement
   {
     $queryString = "VALUES ";
     $separator = ', ';
 
-    foreach ($rows_list as $row)
+    foreach ($rowsList as $row)
     {
       $queryString .= "ROW(";
       foreach ($row as $index => $value)

@@ -1,6 +1,7 @@
 <?php
 
 use LifeRaft\Modules\Home\HomeModule;
+use LifeRaft\Modules\Tests\TestsModule;
 use LifeRaft\Modules\Users\UsersModule;
 
 return [
@@ -10,6 +11,7 @@ return [
   'queries' => HomeModule::class,
   'people' => HomeModule::class,
   'subjects' => HomeModule::class,
+  'tests' => TestsModule::class,
   'followings' => HomeModule::class,
   'users' => UsersModule::class,
 ];

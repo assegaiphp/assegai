@@ -23,7 +23,7 @@ class RequestMethod
 class Request
 {
   protected mixed $body;
-  protected array $all_headers = [];
+  protected array $allHeaders = [];
   protected ?App $app = null;
 
   protected static Request $instance;
@@ -48,7 +48,7 @@ class Request
     {
       if (str_starts_with($key, 'HTTP_'))
       {
-        $this->all_headers[$key] = $value;
+        $this->allHeaders[$key] = $value;
       }
     }
 
@@ -80,7 +80,7 @@ class Request
       'body'      => $this->body(),
       'cookies'   => $this->cookies(),
       'fresh'     => $this->fresh(),
-      'headers'   => $this->all_headers(),
+      'headers'   => $this->allHeaders(),
       'host_name' => $this->host_name(),
       'method'    => $this->method(),
       'remote_ip' => $this->remote_ip(),
@@ -121,9 +121,9 @@ class Request
     return '';
   }
 
-  public function all_headers(): array
+  public function allHeaders(): array
   {
-    return $this->all_headers;
+    return $this->allHeaders;
   }
 
   public function uri(): string

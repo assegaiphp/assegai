@@ -19,7 +19,7 @@ class Post
     public ?HttpStatusCode $status = null
   ) {
     $this->tokens = explode('/', trim($path, '/'));
-    $requested_uri = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
+    $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
     if (is_null($this->status))
     {
       $this->status = HttpStatus::Created();

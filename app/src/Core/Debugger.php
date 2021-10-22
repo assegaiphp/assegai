@@ -10,12 +10,12 @@ class Debugger
     public static function log(...$message): void
     {
         echo "<pre>";
-        foreach ($message as $log_message)
+        foreach ($message as $logMessage)
         {
-            var_export( match( gettype($log_message) ) {
-               'string' => $log_message, 
-               'array' => implode( '<br>', $log_message ), 
-               'object' => json_encode( $log_message ), 
+            var_export( match( gettype($logMessage) ) {
+               'string' => $logMessage, 
+               'array' => implode( '<br>', $logMessage ), 
+               'object' => json_encode( $logMessage ), 
             });
         }
         echo "</pre>";
@@ -23,12 +23,12 @@ class Debugger
 
     public static function log_error(...$message): void
     {
-        foreach ($message as $log_message)
+        foreach ($message as $logMessage)
         {
-            error_log( match( gettype($log_message) ) {
-               'string' => $log_message, 
-               'array' => implode( '\n', $log_message ), 
-               'object' => json_encode( $log_message ), 
+            error_log( match( gettype($logMessage) ) {
+               'string' => $logMessage, 
+               'array' => implode( '\n', $logMessage ), 
+               'object' => json_encode( $logMessage ), 
             });
         }
     }
