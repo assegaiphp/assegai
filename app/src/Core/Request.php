@@ -131,6 +131,11 @@ class Request
     return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/'; 
   }
 
+  public function path(): string
+  {
+    return isset($_GET['path']) ? $_GET['path'] : '/';
+  }
+
   public function limit(): int
   {
     return isset($_GET['limit']) ? $_GET['limit'] : Config::get('request')['DEFAULT_LIMIT'];

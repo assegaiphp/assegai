@@ -9,23 +9,23 @@ function isMatch(string $pattern, string $subject, string $delimiter = '/'): boo
     return true;
   }
 
-  $pattern_tokens = explode( $delimiter, trim( $pattern, $delimiter ) );
-  $subject_tokens = explode( $delimiter, trim( $subject, $delimiter ) );
+  $patternTokens = explode( $delimiter, trim( $pattern, $delimiter ) );
+  $subjectTokens = explode( $delimiter, trim( $subject, $delimiter ) );
 
   $score = 0;
 
-  if (empty($pattern_tokens) && empty($subject_tokens))
+  if (empty($patternTokens) && empty($subjectTokens))
   {
     return true;
   }
 
-  foreach ($subject_tokens as $index => $s_token)
+  foreach ($subjectTokens as $index => $sToken)
   {
-    if ( ( isset($pattern_tokens[$index]) && $s_token === $pattern_tokens[$index] ) || $s_token === '*')
+    if ( ( isset($patternTokens[$index]) && $sToken === $patternTokens[$index] ) || $sToken === '*')
     {
       $score++;
     }
   }
 
-  return $score === count($subject_tokens);
+  return $score === count($subjectTokens);
 }

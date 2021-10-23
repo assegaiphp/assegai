@@ -7,13 +7,13 @@ use LifeRaft\Database\Queries\SQLInsertIntoStatement;
 
 trait DuplicateKeyUpdateableTrait
 {
-  public function onDuplicateKeyUpdate(array $assignment_list): SQLInsertIntoStatement|SQLInsertIntoMultipleStatement
+  public function onDuplicateKeyUpdate(array $assignmentList): SQLInsertIntoStatement|SQLInsertIntoMultipleStatement
   {
     $queryString = "";
-    if (!empty($assignment_list))
+    if (!empty($assignmentList))
     {
       $queryString .= "ON DUPLICATE KEY UPDATE ";
-      foreach ($assignment_list as $assignment)
+      foreach ($assignmentList as $assignment)
       {
         $queryString .= "$assignment ";
       }

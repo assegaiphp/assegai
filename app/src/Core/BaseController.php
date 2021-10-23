@@ -44,9 +44,9 @@ class BaseController implements IController
       # Check if handler is defined
       if (empty($handler))
       {
+        # Else respond with Unknown error
         return new NotFoundErrorResponse();
       }
-      # Else respond with Unknown error
 
       return call_user_func_array([$this, $handler->method()->name], $handler->attribute()->args);
     }
@@ -118,7 +118,14 @@ class BaseController implements IController
             $handler = new Handler( method: $method, attribute: $instance);
             break;
           }
+          var_export([
+            'path' => $path,
+            'pattern' => $pattern,
+            'subject' => $subject,
+            'uri' => $this->request->uri(),
+          ]);
         }
+        exit;
       }
       
       if (!empty($handler))
