@@ -109,23 +109,16 @@ class BaseController implements IController
 
           $pattern = preg_replace('/(:[\w]+)/', '.+', $path);
           $pattern = "(^$pattern$)";
-          $subject = str_ends_with($this->request->uri(), '/') ? $this->request->uri() : $this->request->uri() . '/';
+          $subject = str_ends_with($this->request->path(), '/') ? $this->request->path() : $this->request->path() . '/';
 
-          $canActivate = preg_match( pattern: $pattern, subject: $subject );
+          $canActivate = preg_match( pattern: $pattern, subject: '/' . $subject );
 
           if ($canActivate)
           {
             $handler = new Handler( method: $method, attribute: $instance);
             break;
           }
-          var_export([
-            'path' => $path,
-            'pattern' => $pattern,
-            'subject' => $subject,
-            'uri' => $this->request->uri(),
-          ]);
         }
-        exit;
       }
       
       if (!empty($handler))
