@@ -12,18 +12,18 @@ final class SQLTableReference
 
   public function __construct(
     private SQLQuery $query,
-    private array|string $table_references
+    private array|string $tableReferences
   ) {
     $queryString = "FROM ";
     $separate = ', ';
 
-    if (is_string($table_references))
+    if (is_string($tableReferences))
     {
-      $queryString .= "`$table_references`";
+      $queryString .= "`$tableReferences`";
     }
     else
     {
-      foreach ($table_references as $alias => $reference)
+      foreach ($tableReferences as $alias => $reference)
       {
         if (is_numeric($alias))
         {

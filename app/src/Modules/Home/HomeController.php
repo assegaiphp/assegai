@@ -13,7 +13,7 @@ class HomeController extends BaseController
     private HomeService $homeService
   ) { }
 
-  protected array $forbidden_methods = [
+  protected array $forbiddenMethods = [
     RequestMethod::DELETE,
     RequestMethod::HEAD,
     RequestMethod::PATCH,
@@ -31,7 +31,7 @@ class HomeController extends BaseController
       'copyright'   => '© ' . date('Y') . ' Life Raft',
     ];
 
-    return new Response( data: $data, data_only: true );
+    return new Response( data: $data, dataOnly: true );
   }
 }
 

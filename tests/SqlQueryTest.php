@@ -85,17 +85,17 @@ final class SqlQueryTest extends TestCase
   
   public function testRenameATable(): void
   {
-    $table_name = SqlQueryTest::TEST_TABLE_NAME;
+    $tableName = SqlQueryTest::TEST_TABLE_NAME;
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->rename()->table(from: $table_name, to: $table_name . '_renamed')->execute();
+    $result = $query->rename()->table(from: $tableName, to: $tableName . '_renamed')->execute();
     $this->assertTrue( condition: $result->isOK() );
   }
 
   public function testDropATable(): void
   {
-    $table_name = SqlQueryTest::TEST_TABLE_NAME;
+    $tableName = SqlQueryTest::TEST_TABLE_NAME;
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->drop()->table( tableName: $table_name . '_renamed' )->execute();
+    $result = $query->drop()->table( tableName: $tableName . '_renamed' )->execute();
     $this->assertTrue( condition: $result->isOK() );
   }
 
@@ -148,35 +148,35 @@ final class SqlQueryTest extends TestCase
   public function testSelectAllRowsInATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->execute();
+    $result = $query->select()->all()->from(tableReferences: SqlQueryTest::TEST_TABLE_NAME)->execute();
     $this->assertTrue(condition: $result->isOK());
   }
 
   public function testSelectTheFirstTwoRowsInATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2)->execute();
+    $result = $query->select()->all()->from(tableReferences: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2)->execute();
     $this->assertTrue(condition: $result->isOK());
   }
 
   public function testSelectARangeOfRowsUsingOffsetAndLimit(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->select()->all()->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2, offset: 1)->execute();
+    $result = $query->select()->all()->from(tableReferences: SqlQueryTest::TEST_TABLE_NAME)->limit(limit: 2, offset: 1)->execute();
     $this->assertTrue(condition: $result->isOK());
   }
 
   public function testSelectAllRowsWithSpecificColumnsInATable(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->select()->all(columns: ['id', 'email'])->from(table_references: SqlQueryTest::TEST_TABLE_NAME)->execute();
+    $result = $query->select()->all(columns: ['id', 'email'])->from(tableReferences: SqlQueryTest::TEST_TABLE_NAME)->execute();
     $this->assertTrue(condition: $result->isOK());
   }
 
   public function testSelectARowById(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
-    $result = $query->select()->all()->from( table_references: SqlQueryTest::TEST_TABLE_NAME )->where('id=1')->execute();
+    $result = $query->select()->all()->from( tableReferences: SqlQueryTest::TEST_TABLE_NAME )->where('id=1')->execute();
     $this->assertTrue(condition: $result->isOK());
   }
 
@@ -187,7 +187,7 @@ final class SqlQueryTest extends TestCase
       $query
         ->select()
         ->all()
-        ->from( table_references: SqlQueryTest::TEST_TABLE_NAME )
+        ->from( tableReferences: SqlQueryTest::TEST_TABLE_NAME )
         ->where("`email` LIKE '%04%'")
         ->and('id IN (1,2,3,4)')
         ->execute();
@@ -201,7 +201,7 @@ final class SqlQueryTest extends TestCase
       $query
         ->select()
         ->all()
-        ->from( table_references: SqlQueryTest::TEST_TABLE_NAME )
+        ->from( tableReferences: SqlQueryTest::TEST_TABLE_NAME )
         ->orderBy([
           new SQLKeyPart( 'password', ascending: true ),
           new SQLKeyPart( 'id', ascending: false ),
@@ -217,7 +217,7 @@ final class SqlQueryTest extends TestCase
       $query
         ->select()
         ->all()
-        ->from( table_references: SqlQueryTest::TEST_TABLE_NAME )
+        ->from( tableReferences: SqlQueryTest::TEST_TABLE_NAME )
         ->orderBy(['email'])
         ->execute();
     $this->assertTrue(condition: $result->isOK());

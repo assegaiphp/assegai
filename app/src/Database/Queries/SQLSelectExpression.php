@@ -11,9 +11,9 @@ final class SQLSelectExpression
     private SQLQuery $query
   ) { }
 
-  public function from(array|string $table_references): SQLTableReference
+  public function from(array|string $tableReferences): SQLTableReference
   {
-    return new SQLTableReference( query: $this->query, table_references: $table_references );
+    return new SQLTableReference( query: $this->query, tableReferences: $tableReferences );
   }
 }
 
