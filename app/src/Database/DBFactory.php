@@ -12,125 +12,163 @@ use PDO;
  */
 final class DBFactory
 {
+  private static array $connections = [
+    'mysql' => [],
+    'mariadb' => [],
+    'pgsql' => [],
+    'mysql' => [],
+    'mysql' => [],
+  ];
+
   public static function getMySQLConnection(string $dbName): PDO
   {
-    $config = Config::get('databases')['mysql'][$dbName];
-
-    try
+    $type = 'mysql';
+    if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
     {
-      extract($config);
-      return new PDO(
-        dsn: "mysql:host=$host;port=$port;dbname=$name",
-        username: $user,
-        password: $password
-      );
-    }
-    catch (\Exception $e)
-    {
-      $errorMessage = strval(new InternalServerErrorResponse());
-
-      if (Config::environment('ENVIORNMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+      $config = Config::get('databases')[$type][$dbName];
+  
+      try
       {
-        $errorMessage .= "\n" . $e->getMessage();
+        extract($config);
+        DBFactory::$connections[$type][$dbName] = new PDO(
+          dsn: "mysql:host=$host;port=$port;dbname=$name",
+          username: $user,
+          password: $password
+        );
       }
-
-      die($errorMessage);
+      catch (\Exception $e)
+      {
+        $errorMessage = strval(new InternalServerErrorResponse());
+  
+        if (Config::environment('ENVIORNMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+        {
+          $errorMessage .= "\n" . $e->getMessage();
+        }
+  
+        die($errorMessage);
+      }
     }
+
+    return DBFactory::$connections[$type][$dbName];
   }
 
   public static function getMariaDBConnection(string $dbName): PDO
   {
-    $config = Config::get('databases')['mariadb'][$dbName];
-
-    try
+    $type = 'mariadb';
+    if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
     {
-      extract($config);
-      return new PDO(
-        dsn: "mysql:host=$host;port=$port;dbname=$name",
-        username: $user,
-        password: $password
-      );
-    }
-    catch (\Exception $e)
-    {
-      $errorMessage = strval(new InternalServerErrorResponse());
-
-      if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+      $config = Config::get('databases')[$type][$dbName];
+  
+      try
       {
-        $errorMessage .= "\n" . $e->getMessage();
+        extract($config);
+        DBFactory::$connections[$type][$dbName] = new PDO(
+          dsn: "mysql:host=$host;port=$port;dbname=$name",
+          username: $user,
+          password: $password
+        );
       }
-
-      die($errorMessage);
+      catch (\Exception $e)
+      {
+        $errorMessage = strval(new InternalServerErrorResponse());
+  
+        if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+        {
+          $errorMessage .= "\n" . $e->getMessage();
+        }
+  
+        die($errorMessage);
+      }
     }
+
+    return DBFactory::$connections[$type][$dbName];
   }
 
   public static function getPostgreSQLConnection(string $dbName): PDO
   {
-    $config = Config::get('databases')['pgsql'][$dbName];
-
-    try
+    $type = 'pgsql';
+    if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
     {
-      extract($config);
-      return new PDO(
-        dsn: "pgsql:host=$host;port=$port;dbname=$name",
-        username: $user,
-        password: $password
-      );
-    }
-    catch (\Exception $e)
-    {
-      $errorMessage = strval(new InternalServerErrorResponse());
-
-      if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+      $config = Config::get('databases')[$type][$dbName];
+  
+      try
       {
-        $errorMessage .= "\n" . $e->getMessage();
+        extract($config);
+        DBFactory::$connections[$type][$dbName] = new PDO(
+          dsn: "pgsql:host=$host;port=$port;dbname=$name",
+          username: $user,
+          password: $password
+        );
       }
-
-      die($errorMessage);
+      catch (\Exception $e)
+      {
+        $errorMessage = strval(new InternalServerErrorResponse());
+  
+        if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+        {
+          $errorMessage .= "\n" . $e->getMessage();
+        }
+  
+        die($errorMessage);
+      }
     }
+
+    return DBFactory::$connections[$type][$dbName];
   }
 
   public static function getSQLiteConnection(string $dbName): PDO
   {
-    $config = Config::get('databases')['sqlite'][$dbName];
-
-    try
+    $type = 'sqlite';
+    if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
     {
-      extract($config);
-      return new PDO( dsn: "sqlite:$path" );
-    }
-    catch (\Exception $e)
-    {
-      $errorMessage = strval(new InternalServerErrorResponse());
-
-      if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+      $config = Config::get('databases')[$type][$dbName];
+  
+      try
       {
-        $errorMessage .= "\n" . $e->getMessage();
+        extract($config);
+        DBFactory::$connections[$type][$dbName] = new PDO( dsn: "sqlite:$path" );
       }
-
-      die($errorMessage);
+      catch (\Exception $e)
+      {
+        $errorMessage = strval(new InternalServerErrorResponse());
+  
+        if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+        {
+          $errorMessage .= "\n" . $e->getMessage();
+        }
+  
+        die($errorMessage);
+      }
     }
+
+    return DBFactory::$connections[$type][$dbName];
   }
 
   public static function getMongoDbConnection(string $dbName): PDO
   {
-    $config = Config::get('databases')['mongodb'][$dbName];
-
-    try
+    $type = 'mongodb';
+    if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
     {
-
-    }
-    catch (\Exception $e)
-    {
-      $errorMessage = strval(new InternalServerErrorResponse());
-
-      if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+      $config = Config::get('databases')[$type][$dbName];
+  
+      try
       {
-        $errorMessage .= "\n" . $e->getMessage();
+  
       }
-
-      die($errorMessage);
+      catch (\Exception $e)
+      {
+        $errorMessage = strval(new InternalServerErrorResponse());
+  
+        if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+        {
+          $errorMessage .= "\n" . $e->getMessage();
+        }
+  
+        die($errorMessage);
+      }
     }
+
+    return DBFactory::$connections[$type][$dbName];
   }
 }
 

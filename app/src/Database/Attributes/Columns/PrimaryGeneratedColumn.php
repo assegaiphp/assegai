@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Attributes;
+namespace LifeRaft\Database\Attributes\Columns;
 
 use Attribute;
 use LifeRaft\Database\Queries\SQLDataTypes;
@@ -10,8 +10,8 @@ class PrimaryGeneratedColumn extends Column
 {
   public function __construct(
     public string $name,
-    public string $alias = "",
-    public string $comment = ""
+    public string $alias = '',
+    public string $comment = ''
   )
   {
     parent::__construct(

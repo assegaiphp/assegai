@@ -2,7 +2,9 @@
 
 namespace LifeRaft\Database;
 
-class BaseEntity
+use LifeRaft\Database\Interfaces\IEntity;
+
+class BaseEntity implements IEntity
 {
 }
 

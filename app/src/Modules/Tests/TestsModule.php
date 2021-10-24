@@ -9,7 +9,7 @@ use LifeRaft\Core\Attributes\Module;
   controllers: [TestsController::class],
   exports: [],
   imports: [],
-  providers: [TestsService::class],
+  providers: [TestsService::class, TestsRepository::class],
 )]
 class TestsModule extends BaseModule
 {

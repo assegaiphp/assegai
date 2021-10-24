@@ -14,7 +14,7 @@ interface IModule
 
   public function resolveInjectables(): array;
 
-  public function resolveDependencies(string $classname): array;
+  public function getDependencies(string $classname): array;
 }
 
 ?>

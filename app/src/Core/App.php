@@ -134,7 +134,7 @@ class App
 
     $module->resolveInjectables();
 
-    $dependencies = $module->resolveDependencies(classname: $activatedController);
+    $dependencies = $module->getDependencies(classname: $activatedController);
 
     $reflection = new ReflectionClass($activatedController);
 

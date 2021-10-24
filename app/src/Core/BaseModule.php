@@ -83,7 +83,7 @@ class BaseModule implements IModule
     return $this->exports;
   }
 
-  public function resolveDependencies(string $classname): array
+  public function getDependencies(string $classname): array
   {
     global $app;
 

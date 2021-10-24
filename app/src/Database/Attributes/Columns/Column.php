@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Attributes;
+namespace LifeRaft\Database\Attributes\Columns;
 
 use Attribute;
 use LifeRaft\Database\Queries\SQLDataTypes;
@@ -17,19 +17,20 @@ class Column
   public string $value;
 
   public function __construct(
-    public string $name,
-    public string $alias = "",
+    public string $name = '',
+    public string $alias = '',
     public string $dataType = SQLDataTypes::INT,
+    private string|int|null $dataTypeSize = null,
     public bool $allowNull = true,
     public bool $signed = true,
     public bool $zeroFilled = false,
-    public mixed $defaultValue = "",
+    public mixed $defaultValue = '',
     public bool $autoIncrement = false,
-    public string $onUpdate = "",
+    public string $onUpdate = '',
     public bool $isUnique = false,
-    public string $uniqueKey = "",
+    public string $uniqueKey = '',
     public bool $isPrimaryKey = false,
-    public string $comment = "",
+    public string $comment = '',
   )
   {
     $this->value = "$dataType ";
