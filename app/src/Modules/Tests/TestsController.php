@@ -17,21 +17,20 @@ class TestsController extends BaseController
   )
   {
     parent::__construct( request: $request );
-    echo get_called_class() . "\n";
-    var_export($testsRepository);
-    exit;
   }
 
   #[Get]
   public function findAll(): Response
   {
-    return new Response( data: ['This action returns all entities'], dataOnly: true );
+    $data = $this->testsRepository->findAll(limit: $this->request->limit(), skip: $this->request->skip());
+    return new Response( data: $data );
   }
 
   #[Get(path: '/:id')]
   public function find(int $id): Response
   {
-    return new Response( data: ['This action returns the entity with id: ' . $id], dataOnly: true );
+    $data = $this->testsRepository->findOne(id: $id);
+    return new Response( data: $data );
   }
 }
 

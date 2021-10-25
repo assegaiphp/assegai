@@ -16,8 +16,8 @@ final class DBFactory
     'mysql' => [],
     'mariadb' => [],
     'pgsql' => [],
-    'mysql' => [],
-    'mysql' => [],
+    'sqlite' => [],
+    'mongodb' => [],
   ];
 
   public static function getMySQLConnection(string $dbName): PDO

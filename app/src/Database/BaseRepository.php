@@ -3,12 +3,16 @@
 namespace LifeRaft\Database;
 
 use LifeRaft\Core\Attributes\Injectable;
+use LifeRaft\Core\Config;
+use LifeRaft\Core\Responses\BadRequestErrorResponse;
+use LifeRaft\Core\Responses\NotImplementedErrorResponse;
 use LifeRaft\Database\Attributes\Repository;
 use LifeRaft\Database\Interfaces\IEntity;
 use LifeRaft\Database\Interfaces\IRepository;
 use LifeRaft\Database\Queries\SQLQuery;
 use PDO;
 use ReflectionClass;
+use stdClass;
 
 #[Repository]
 #[Injectable]
@@ -53,22 +57,77 @@ class BaseRepository implements IRepository
     return $this->dbContext;
   }
 
-  public function find(IEntity $entity): array
+  public function commit(): bool
   {
-    return [];
+    exit(new NotImplementedErrorResponse());
+    return false;
   }
 
-  public function get(int $id): IEntity|false
+  public function find(string $conditions): array
+  {
+    $entities = [];
+
+    try
+    {
+      $this->query = new SQLQuery(
+        db: $this->dbContext(),
+        fetchClass: $this->entity,
+        fetchMode: $this->fetchMode
+      );
+
+      $result = $this->query->select()->all()->from(tableReferences: $this->tableName)->where(condition: 'deleted_at IS NOT NULL')->execute();
+      if ($result->isOK())
+      {
+        $entities = $result->value();
+      }
+      else
+      {
+        exit(new BadRequestErrorResponse(message: strval($result)));
+      }
+    }
+    catch(\Exception $e)
+    {
+      exit(new BadRequestErrorResponse(message: $e->getMessage()));
+    }
+
+    return $entities;
+  }
+
+  public function findOne(int $id): null|IEntity|stdClass
   {
     $query = new SQLQuery( db: $this->dbContext(), fetchClass: $this->entity, fetchMode: $this->fetchMode );
-    // $result = $query->select()->all()
+    $result = $query->select()->all(columns: $this->entity::columns(exclude: ['password']))->from(tableReferences: $this->tableName)->where("id=$id")->execute();
 
-    return new BaseEntity();
+    if ($result->isOK())
+    {
+      if (!empty($result->value()))
+      {
+        $entities = $result->value();
+        return array_pop($entities);
+      }
+    }
+    else
+    {
+      exit(new BadRequestErrorResponse(message: strval($result)));
+    }
+
+    return null;
   }
 
-  public function getAll(): array
+  public function findAll(?int $limit = null, ?int $skip = null ): array
   {
-    return [];
+    $limit  = is_null($limit) ? Config::get('request')['DEFAULT_LIMIT'] : $limit;
+    $skip   = is_null($skip)  ? Config::get('request')['DEFAULT_SKIP']  : $skip;
+
+    $this->query = new SQLQuery( db: $this->dbContext(), fetchClass: $this->entity, fetchMode: $this->fetchMode );
+    $result = $this->query->select()->all(columns: $this->entity::columns(exclude: ['password']))->from(tableReferences: $this->tableName)->limit( limit: $limit, offset: $skip)->execute();
+
+    if ($result->isError())
+    {
+      exit(new BadRequestErrorResponse(message: $result->toJSON()));
+    }
+
+    return $result->value();
   }
 
   public function add(IEntity $obj): void

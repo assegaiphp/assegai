@@ -2,10 +2,13 @@
 
 namespace LifeRaft\Database\Interfaces;
 
+use stdClass;
+
 interface IRepository {
-  public function get(int $id): IEntity|false;
-  public function getAll(): array;
-  public function find(IEntity $entity): array;
+  public function commit(): bool;
+  public function find(string $conditions): array;
+  public function findAll(): array;
+  public function findOne(int $id): null|IEntity|stdClass;
 
   public function add(IEntity $entity): void;
   public function addRange(IEntity $entity): void;

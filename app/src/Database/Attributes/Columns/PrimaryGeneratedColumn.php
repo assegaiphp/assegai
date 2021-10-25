@@ -9,7 +9,7 @@ use LifeRaft\Database\Queries\SQLDataTypes;
 class PrimaryGeneratedColumn extends Column
 {
   public function __construct(
-    public string $name,
+    public string $name = 'id',
     public string $alias = '',
     public string $comment = ''
   )

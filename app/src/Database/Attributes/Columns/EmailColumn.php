@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Attributes;
+namespace LifeRaft\Database\Attributes\Columns;
 
 use Attribute;
 use LifeRaft\Database\Attributes\Columns\Column;

@@ -32,7 +32,6 @@ final class SQLQueryResult
     return [
       'isOK'    => $this->isOK(),
       'value'   => $this->value(),
-      'data'    => $this->data,
       'errors'  => $this->errors
     ];
   }

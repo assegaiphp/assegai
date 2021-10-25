@@ -163,7 +163,7 @@ final class SQLQuery
         }
   
         $data = match ($this->type()) {
-          SQLQueryType::SELECT => $statement->fetchAll(),
+          SQLQueryType::SELECT => $statement->fetchAll(mode: $this->fetchMode),
           default => $statement->fetchAll()
         };
   

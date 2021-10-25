@@ -6,7 +6,7 @@ use LifeRaft\Database\Queries\SQLLimitClause;
 
 trait SQLAggregatorTrait
 {
-  public function limit(int $limit, ?int $offset = null): mixed
+  public function limit(int $limit, ?int $offset = null)
   {
     if (property_exists($this, 'query'))
     {
@@ -23,7 +23,7 @@ trait SQLAggregatorTrait
   /**
    * @param array $keyParts A list of **SQLKeyPart** objects.
    */
-  public function orderBy(array $keyParts): mixed
+  public function orderBy(array $keyParts)
   {
     if (property_exists($this, 'query'))
     {
@@ -33,7 +33,7 @@ trait SQLAggregatorTrait
     return $this;
   }
 
-  public function groupBy(array $columnNames): mixed
+  public function groupBy(array $columnNames)
   {
     if (property_exists($this, 'query'))
     {

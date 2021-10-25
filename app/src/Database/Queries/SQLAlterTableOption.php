@@ -14,9 +14,22 @@ final class SQLAlterTableOption
   {
   }
 
-  public function addColumn(SQLColumnDefinition $dataType): SQLAlterTableOption
+  /**
+   * @param SQLColumnDefinition $dataType
+   * @param bool $first Specifies that the new column should be positioned first within a table row.
+   * @param null|string $afterColumn Specifies the column after which to position the new column within a table row.
+   */
+  public function addColumn(SQLColumnDefinition $dataType, ?bool $first = false, ?string $afterColumn = null): SQLAlterTableOption
   {
     $this->query->appendQueryString(tail: "ADD $dataType");
+    if ($first)
+    {
+      $this->query->appendQueryString(tail: "FIRST");
+    }
+    else if (!is_null($afterColumn))
+    {
+      $this->query->appendQueryString(tail: "AFTER `$afterColumn`");
+    }
     return $this;
   }
 

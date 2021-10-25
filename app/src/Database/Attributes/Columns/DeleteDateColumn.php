@@ -23,7 +23,7 @@ class DeleteDateColumn extends Column
       comment: $comment,
       dataType: SQLDataTypes::DATETIME,
       allowNull: false,
-      defaultValue: '',
+      defaultValue: '1000-01-01 00:00:00',
     );
   }
 }

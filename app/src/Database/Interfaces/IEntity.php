@@ -7,6 +7,8 @@ namespace LifeRaft\Database\Interfaces;
  * row (or collection when using MongoDB). You can create an entity by 
  * defining a new class and mark it with `#[Entity]`
  */
-interface IEntity {}
+interface IEntity {
+  public static function columns(array $exclude = []): array;
+}
 
 ?>
