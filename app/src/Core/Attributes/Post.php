@@ -11,7 +11,7 @@ use stdClass;
 class Post
 {
   public array $tokens = [];
-  public stdClass $body;
+  public null|stdClass|array $body = null;
 
   public function __construct(
     public string $path = '',
@@ -24,7 +24,6 @@ class Post
     {
       $this->status = HttpStatus::Created();
     }
-    http_response_code($this->status->code());
 
     $body = $_POST;
 

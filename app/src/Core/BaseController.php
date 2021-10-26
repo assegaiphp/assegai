@@ -165,7 +165,6 @@ class BaseController implements IController
 
   public function respond(Response $response): void
   {
-    http_response_code( response_code: $response->status()->code());
     exit($response);
   }
 }

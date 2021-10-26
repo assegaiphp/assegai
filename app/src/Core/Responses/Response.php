@@ -36,7 +36,7 @@ class Response
     {
       http_response_code($this->status()->code());
     }
-    $this->data(data: $data);
+    $this->setData(data: $data);
   }
 
   public function total(): int
@@ -56,23 +56,31 @@ class Response
 
   public function data(mixed $data = NULL): mixed
   {
-    if (!is_null($data))
-    {
-      $this->data = $data;
-      $this->total = is_countable($this->data) ? count($this->data) : 1;
-    }
-
     return !is_null($this->data) ? $this->data : [];
   }
 
-  public function status(?HttpStatus $status = null): ?HttpStatusCode
+  public function setData(mixed $data): void
+  {
+    $this->data = $data;
+
+    if (!is_null($this->data))
+    {
+      $this->total = is_countable($this->data) ? count($this->data) : 1;
+    }
+  }
+
+  public function status(): HttpStatusCode
+  {
+    return is_null($this->status) ? HttpStatus::OK() : $this->status;
+  }
+
+  public function setStatus(HttpStatus $status): void
   {
     if (!is_null($status))
     {
       $this->status = $status;
+      http_response_code( response_code: $this->status()->code());
     }
-
-    return $this->status;
   }
 
   public function type(): ?ResponseType

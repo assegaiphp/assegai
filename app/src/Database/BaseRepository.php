@@ -9,6 +9,8 @@ use LifeRaft\Core\Responses\NotImplementedErrorResponse;
 use LifeRaft\Database\Attributes\Repository;
 use LifeRaft\Database\Interfaces\IEntity;
 use LifeRaft\Database\Interfaces\IRepository;
+use LifeRaft\Database\Queries\SQLColumnDefinition;
+use LifeRaft\Database\Queries\SQLDataTypes;
 use LifeRaft\Database\Queries\SQLQuery;
 use PDO;
 use ReflectionClass;
@@ -152,7 +154,35 @@ class BaseRepository implements IRepository
 
   public function addRange(array $entities): array|false
   {
-    return [];
+    if (empty($entities))
+    {
+      return false;
+    }
+
+    $exclude = ['id', 'createdAt', 'updatedAt', 'deletedAt'];
+    $columns = $this->entity::columns(exclude: $exclude);
+    $rowList =  [];
+
+    foreach ($entities as $entity)
+    {
+      $obj = $this->entity::newInstanceFromObject($entity);
+      $values = $obj->values(exclude: $exclude);
+      array_push($rowList, $values);
+    }
+
+    $result = $this->query->insertInto(tableName: $this->tableName)->multipleRows(columns: $columns)->rows(rowsList: $rowList)->execute();
+
+    if ($result->isError())
+    {
+      if (Config::environment('ENVIORNMENT') === 'DEV' && Config::environment('DEBUG') === TRUE)
+      {
+        exit(new BadRequestErrorResponse(message: $result->toJSON()));
+      }
+
+      return false;
+    }
+
+    return $entities;
   }
 
   public function remove(IEntity $entity): IEntity|stdClass|false

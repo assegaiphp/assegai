@@ -17,7 +17,7 @@ class BaseEntity implements IEntity
 
   #[CreateDateColumn]
   public string $createdAt = '';
-  
+
   #[UpdateDateColumn]
   public string $updatedAt = '';
   

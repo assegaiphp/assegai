@@ -14,6 +14,9 @@ class TestEntity extends BaseEntity
   
   #[Column(name: 'first_name', alias: 'firstName', dataType: SQLDataTypes::VARCHAR, lengthOrValues: 50)]
   public string $firstName = '';
+
+  #[Column( dataType: SQLDataTypes::ENUM, lengthOrValues: ['active', 'inactive', 'archived', 'deleted'], defaultValue: 'deleted' )]
+  public string $status = 'active';
 }
 
 ?>

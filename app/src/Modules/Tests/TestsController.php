@@ -37,10 +37,17 @@ class TestsController extends BaseController
   }
 
   #[Post]
-  public function createTest(stdClass $body): Response
+  public function createTest(stdClass|array $body): Response
   {
-    $entity = TestEntity::newInstanceFromObject(object: $body);
-    $entity = $this->testsRepository->add( entity: $entity );
+    if (is_array(value: $body))
+    {
+      $entity = $this->testsRepository->addRange(entities: $body);
+    }
+    else
+    {
+      $entity = TestEntity::newInstanceFromObject(object: $body);
+      $entity = $this->testsRepository->add( entity: $entity );
+    }
 
     if ($entity === false)
     {

@@ -52,12 +52,10 @@ class App
     $activatedController = $this->getActivatedController( module: $activatedModule );
     $response = $activatedController->handleRequest( url: $this->url );
 
-    header('Content-Type: ' . $response->type());
-    http_response_code( response_code: $response->status()->code() );
     $this->respond(response: $response);  
   }
 
-  public function respond(string|Response $response): void
+  public function respond(Response $response): void
   {
     exit($response);
   }
