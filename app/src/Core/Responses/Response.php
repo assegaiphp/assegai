@@ -65,7 +65,7 @@ class Response
     return !is_null($this->data) ? $this->data : [];
   }
 
-  public function status(HttpStatus|null $status = null): HttpStatusCode
+  public function status(?HttpStatus $status = null): ?HttpStatusCode
   {
     if (!is_null($status))
     {
@@ -75,7 +75,7 @@ class Response
     return $this->status;
   }
 
-  public function type(): ResponseType|null
+  public function type(): ?ResponseType
   {
     return $this->type;
   }

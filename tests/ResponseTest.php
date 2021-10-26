@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use LifeRaft\Core\App;
 use LifeRaft\Core\Request;
+use LifeRaft\Core\Responses\HttpStatus;
 use LifeRaft\Core\Responses\HttpStatusCode;
 use LifeRaft\Core\Responses\Response;
 use LifeRaft\Core\Responses\ResponseType;
@@ -66,7 +67,7 @@ final class ResponseTest extends TestCase
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertClassHasAttribute('status', Response::class);
-    $this->assertInstanceOf(HttpStatusCode::class, (new Response())->status());
+    $this->assertInstanceOf(HttpStatusCode::class, (new Response( status: HttpStatus::OK() ))->status());
   }
 
   public function testGetPropertyNamedStatusOfTypeType(): void
