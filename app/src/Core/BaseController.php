@@ -2,6 +2,7 @@
 
 namespace LifeRaft\Core;
 
+use LifeRaft\Core\Attributes\Controller;
 use LifeRaft\Core\Interfaces\IController;
 use LifeRaft\Core\Attributes\Get;
 use LifeRaft\Core\Attributes\POST;
@@ -9,6 +10,7 @@ use LifeRaft\Core\Attributes\PUT;
 use LifeRaft\Core\Attributes\PATCH;
 use LifeRaft\Core\Attributes\DELETE;
 use LifeRaft\Core\Attributes\OPTIONS;
+use LifeRaft\Core\Responses\HttpStatusCode;
 use LifeRaft\Core\Responses\MethodNotAllowedErrorResponse;
 use LifeRaft\Core\Responses\NotFoundErrorResponse;
 use LifeRaft\Core\Responses\NotImplementedErrorResponse;
@@ -22,18 +24,38 @@ use ReflectionClass;
 class BaseController implements IController
 {
   protected string $prefix = '';
+  protected string $path = '/';
+  protected ?string $host = null;
+  protected ?HttpStatusCode $status = null;
   protected Handler $handler;
   protected array $forbiddenMethods = [];
 
   public function __construct(
     protected Request $request
   ) {
+    $reflection = new ReflectionClass(objectOrClass: $this);
+    $attributes = $reflection->getAttributes(Controller::class);
+    
+    foreach ($attributes as $attribute)
+    {
+      $instance = $attribute->newInstance();
+      $this->path = $instance->path;
+      $this->host = $instance->host;
+      $this->status = $instance->status;
+    }
+
     if (!empty($request->uri()))
     {
       $explodedURI = explode('/', trim($request->uri(), '/'));
       $this->prefix = array_shift($explodedURI);
     }
   }
+
+  public function path(): string { return $this->path; }
+
+  public function host(): string { return $this->host; }
+
+  public function status(): string { return $this->status; }
 
   public function handleRequest(array $url): Response
   {
