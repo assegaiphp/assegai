@@ -11,7 +11,7 @@ interface IRepository {
   public function findOne(int $id): null|IEntity|stdClass;
 
   public function add(IEntity $entity): void;
-  public function addRange(IEntity $entity): void;
+  public function addRange(array $entities): void;
   
 
   public function remove(IEntity $entity): void;

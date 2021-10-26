@@ -3,8 +3,8 @@
 namespace LifeRaft\Core\Attributes;
 
 use Attribute;
-use LifeRaft\Core\HttpStatus;
-use LifeRaft\Core\HttpStatusCode;
+use LifeRaft\Core\Responses\HttpStatus;
+use LifeRaft\Core\Responses\HttpStatusCode;
 use stdClass;
 
 #[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]

@@ -50,6 +50,8 @@ class BaseRepository implements IRepository
       'mongodb'     => DBFactory::getMongoDbConnection(dbName: $instance->databaseName),
       default       => DBFactory::getMariaDBConnection(dbName: $instance->databaseName)
     };
+
+    $this->query = new SQLQuery( db: $this->dbContext(), fetchClass: $this->entity, fetchMode: $this->fetchMode );
   }
 
   public function dbContext(): ?PDO
@@ -95,8 +97,7 @@ class BaseRepository implements IRepository
 
   public function findOne(int $id): null|IEntity|stdClass
   {
-    $query = new SQLQuery( db: $this->dbContext(), fetchClass: $this->entity, fetchMode: $this->fetchMode );
-    $result = $query->select()->all(columns: $this->entity::columns(exclude: ['password']))->from(tableReferences: $this->tableName)->where("id=$id")->execute();
+    $result = $this->query->select()->all(columns: $this->entity::columns(exclude: ['password']))->from(tableReferences: $this->tableName)->where("id=$id")->execute();
 
     if ($result->isOK())
     {
@@ -119,7 +120,6 @@ class BaseRepository implements IRepository
     $limit  = is_null($limit) ? Config::get('request')['DEFAULT_LIMIT'] : $limit;
     $skip   = is_null($skip)  ? Config::get('request')['DEFAULT_SKIP']  : $skip;
 
-    $this->query = new SQLQuery( db: $this->dbContext(), fetchClass: $this->entity, fetchMode: $this->fetchMode );
     $result = $this->query->select()->all(columns: $this->entity::columns(exclude: ['password']))->from(tableReferences: $this->tableName)->limit( limit: $limit, offset: $skip)->execute();
 
     if ($result->isError())
@@ -130,15 +130,17 @@ class BaseRepository implements IRepository
     return $result->value();
   }
 
-  public function add(IEntity $obj): void
+  public function add(IEntity $entity): void
+  {
+    $entity = json_decode(json_encode($entity), true);
+    $this->query->insertInto(tableName: $this->tableName)->singleRow(columns: array_keys($entity))->values(array_values($entity))->debug();
+  }
+
+  public function addRange(array $entities): void
   {
   }
 
-  public function addRange(IEntity $entity): void
-  {
-  }
-
-  public function remove(IEntity $obj): void
+  public function remove(IEntity $entity): void
   {
   }
 

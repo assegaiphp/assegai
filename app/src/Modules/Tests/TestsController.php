@@ -5,7 +5,9 @@ namespace LifeRaft\Modules\Tests;
 use LifeRaft\Core\BaseController;
 use LifeRaft\Core\Responses\Response;
 use LifeRaft\Core\Attributes\Get;
+use LifeRaft\Core\Attributes\Post;
 use LifeRaft\Core\Request;
+use stdClass;
 
 class TestsController extends BaseController
 {
@@ -31,6 +33,17 @@ class TestsController extends BaseController
   {
     $data = $this->testsRepository->findOne(id: $id);
     return new Response( data: $data );
+  }
+
+  #[Post]
+  public function createTest(stdClass $body): Response
+  {
+    $entity = new TestEntity;
+    foreach (get_object_vars($body) as $prop => $value)
+    {
+      $entity->$prop = $value;
+    }
+    return new Response( data: $entity, dataOnly: true );
   }
 }
 
