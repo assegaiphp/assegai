@@ -3,6 +3,8 @@
 namespace LifeRaft\Database\Queries;
 
 use LifeRaft\Core\Config;
+use LifeRaft\Core\Responses\BadRequestErrorResponse;
+use LifeRaft\Core\Responses\ConflictErrorResponse;
 use stdClass;
 
 final class SQLQuery
@@ -10,6 +12,7 @@ final class SQLQuery
   private string $queryString;
   private string $type;
   private array $params;
+  private ?int $lastInsertId = null;
 
   public function __construct(
     private \PDO $db,
@@ -46,6 +49,11 @@ final class SQLQuery
   public function passwordHashAlgorithm(): string
   {
     return $this->passwordHashAlgorithm;
+  }
+
+  public function lastInsertId(): ?int
+  {
+    return $this->lastInsertId;
   }
 
   public function __toString(): string
@@ -166,6 +174,11 @@ final class SQLQuery
           SQLQueryType::SELECT => $statement->fetchAll(mode: $this->fetchMode),
           default => $statement->fetchAll()
         };
+
+        if ($this->type() === SQLQueryType::INSERT)
+        {
+          $this->lastInsertId = $this->db->lastInsertId();
+        }
   
         return new SQLQueryResult(data: $data, errors: [], isOK: true);
       }
@@ -179,7 +192,17 @@ final class SQLQuery
     }
     catch (\Exception $e)
     {
-      die($e->getMessage());
+      list($sqlCode, $driverCode, $message) = $statement->errorInfo();
+      if (Config::environment('ENVIORNMENT') === 'PROD')
+      {
+        $message = 'Bad Request';
+      }
+      $errorResponse = match($sqlCode) {
+        '23000' => new ConflictErrorResponse(message: $message),
+        default => new BadRequestErrorResponse()
+      };
+
+      exit($errorResponse);
     }
   }
 

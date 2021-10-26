@@ -19,7 +19,7 @@ class EmailColumn extends Column
       name: $name,
       alias: $alias,
       dataType: SQLDataTypes::VARCHAR,
-      dataTypeSize: 60
+      lengthOrValues: 60
     );
   }
 }

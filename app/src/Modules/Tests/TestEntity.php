@@ -12,7 +12,7 @@ class TestEntity extends BaseEntity
   #[EmailColumn]
   public string $email = '';
   
-  #[Column(name: 'first_name', alias: 'firstName', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 50)]
+  #[Column(name: 'first_name', alias: 'firstName', dataType: SQLDataTypes::VARCHAR, lengthOrValues: 50)]
   public string $firstName = '';
 }
 

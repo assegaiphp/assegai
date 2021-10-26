@@ -20,7 +20,7 @@ class BaseModule implements IModule
     protected ?array $exports = [],
   )
   {
-    $this->id = uniqid('module-');
+    $this->id = uniqid(prefix: 'module-');
 
     $reflection = new \ReflectionClass($this);
     $attributes = $reflection->getAttributes(Module::class);

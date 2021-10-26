@@ -65,7 +65,7 @@ class BaseEntity implements IEntity
 
     foreach ($props as $prop)
     {
-      if (!in_array($prop, $exclude))
+      if (!in_array($prop->getName(), $exclude))
       {
         # Get meta data
         $attributes = $prop->getAttributes();
@@ -86,6 +86,21 @@ class BaseEntity implements IEntity
     }
 
     return $columns;
+  }
+
+  public function values(array $exclude = []): array
+  {
+    $values = [];
+    $class = get_called_class();
+    $columns = $class::columns(exclude: $exclude);
+
+    foreach ($columns as $index => $column)
+    {
+      $value = is_numeric($index) ? $this->$column : $this->$index;
+      array_push($values, $value);
+    }
+
+    return $values;
   }
 }
 

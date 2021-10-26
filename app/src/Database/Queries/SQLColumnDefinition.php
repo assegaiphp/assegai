@@ -9,7 +9,7 @@ class SQLColumnDefinition
   public function __construct(
     private string $name,
     private string $dataType = SQLDataTypes::INT,
-    private string|int|null $dataTypeSize = null,
+    private string|int|null $lengthOrValues = null,
     private mixed $defaultValue = null,
     private bool $allowNull = true,
     private bool $autoIncrement = false,
@@ -21,16 +21,16 @@ class SQLColumnDefinition
   )
   {
     $queryString = "`$this->name` ";
-    if (is_null($this->dataTypeSize))
+    if (is_null($this->lengthOrValues))
     {
-      $this->dataTypeSize = match($this->dataType) {
+      $this->lengthOrValues = match($this->dataType) {
         SQLDataTypes::VARCHAR => '10',
         SQLDataTypes::DECIMAL => '16,2',
         default => null
       };
     }
 
-    if (!is_null($this->dataTypeSize))
+    if (!is_null($this->lengthOrValues))
     {
       switch($this->dataType) {
         case SQLDataTypes::TINYINT:
@@ -42,7 +42,7 @@ class SQLColumnDefinition
         case SQLDataTypes::BIGINT:
         case SQLDataTypes::BIGINT_UNSIGNED:
         case SQLDataTypes::VARCHAR:
-          $queryString .= $this->dataType . "(" . $this->dataTypeSize . ") ";
+          $queryString .= $this->dataType . "(" . $this->lengthOrValues . ") ";
           break;
   
         default: $queryString .= "$this->dataType ";

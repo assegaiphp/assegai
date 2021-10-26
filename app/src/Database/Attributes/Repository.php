@@ -9,7 +9,7 @@ use LifeRaft\Database\DBFactory;
 #[Attribute]
 class Repository
 {
-  public ?\PDO $db = null;
+  public ?\PDO $dbContext = null;
 
   public function __construct(
     public string $entity = BaseEntity::class,
@@ -21,13 +21,13 @@ class Repository
   {
     if (!empty($databaseType) && !empty($databaseName))
     {
-      $this->db = match($databaseType) {
-        'mariadb' => DBFactory::getMariaDBConnection(dbName: $databaseName),
-        'mysql' => DBFactory::getMySQLConnection(dbName: $databaseName),
-        'postgresql' => DBFactory::getPostgreSQLConnection(dbName: $databaseName),
-        'sqlite' => DBFactory::getSQLiteConnection(dbName: $databaseName),
-        'mongodb' => DBFactory::getMongoDbConnection(dbName: $databaseName),
-        default => DBFactory::getMariaDBConnection(dbName: $databaseName)
+      $this->dbContext = match($databaseType) {
+        'mariadb'     => DBFactory::getMariaDBConnection(dbName: $databaseName),
+        'mysql'       => DBFactory::getMySQLConnection(dbName: $databaseName),
+        'postgresql'  => DBFactory::getPostgreSQLConnection(dbName: $databaseName),
+        'sqlite'      => DBFactory::getSQLiteConnection(dbName: $databaseName),
+        'mongodb'     => DBFactory::getMongoDbConnection(dbName: $databaseName),
+        default       => DBFactory::getMariaDBConnection(dbName: $databaseName)
       };
     }
   }

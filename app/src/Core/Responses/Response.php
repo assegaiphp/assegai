@@ -23,10 +23,7 @@ class Response
     {
       $this->type = ResponseType::JSON();
     }
-    if (is_null($this->status))
-    {
-      $this->status = HttpStatus::OK();
-    }
+
     $this->limit = $this->request->limit();
     $this->skip = $this->request->skip();
 
@@ -34,7 +31,11 @@ class Response
     {
       header("Content-Type: {$this->type()}");
     }
-    http_response_code($this->status()->code());
+
+    if (!is_null($this->status))
+    {
+      http_response_code($this->status()->code());
+    }
     $this->data(data: $data);
   }
 

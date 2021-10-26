@@ -9,6 +9,7 @@ namespace LifeRaft\Database\Interfaces;
  */
 interface IEntity {
   public static function columns(array $exclude = []): array;
+  public function values(array $exclude = []): array;
 }
 
 ?>

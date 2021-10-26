@@ -77,7 +77,7 @@ final class SqlQueryTest extends TestCase
       tableName: SqlQueryTest::TEST_TABLE_NAME,
     )->columns(columns: [
       new PrimaryColumn(),
-      new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
+      new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, lengthOrValues: 60, isUnique: true, allowNull: false),
       new Column(name: 'password', dataType: SQLDataTypes::TEXT)
     ])->execute();
     $this->assertTrue( condition: $result->isOK() );
@@ -110,7 +110,7 @@ final class SqlQueryTest extends TestCase
       tableName: SqlQueryTest::TEST_TABLE_NAME,
     )->columns(columns: [
       new PrimaryColumn(),
-      new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, dataTypeSize: 60, isUnique: true, allowNull: false),
+      new Column(name: 'email', dataType: SQLDataTypes::VARCHAR, lengthOrValues: 60, isUnique: true, allowNull: false),
       new Column(name: 'password', dataType: SQLDataTypes::TEXT),
       new Column(name: 'isVerified', dataType: SQLDataTypes::BOOLEAN, defaultValue: 0, allowNull: false),
       new Column(name: 'created_at', dataType: SQLDataTypes::DATETIME, defaultValue: 'CURRENT_TIMESTAMP'),

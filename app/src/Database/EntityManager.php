@@ -4,14 +4,17 @@ namespace LifeRaft\Database;
 
 final class EntityManager
 {
-  private array $repositories = [];
-
-  public function __construct()
-  {
-  }
+  
+  public function __construct(
+    private array $repositories = []
+  ) { }
 
   public function save(): void
   {
+    foreach ($this->repositories as $repository)
+    {
+      $repository->commit();
+    }
   }
 }
 

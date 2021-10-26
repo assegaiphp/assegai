@@ -10,12 +10,12 @@ interface IRepository {
   public function findAll(): array;
   public function findOne(int $id): null|IEntity|stdClass;
 
-  public function add(IEntity $entity): void;
-  public function addRange(array $entities): void;
+  public function add(IEntity $entity): IEntity|stdClass|false;
+  public function addRange(array $entities): array|false;
   
 
-  public function remove(IEntity $entity): void;
-  public function removeRange(array $entities): void;
+  public function remove(IEntity $entity): IEntity|stdClass|false;
+  public function removeRange(array $entities): array|false;
 }
 
 ?>

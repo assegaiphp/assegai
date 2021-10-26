@@ -20,7 +20,7 @@ class Column
     public string $name = '',
     public string $alias = '',
     public string $dataType = SQLDataTypes::INT,
-    private string|int|null $dataTypeSize = null,
+    private string|int|null $lengthOrValues = null,
     public bool $allowNull = true,
     public bool $signed = true,
     public bool $zeroFilled = false,
@@ -31,6 +31,7 @@ class Column
     public string $uniqueKey = '',
     public bool $isPrimaryKey = false,
     public string $comment = '',
+    public bool $canUpdate = true
   )
   {
     $this->value = "$dataType ";

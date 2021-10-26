@@ -33,23 +33,27 @@ class BaseRepository implements IRepository
 
     foreach ($attributes as $attribute)
     {
-      $instance = $attribute->newInstance();
-      $this->entity = $instance->entity;
+      $instance           = $attribute->newInstance();
+      $this->entity       = $instance->entity;
       $this->databaseType = $instance->databaseType;
       $this->databaseName = $instance->databaseName;
-      $this->tableName = $instance->tableName;
-      $this->fetchMode = $instance->fetchMode;
+      $this->tableName    = $instance->tableName;
+      $this->fetchMode    = $instance->fetchMode;
+      $this->dbContext    = $instance->dbContext;
     }
 
-    $this->dbContext = match ($instance->databaseType) {
-      'mysql'       => DBFactory::getMySQLConnection(dbName: $instance->databaseName),
-      'mariadb'     => DBFactory::getMariaDBConnection(dbName: $instance->databaseName),
-      'pgsql'       => DBFactory::getPostgreSQLConnection(dbName: $instance->databaseName),
-      'postgresql'  => DBFactory::getPostgreSQLConnection(dbName: $instance->databaseName),
-      'sqlite'      => DBFactory::getSQLiteConnection(dbName: $instance->databaseName),
-      'mongodb'     => DBFactory::getMongoDbConnection(dbName: $instance->databaseName),
-      default       => DBFactory::getMariaDBConnection(dbName: $instance->databaseName)
-    };
+    if (is_null($this->dbContext) || empty($this->dbContext))
+    {
+      $this->dbContext = match ($instance->databaseType) {
+        'mysql'       => DBFactory::getMySQLConnection(dbName: $instance->databaseName),
+        'mariadb'     => DBFactory::getMariaDBConnection(dbName: $instance->databaseName),
+        'pgsql'       => DBFactory::getPostgreSQLConnection(dbName: $instance->databaseName),
+        'postgresql'  => DBFactory::getPostgreSQLConnection(dbName: $instance->databaseName),
+        'sqlite'      => DBFactory::getSQLiteConnection(dbName: $instance->databaseName),
+        'mongodb'     => DBFactory::getMongoDbConnection(dbName: $instance->databaseName),
+        default       => DBFactory::getMariaDBConnection(dbName: $instance->databaseName)
+      };
+    }
 
     $this->query = new SQLQuery( db: $this->dbContext(), fetchClass: $this->entity, fetchMode: $this->fetchMode );
   }
@@ -61,7 +65,7 @@ class BaseRepository implements IRepository
 
   public function commit(): bool
   {
-    exit(new NotImplementedErrorResponse());
+    exit(new NotImplementedErrorResponse(message: 'Commit message not implemented.'));
     return false;
   }
 
@@ -130,22 +134,35 @@ class BaseRepository implements IRepository
     return $result->value();
   }
 
-  public function add(IEntity $entity): void
+  public function add(IEntity $entity): IEntity|stdClass|false
   {
-    $entity = json_decode(json_encode($entity), true);
-    $this->query->insertInto(tableName: $this->tableName)->singleRow(columns: array_keys($entity))->values(array_values($entity))->debug();
+    $exclude = ['id', 'createdAt', 'updatedAt', 'deletedAt'];
+    $columns = $entity->columns(exclude: $exclude);
+    $values = $entity->values(exclude: $exclude);
+
+    $result = $this->query->insertInto(tableName: $this->tableName)->singleRow(columns: $columns)->values( valuesList: $values )->execute();
+
+    if ($result->isOK())
+    {
+      return $this->findOne(id: $this->query->lastInsertId());
+    }
+
+    return false;
   }
 
-  public function addRange(array $entities): void
+  public function addRange(array $entities): array|false
   {
+    return [];
   }
 
-  public function remove(IEntity $entity): void
+  public function remove(IEntity $entity): IEntity|stdClass|false
   {
+    return false;
   }
 
-  public function removeRange(array $entities): void
+  public function removeRange(array $entities): array|false
   {
+    return [];
   }
 }
 

@@ -7,6 +7,7 @@ use LifeRaft\Core\Responses\Response;
 use LifeRaft\Core\Attributes\Get;
 use LifeRaft\Core\Attributes\Post;
 use LifeRaft\Core\Request;
+use LifeRaft\Core\Responses\BadRequestErrorResponse;
 use stdClass;
 
 class TestsController extends BaseController
@@ -39,7 +40,14 @@ class TestsController extends BaseController
   public function createTest(stdClass $body): Response
   {
     $entity = TestEntity::newInstanceFromObject(object: $body);
-    return new Response( data: $entity, dataOnly: true );
+    $entity = $this->testsRepository->add( entity: $entity );
+
+    if ($entity === false)
+    {
+      return new BadRequestErrorResponse();
+    }
+
+    return new Response( data: $entity, dataOnly: true, status: $this->status );
   }
 }
 
