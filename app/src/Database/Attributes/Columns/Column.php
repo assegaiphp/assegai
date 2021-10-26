@@ -20,7 +20,7 @@ class Column
     public string $name = '',
     public string $alias = '',
     public string $dataType = SQLDataTypes::INT,
-    private string|int|null $lengthOrValues = null,
+    private null|string|array|int $lengthOrValues = null,
     public bool $allowNull = true,
     public bool $signed = true,
     public bool $zeroFilled = false,
@@ -34,7 +34,13 @@ class Column
     public bool $canUpdate = true
   )
   {
-    $this->value = "$dataType ";
+    $this->lengthOrValues = match(gettype($this->lengthOrValues)) {
+      'array' => empty($this->lengthOrValues) ? '' : '(' . implode(',', $this->lengthOrValues) . ')',
+      'NULL'  => '',
+      default => empty($this->lengthOrValues) ? '' : '(' . $this->lengthOrValues  . ')'
+    };
+
+    $this->value = "${dataType}$this->lengthOrValues ";
 
     if (!$signed)                 { $this->value .= Column::UNSIGNED . ' '; }
     if (!$allowNull)              { $this->value .= 'NOT '; }
@@ -48,7 +54,6 @@ class Column
     if ($isUnique)                { $this->value .= "UNIQUE {$uniqueKey}"; }
 
     if (isset($alias))            { $this->value .= "AS $alias"; }
-
 
     $this->value = trim($this->value);
   }

@@ -270,6 +270,14 @@ final class SqlQueryTest extends TestCase
     $this->assertTrue(condition: $result->isOK());
   }
 
+  public function testAlterTableByAddingAnEnumColumn(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result = 
+      $query->alter()->table( tableName: SqlQueryTest::TEST_TABLE_NAME )->addColumn( dataType: new Column( name: 'status', dataType: SQLDataTypes::ENUM, lengthOrValues: ['active', 'inactive', 'pending', 'archived', 'deleted'], defaultValue: 'active', allowNull: false ), afterColumn: 'isVerified' )->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
+
   public function testAlterTableByModifyingAColumn(): void
   {
     $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );

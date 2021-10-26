@@ -9,7 +9,7 @@ class SQLColumnDefinition
   public function __construct(
     private string $name,
     private string $dataType = SQLDataTypes::INT,
-    private string|int|null $lengthOrValues = null,
+    private null|string|int|array $lengthOrValues = null,
     private mixed $defaultValue = null,
     private bool $allowNull = true,
     private bool $autoIncrement = false,
@@ -43,6 +43,21 @@ class SQLColumnDefinition
         case SQLDataTypes::BIGINT_UNSIGNED:
         case SQLDataTypes::VARCHAR:
           $queryString .= $this->dataType . "(" . $this->lengthOrValues . ") ";
+          break;
+
+        case SQLDataTypes::ENUM:
+          if (!is_array($this->lengthOrValues))
+          {
+            $this->lengthOrValues = [];
+          }
+          $queryString .= $this->dataType . "(";
+          foreach ($lengthOrValues as $value)
+          {
+            $queryString .= "'$value', ";
+            
+          }
+          $queryString = trim($queryString, ', ');
+          $queryString .= ") ";
           break;
   
         default: $queryString .= "$this->dataType ";
