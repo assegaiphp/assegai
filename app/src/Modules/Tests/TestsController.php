@@ -38,11 +38,7 @@ class TestsController extends BaseController
   #[Post]
   public function createTest(stdClass $body): Response
   {
-    $entity = new TestEntity;
-    foreach (get_object_vars($body) as $prop => $value)
-    {
-      $entity->$prop = $value;
-    }
+    $entity = TestEntity::newInstanceFromObject(object: $body);
     return new Response( data: $entity, dataOnly: true );
   }
 }

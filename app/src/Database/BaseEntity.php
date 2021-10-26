@@ -2,7 +2,6 @@
 
 namespace LifeRaft\Database;
 
-use LifeRaft\Database\Attributes\Columns\Column;
 use LifeRaft\Database\Attributes\Columns\CreateDateColumn;
 use LifeRaft\Database\Attributes\Columns\DeleteDateColumn;
 use LifeRaft\Database\Attributes\Columns\PrimaryGeneratedColumn;
@@ -25,9 +24,10 @@ class BaseEntity implements IEntity
   #[DeleteDateColumn]
   public string $deletedAt = '';
 
-  public static function newInstanceFromObject(stdClass $object): BaseEntity
+  public static function newInstanceFromObject(stdClass $object): IEntity
   {
-    $entity = new BaseEntity;
+    $className = get_called_class();
+    $entity = new $className;
 
     foreach (get_object_vars($object) as $prop => $value)
     {
@@ -40,9 +40,10 @@ class BaseEntity implements IEntity
     return $entity;
   }
 
-  public static function newInstanceFromArray(array $array): BaseEntity
+  public static function newInstanceFromArray(array $array): IEntity
   {
-    $entity = new BaseEntity;
+    $className = get_called_class();
+    $entity = new $className;
 
     foreach ($array as $prop => $value)
     {
