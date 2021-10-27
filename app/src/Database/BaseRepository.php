@@ -103,7 +103,14 @@ class BaseRepository implements IRepository
 
   public function findOne(int $id): null|IEntity|stdClass
   {
-    $result = $this->query->select()->all(columns: $this->entity::columns(exclude: ['password']))->from(tableReferences: $this->tableName)->where("id=$id")->execute();
+    $result =
+      $this->query
+        ->select()
+        ->all(columns: $this->entity::columns(exclude: ['password']))
+        ->from(tableReferences: $this->tableName)
+        ->where("id=$id")
+        ->and(condition: "(deleted_at='1000-01-01 00:00:00' OR deleted_at=NULL)")
+        ->execute();
 
     if ($result->isOK())
     {
@@ -126,7 +133,15 @@ class BaseRepository implements IRepository
     $limit  = is_null($limit) ? Config::get('request')['DEFAULT_LIMIT'] : $limit;
     $skip   = is_null($skip)  ? Config::get('request')['DEFAULT_SKIP']  : $skip;
 
-    $result = $this->query->select()->all(columns: $this->entity::columns(exclude: ['password']))->from(tableReferences: $this->tableName)->limit( limit: $limit, offset: $skip)->execute();
+    $result =
+      $this->query
+        ->select()
+        ->all(columns: $this->entity::columns(exclude: ['password']))
+        ->from(tableReferences: $this->tableName)
+        ->where(condition: "deleted_at='1000-01-01 00:00:00'")
+        ->or(condition: 'deleted_at=NULL')
+        ->limit( limit: $limit, offset: $skip)
+        ->execute();
 
     if ($result->isError())
     {
