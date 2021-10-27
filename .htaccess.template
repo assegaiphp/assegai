@@ -6,6 +6,10 @@ Header set Access-Control-Allow-Origin "*"
 
 RewriteEngine On
 
+# Turn off directory slash so requests aren't rewritten as GET requests
+DirectorySlash Off
+SetHandler index.php
+
 # Base path of the app
 RewriteBase /
 
