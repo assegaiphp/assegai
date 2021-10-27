@@ -65,6 +65,11 @@ class BaseRepository implements IRepository
     return $this->dbContext;
   }
 
+  public function entityName(): string
+  {
+    return $this->entity;
+  }
+
   public function commit(): bool
   {
     exit(new NotImplementedErrorResponse(message: 'Commit message not implemented.'));
@@ -213,6 +218,20 @@ class BaseRepository implements IRepository
 
   public function remove(IEntity $entity): IEntity|stdClass|false
   {
+    $id = $entity->id;
+    $now = date(DATE_ATOM);
+    $result =
+      $this->query
+        ->update(tableName: $this->tableName)
+        ->set(assignmentList: ['deleted_at' => $now])
+        ->where("id=${id}")
+        ->execute();
+
+    if ($result->isOK())
+    {
+      return $entity;
+    }
+
     return false;
   }
 
