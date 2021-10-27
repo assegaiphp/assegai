@@ -8,6 +8,7 @@ use LifeRaft\Database\Attributes\Columns\PrimaryGeneratedColumn;
 use LifeRaft\Database\Attributes\Columns\UpdateDateColumn;
 use LifeRaft\Database\Interfaces\IEntity;
 use ReflectionClass;
+use ReflectionProperty;
 use stdClass;
 
 class BaseEntity implements IEntity
@@ -103,9 +104,40 @@ class BaseEntity implements IEntity
     return $values;
   }
 
-  public function toArray(): array
+  public function columnValuePairs(array $exclude = []): array
   {
-    return get_object_vars($this);
+    $values = [];
+    $class = get_called_class();
+    $columns = $class::columns(exclude: $exclude);
+    $pairs = [];
+
+    foreach ($columns as $alias => $column)
+    {
+      if (is_numeric($alias))
+      {
+        $pairs[$column] = $this->$column;
+      }
+      else
+      {
+        $pairs[$column] = $this->$alias;
+      }
+    }
+
+    return $pairs;    
+  }
+
+  public function toArray(array $exclude = []): array
+  {
+    $vars = get_object_vars($this);
+    $array = [];
+    foreach ($vars as $prop => $value)
+    {
+      if (!in_array($prop, $exclude))
+      {
+        $array[$prop] = $value;
+      }
+    }
+    return $array;
   }
 
   public function toJSON(): string

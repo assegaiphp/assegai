@@ -22,8 +22,8 @@ final class SQLAssignmentList
         $value = password_hash($value, $this->query->passwordHashAlgorithm());
       }
       $queryString .= is_numeric($value)
-        ? "$key=${value}${separator}"
-        : "$key='$value'${separator}";
+        ? "`$key`=${value}${separator}"
+        : "`$key`='$value'${separator}";
     }
     $queryString = trim($queryString, $separator);
     $this->query->appendQueryString( tail: $queryString );

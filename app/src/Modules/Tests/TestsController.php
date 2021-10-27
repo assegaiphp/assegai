@@ -2,14 +2,18 @@
 
 namespace LifeRaft\Modules\Tests;
 
+use LifeRaft\Core\Attributes\Controller;
 use LifeRaft\Core\BaseController;
 use LifeRaft\Core\Responses\Response;
 use LifeRaft\Core\Attributes\Get;
 use LifeRaft\Core\Attributes\Post;
+use LifeRaft\Core\Attributes\Put;
 use LifeRaft\Core\Request;
 use LifeRaft\Core\Responses\BadRequestErrorResponse;
+use LifeRaft\Database\Interfaces\IEntity;
 use stdClass;
 
+#[Controller(path: 'tests')]
 class TestsController extends BaseController
 {
   protected array $forbiddenMethods = [];
@@ -55,6 +59,21 @@ class TestsController extends BaseController
     }
 
     return new Response( data: $entity, dataOnly: true, status: $this->status );
+  }
+
+  #[Put(path: '/:id')]
+  public function update(int $id, stdClass|IEntity $body): Response
+  {
+    $entity = TestEntity::newInstanceFromObject(object: $body);
+    $entity->id = $id;
+    $result = $this->testsRepository->update(entity: $entity);
+
+    if ($result === false)
+    {
+      return new BadRequestErrorResponse();
+    }
+
+    return new Response(data: $result, dataOnly: true );
   }
 }
 

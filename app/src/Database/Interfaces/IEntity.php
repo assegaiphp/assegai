@@ -14,7 +14,8 @@ interface IEntity {
   public static function newInstanceFromArray(array $array): IEntity;
   public static function columns(array $exclude = []): array;
   public function values(array $exclude = []): array;
-  public function toArray(): array;
+  public function columnValuePairs(array $exclude = []): array;
+  public function toArray(array $exclude = []): array;
   public function toJSON(): string;
 }
 

@@ -185,6 +185,13 @@ class BaseRepository implements IRepository
 
   public function update(IEntity $entity): IEntity|stdClass|false
   {
+    $id = $entity->id;
+    $result = $this->query->update(tableName: $this->tableName)->set(assignmentList: $entity->columnValuePairs(exclude: $this->readOnlyFields))->where("id=${id}")->execute();
+
+    if ($result->isOK())
+    {
+      return $this->findOne(id: $entity->id);
+    }
 
     return false;
   }
