@@ -3,11 +3,14 @@
 namespace LifeRaft\Core\Attributes;
 
 use Attribute;
+use stdClass;
 
 #[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
 class Put
 {
   public array $tokens = [];
+  public null|stdClass|array $body = null;
+
   public function __construct(
     public string $path = '',
     public array $args = []
@@ -29,6 +32,14 @@ class Put
         $this->args[trim($token, ':')] = $value;
       }
     }
+
+    $body = file_get_contents('php://input');
+    $this->body = json_decode( $body );
+    if (json_last_error() !== JSON_ERROR_NONE)
+    {
+      $this->body = json_decode(json_encode([]));
+    }
+    $this->args['body'] = $this->body;
   }
 }
 

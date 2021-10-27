@@ -9,8 +9,6 @@ use LifeRaft\Core\Responses\NotImplementedErrorResponse;
 use LifeRaft\Database\Attributes\Repository;
 use LifeRaft\Database\Interfaces\IEntity;
 use LifeRaft\Database\Interfaces\IRepository;
-use LifeRaft\Database\Queries\SQLColumnDefinition;
-use LifeRaft\Database\Queries\SQLDataTypes;
 use LifeRaft\Database\Queries\SQLQuery;
 use PDO;
 use ReflectionClass;
@@ -20,6 +18,7 @@ use stdClass;
 #[Injectable]
 class BaseRepository implements IRepository
 {
+  protected array $readOnlyFields = ['id', 'createdAt', 'updatedAt', 'deletedAt'];
   protected ?PDO $dbContext = null;
   protected ?SQLQuery $query = null;
   protected string|IEntity $entity = '';
@@ -35,13 +34,14 @@ class BaseRepository implements IRepository
 
     foreach ($attributes as $attribute)
     {
-      $instance           = $attribute->newInstance();
-      $this->entity       = $instance->entity;
-      $this->databaseType = $instance->databaseType;
-      $this->databaseName = $instance->databaseName;
-      $this->tableName    = $instance->tableName;
-      $this->fetchMode    = $instance->fetchMode;
-      $this->dbContext    = $instance->dbContext;
+      $instance             = $attribute->newInstance();
+      $this->entity         = $instance->entity;
+      $this->databaseType   = $instance->databaseType;
+      $this->databaseName   = $instance->databaseName;
+      $this->tableName      = $instance->tableName;
+      $this->fetchMode      = $instance->fetchMode;
+      $this->dbContext      = $instance->dbContext;
+      $this->readOnlyFields = $instance->readOnlyFields;
     }
 
     if (is_null($this->dbContext) || empty($this->dbContext))
@@ -138,9 +138,8 @@ class BaseRepository implements IRepository
 
   public function add(IEntity $entity): IEntity|stdClass|false
   {
-    $exclude = ['id', 'createdAt', 'updatedAt', 'deletedAt'];
-    $columns = $entity->columns(exclude: $exclude);
-    $values = $entity->values(exclude: $exclude);
+    $columns = $entity->columns(exclude: $this->readOnlyFields);
+    $values = $entity->values(exclude: $this->readOnlyFields);
 
     $result = $this->query->insertInto(tableName: $this->tableName)->singleRow(columns: $columns)->values( valuesList: $values )->execute();
 
@@ -159,14 +158,13 @@ class BaseRepository implements IRepository
       return false;
     }
 
-    $exclude = ['id', 'createdAt', 'updatedAt', 'deletedAt'];
-    $columns = $this->entity::columns(exclude: $exclude);
+    $columns = $this->entity::columns(exclude: $this->readOnlyFields);
     $rowList =  [];
 
     foreach ($entities as $entity)
     {
       $obj = $this->entity::newInstanceFromObject($entity);
-      $values = $obj->values(exclude: $exclude);
+      $values = $obj->values(exclude: $this->readOnlyFields);
       array_push($rowList, $values);
     }
 
@@ -183,6 +181,12 @@ class BaseRepository implements IRepository
     }
 
     return $entities;
+  }
+
+  public function update(IEntity $entity): IEntity|stdClass|false
+  {
+
+    return false;
   }
 
   public function remove(IEntity $entity): IEntity|stdClass|false

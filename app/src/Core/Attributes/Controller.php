@@ -11,7 +11,8 @@ final class Controller
   public function __construct(
     public string $path = '/',
     public ?string $host = null,
-    public ?HttpStatusCode $status = null
+    public ?HttpStatusCode $status = null,
+    public ?array $forbiddenMethods = [Patch::class],
   ) { }
 }
 

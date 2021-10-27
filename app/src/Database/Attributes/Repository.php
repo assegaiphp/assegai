@@ -17,6 +17,7 @@ class Repository
     public string $databaseName = 'assegai_test',
     public string $tableName = '',
     public int $fetchMode = \PDO::FETCH_CLASS,
+    public array $readOnlyFields = ['id', 'createdAt', 'updatedAt', 'deletedAt'],
   )
   {
     if (!empty($databaseType) && !empty($databaseName))

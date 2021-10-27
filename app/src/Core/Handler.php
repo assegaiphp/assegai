@@ -14,9 +14,7 @@ class Handler
     public function __construct(
         protected \ReflectionMethod $method,
         protected Delete|Get|Options|Patch|Post|Put $attribute
-    )
-    {
-    }
+    ) { }
 
     public function method(): \ReflectionMethod
     {
