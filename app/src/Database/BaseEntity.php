@@ -102,6 +102,26 @@ class BaseEntity implements IEntity
 
     return $values;
   }
+
+  public function toArray(): array
+  {
+    return get_object_vars($this);
+  }
+
+  public function toJSON(): string
+  {
+    return json_encode($this->toArray());
+  }
+
+  public function __toString(): string
+  {
+    return $this->toJSON();
+  }
+
+  public function __serialize(): array
+  {
+    return $this->toArray();
+  }
 }
 
 ?>
