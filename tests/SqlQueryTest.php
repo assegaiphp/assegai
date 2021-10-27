@@ -301,6 +301,14 @@ final class SqlQueryTest extends TestCase
       $query->alter()->table( tableName: SqlQueryTest::TEST_TABLE_NAME )->dropColumn( columnName: 'date_of_birth' )->execute();
     $this->assertTrue(condition: $result->isOK());
   }
+
+  public function testTruncateATable(): void
+  {
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query->truncateTable(tableName: SqlQueryTest::TEST_TABLE_NAME)->execute();
+    $this->assertTrue(condition: $result->isOK());
+  }
 }
 
 ?>

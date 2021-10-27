@@ -152,6 +152,12 @@ final class SQLQuery
     );
   }
 
+  public function truncateTable(string $tableName): SQLTruncateStatement
+  {
+    $this->type = SQLQueryType::TRUNCATE;
+    return new SQLTruncateStatement( query: $this, tableName: $tableName );
+  }
+
   public function execute(): SQLQueryResult
   {
     try
