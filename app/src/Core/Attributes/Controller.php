@@ -3,6 +3,7 @@
 namespace LifeRaft\Core\Attributes;
 
 use Attribute;
+use LifeRaft\Core\RequestMethod;
 use LifeRaft\Core\Responses\HttpStatusCode;
 
 #[Attribute(Attribute::TARGET_CLASS)]
@@ -12,7 +13,7 @@ final class Controller
     public string $path = '/',
     public ?string $host = null,
     public ?HttpStatusCode $status = null,
-    public ?array $forbiddenMethods = [Patch::class],
+    public ?array $forbiddenMethods = [RequestMethod::DELETE],
   ) { }
 }
 

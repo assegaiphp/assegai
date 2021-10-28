@@ -2,24 +2,24 @@
 
 namespace LifeRaft\Modules\Home;
 
+use LifeRaft\Core\Attributes\Controller;
 use LifeRaft\Core\BaseController;
 use LifeRaft\Core\Attributes\Get;
 use LifeRaft\Core\RequestMethod;
 use LifeRaft\Core\Responses\Response;
 
+#[Controller(forbiddenMethods: [
+  RequestMethod::DELETE,
+  RequestMethod::HEAD,
+  RequestMethod::PATCH,
+  RequestMethod::POST,
+  RequestMethod::PUT,
+])]
 class HomeController extends BaseController
 {
   public function __construct(
     private HomeService $homeService
   ) { }
-
-  protected array $forbiddenMethods = [
-    RequestMethod::DELETE,
-    RequestMethod::HEAD,
-    RequestMethod::PATCH,
-    RequestMethod::POST,
-    RequestMethod::PUT,
-  ];
 
   #[Get]
   public function default(): Response

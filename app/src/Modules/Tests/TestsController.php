@@ -10,17 +10,16 @@ use LifeRaft\Core\Attributes\Get;
 use LifeRaft\Core\Attributes\Post;
 use LifeRaft\Core\Attributes\Put;
 use LifeRaft\Core\Request;
+use LifeRaft\Core\RequestMethod;
 use LifeRaft\Core\Responses\BadRequestErrorResponse;
 use LifeRaft\Core\Responses\HttpStatus;
 use LifeRaft\Core\Responses\NotFoundErrorResponse;
 use LifeRaft\Database\Interfaces\IEntity;
 use stdClass;
 
-#[Controller(path: 'tests')]
+#[Controller(path: 'tests', forbiddenMethods: [RequestMethod::DELETE])]
 class TestsController extends BaseController
 {
-  protected array $forbiddenMethods = [];
-
   public function __construct(
     protected Request $request,
     protected TestsRepository $testsRepository
@@ -32,7 +31,9 @@ class TestsController extends BaseController
   #[Get]
   public function findAll(): Response
   {
-    $data = $this->testsRepository->findAll(limit: $this->request->limit(), skip: $this->request->skip());
+    $data =
+      $this->testsRepository
+        ->findAll(limit: $this->request->limit(), skip: $this->request->skip());
     return new Response( data: $data );
   }
 
@@ -77,6 +78,12 @@ class TestsController extends BaseController
     }
 
     return new Response(data: $result, dataOnly: true );
+  }
+
+  #[Delete]
+  public function removeAll(array $ids): Response
+  {
+    return new Response(data: "This action removes all entities with", dataOnly: true);
   }
 
   #[Delete(path: '/:id')]

@@ -42,6 +42,7 @@ class BaseController implements IController
       $this->path = $instance->path;
       $this->host = $instance->host;
       $this->status = $instance->status;
+      $this->forbiddenMethods = $instance->forbiddenMethods;
     }
 
     if (!empty($request->uri()))
