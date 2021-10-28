@@ -111,16 +111,19 @@ class BaseRepository implements IRepository
     return $entities;
   }
 
-  public function findOne(int $id): null|IEntity|stdClass
+  public function findOne(int $id, bool $filterDeleted = true): null|IEntity|stdClass
   {
-    $result =
+    $statement =
       $this->query
         ->select()
         ->all(columns: $this->entity::columns(exclude: ['password']))
         ->from(tableReferences: $this->tableName)
-        ->where("id=$id")
-        ->and(condition: "(deleted_at='1000-01-01 00:00:00' OR deleted_at=NULL)")
-        ->execute();
+        ->where("id=$id");
+    if ($filterDeleted)
+    {
+      $statement = $statement->and(condition: "(deleted_at='1000-01-01 00:00:00' OR deleted_at=NULL)");
+    }
+    $result = $statement->execute();
 
     if ($result->isOK())
     {
@@ -308,7 +311,7 @@ class BaseRepository implements IRepository
           if ($instance->dataType === SQLDataTypes::ENUM)
           {
             $deleteIsValidStatus = match (gettype($instance->lengthOrValues)) {
-              'string' => str_contains($instance->lengthOrValues, 'delete'),
+              'string' => str_contains($instance->lengthOrValues, 'deleted'),
               'array' => in_array('deleted', $instance->lengthOrValues),
               default => false
             };
@@ -371,6 +374,64 @@ class BaseRepository implements IRepository
   public function removeRange(array $ids): array|false
   {
     Debugger::respond(response: new NotImplementedErrorResponse(message: 'BaseRepository->removeRange()'));
+    return false;
+  }
+
+  public function restore(int $id): IEntity|stdClass|false
+  {
+    $className = $this->entity;
+    $entity = $this->findOne(id: $id, filterDeleted: false);
+    $entity = $className::newInstanceFromObject($entity);
+
+    if (is_null($entity))
+    {
+      exit(new NotFoundErrorResponse());
+    }
+
+    $id = $entity->id;
+    $then = '1000-01-01 00:00:00';
+    $assignmentList = ['deleted_at' => $then];
+
+    if (property_exists($this->entity, 'status'))
+    {
+      $status = new ReflectionProperty($this->entity, 'status');
+      $attributes = $status->getAttributes(Column::class);
+      if (!empty($attributes))
+      {
+        foreach($attributes as $attribute)
+        {
+          $instance = $attribute->newInstance();
+          if ($instance->dataType === SQLDataTypes::ENUM)
+          {
+            $deleteIsValidStatus = match (gettype($instance->lengthOrValues)) {
+              'string' => str_contains($instance->lengthOrValues, 'active'),
+              'array' => in_array('active', $instance->lengthOrValues),
+              default => false
+            };
+
+            if ($deleteIsValidStatus)
+            {
+              $entity->status = 'active';
+              $assignmentList['status'] = 'active';
+            }
+          }
+        }
+      }
+    }
+
+    $result =
+      $this->query
+        ->update(tableName: $this->tableName)
+        ->set(assignmentList: $assignmentList)
+        ->where("id=${id}")
+        ->execute();
+
+    if ($result->isOK())
+    {
+      $entity->deletedAt = $then;
+      return $entity;
+    }
+
     return false;
   }
 }

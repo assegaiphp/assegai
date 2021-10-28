@@ -19,7 +19,7 @@ class Patch
 {
   const UPDATE_ACTION = 'UPDATE';
   const DELETE_ACTION = 'DELETE';
-  const RESTORE_ACTION = 'DELETE';
+  const RESTORE_ACTION = 'RESTORE';
 
   public array $tokens = [];
   public mixed $body = null;
@@ -54,7 +54,7 @@ class Patch
       $this->body = json_decode($this->body);
     }
 
-    $valid_actions = [Patch::UPDATE_ACTION, Patch::DELETE_ACTION];
+    $valid_actions = [Patch::UPDATE_ACTION, Patch::DELETE_ACTION, Patch::RESTORE_ACTION];
     if (!isset($_GET['action']))
     {
       exit(new BadRequestErrorResponse(message: 'Missing action parameter'));

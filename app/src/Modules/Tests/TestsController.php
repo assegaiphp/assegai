@@ -95,6 +95,19 @@ class TestsController extends BaseController
     return new Response(data: $result, dataOnly: true );
   }
 
+  #[Patch(path: '/:id', action: Patch::RESTORE_ACTION)]
+  public function restore(int $id): Response
+  {
+    $result = $this->testsRepository->restore(id: $id);
+
+    if ($result === false)
+    {
+      return new BadRequestErrorResponse();
+    }
+
+    return new Response(data: $result, dataOnly: true );
+  }
+
   #[Patch(path: '/:id', action: Patch::DELETE_ACTION)]
   public function softRemove(int $id): Response
   {
