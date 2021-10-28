@@ -199,7 +199,7 @@ final class SQLQuery
     catch (\Exception $e)
     {
       list($sqlCode, $driverCode, $message) = $statement->errorInfo();
-      if (Config::environment('ENVIORNMENT') === 'PROD')
+      if (Config::environment('ENVIRONMENT') === 'PROD')
       {
         $message = 'Bad Request';
       }

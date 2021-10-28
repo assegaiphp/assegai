@@ -7,7 +7,7 @@ Config::hydrate();
 
 $GLOBALS['config'] = require("config/default.php");
 
-if (Config::environment('ENVIORNMENT') === 'PROD' && file_exists('app/config/production.php'))
+if (Config::environment('ENVIRONMENT') === 'PROD' && file_exists('app/config/production.php'))
 {
   $prodConfig = require("config/production.php");
   if (is_array($prodConfig))

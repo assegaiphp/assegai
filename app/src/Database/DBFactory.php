@@ -40,7 +40,7 @@ final class DBFactory
       {
         $errorMessage = strval(new InternalServerErrorResponse());
   
-        if (Config::environment('ENVIORNMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
+        if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
         {
           $errorMessage .= "\n" . $e->getMessage();
         }
