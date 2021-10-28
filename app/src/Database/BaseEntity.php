@@ -8,7 +8,6 @@ use LifeRaft\Database\Attributes\Columns\PrimaryGeneratedColumn;
 use LifeRaft\Database\Attributes\Columns\UpdateDateColumn;
 use LifeRaft\Database\Interfaces\IEntity;
 use ReflectionClass;
-use ReflectionProperty;
 use stdClass;
 
 class BaseEntity implements IEntity
@@ -30,7 +29,7 @@ class BaseEntity implements IEntity
     $className = get_called_class();
     $entity = new $className;
 
-    foreach (get_object_vars($object) as $prop => $value)
+    foreach ($object as $prop => $value)
     {
       if (property_exists($entity, $prop))
       {
@@ -87,6 +86,35 @@ class BaseEntity implements IEntity
     }
 
     return $columns;
+  }
+
+  public static function isValidEntity(
+    stdClass|IEntity $object,
+    array $excludedFields = ['id', 'createdAt', 'deletedAt', 'updatedAt']
+  ): bool
+  {
+    $isValid = true;
+
+    $entityProps = get_class_vars(get_called_class());
+    $objProps = get_object_vars($object);
+
+    if (count($entityProps) !== count($objProps))
+    {
+      $isValid = false;
+    }
+
+    foreach ($object as $prop => $value)
+    {
+      if (!in_array($prop, $excludedFields))
+      {
+        if (!property_exists(get_called_class(), $prop))
+        {
+          $isValid = false;
+        }
+      }
+    }
+
+    return $isValid;
   }
 
   public function values(array $exclude = []): array
