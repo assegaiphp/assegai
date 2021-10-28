@@ -3,6 +3,7 @@
 namespace LifeRaft\Core\Attributes;
 
 use Attribute;
+use LifeRaft\Core\Responses\BadRequestErrorResponse;
 
 /**
  * The **HTTP PATCH request method** applies partial modifications to a 
@@ -18,6 +19,7 @@ class Patch
 {
   const UPDATE_ACTION = 'UPDATE';
   const DELETE_ACTION = 'DELETE';
+  const RESTORE_ACTION = 'DELETE';
 
   public array $tokens = [];
   public mixed $body = null;
@@ -46,20 +48,29 @@ class Patch
         $this->args[trim($token, ':')] = $value;
       }
     }
-
-    $valid_actions = [Patch::UPDATE_ACTION, Patch::DELETE_ACTION];
-    if (isset($_GET['action']))
+    $this->body = $request->body();
+    if (is_string($this->body))
     {
-      $action = strtoupper($_GET['action']);
-
-      if (in_array($action, $valid_actions))
-      {
-        $this->action = $action;
-      }
+      $this->body = json_decode($this->body);
     }
 
-    $this->body = $request->body();
-    $this->canActivate = $request->method() === 'PATCH';
+    $valid_actions = [Patch::UPDATE_ACTION, Patch::DELETE_ACTION];
+    if (!isset($_GET['action']))
+    {
+      exit(new BadRequestErrorResponse(message: 'Missing action parameter'));
+    }
+
+    $action = strtoupper($_GET['action']);
+
+    if (in_array($action, $valid_actions))
+    {
+      $this->canActivate = $request->method() === 'PATCH' && $action === $this->action;
+    }
+
+    if ($this->action === Patch::UPDATE_ACTION)
+    {
+      $this->args['body'] = $this->body;
+    }
   }
 }
 
