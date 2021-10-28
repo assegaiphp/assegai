@@ -20,7 +20,7 @@ class Column
     public string $name = '',
     public string $alias = '',
     public string $dataType = SQLDataTypes::INT,
-    private null|string|array|int $lengthOrValues = null,
+    public null|string|array|int $lengthOrValues = null,
     public bool $allowNull = true,
     public bool $signed = true,
     public bool $zeroFilled = false,

@@ -4,14 +4,19 @@ namespace LifeRaft\Database;
 
 use LifeRaft\Core\Attributes\Injectable;
 use LifeRaft\Core\Config;
+use LifeRaft\Core\Debugger;
 use LifeRaft\Core\Responses\BadRequestErrorResponse;
+use LifeRaft\Core\Responses\NotFoundErrorResponse;
 use LifeRaft\Core\Responses\NotImplementedErrorResponse;
+use LifeRaft\Database\Attributes\Columns\Column;
 use LifeRaft\Database\Attributes\Repository;
 use LifeRaft\Database\Interfaces\IEntity;
 use LifeRaft\Database\Interfaces\IRepository;
+use LifeRaft\Database\Queries\SQLDataTypes;
 use LifeRaft\Database\Queries\SQLQuery;
 use PDO;
 use ReflectionClass;
+use ReflectionProperty;
 use stdClass;
 
 #[Repository]
@@ -192,7 +197,7 @@ class BaseRepository implements IRepository
 
     if ($result->isError())
     {
-      if (Config::environment('ENVIORNMENT') === 'DEV' && Config::environment('DEBUG') === TRUE)
+      if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === TRUE)
       {
         exit(new BadRequestErrorResponse(message: $result->toJSON()));
       }
@@ -205,6 +210,11 @@ class BaseRepository implements IRepository
 
   public function update(IEntity $entity): IEntity|stdClass|false
   {
+    if (!$this->entity::isValidEntity($entity))
+    {
+      Debugger::respond(new BadRequestErrorResponse(message: 'Invalid entity'));
+      return false;
+    }
     $id = $entity->id;
     $result = $this->query->update(tableName: $this->tableName)->set(assignmentList: $entity->columnValuePairs(exclude: $this->readOnlyFields))->where("id=${id}")->execute();
 
@@ -216,14 +226,107 @@ class BaseRepository implements IRepository
     return false;
   }
 
-  public function remove(IEntity $entity): IEntity|stdClass|false
+  public function partialUpdate(stdClass $body): IEntity|stdClass|false
   {
-    $id = $entity->id;
-    $now = date(DATE_ATOM);
+    if (!isset($body->id))
+    {
+      exit(new BadRequestErrorResponse(message: 'Missing id field'));
+    }
+    $id = $body->id;
+    $entity = $this->findOne(id: $id);
+
+    if (is_null($entity))
+    {
+      exit(new NotFoundErrorResponse());
+    }
+    $assignmentList = [];
+
+    foreach ($body as $prop => $value)
+    {
+      if (property_exists($this->entity, $prop))
+      {
+        if (in_array($prop, $this->readOnlyFields))
+        {
+          continue;
+        }
+
+        # Get colum attribute
+        $reflectionProp = new ReflectionProperty($this->entity, $prop);
+        $attributes = $reflectionProp->getAttributes();
+
+        foreach ($attributes as $attribute)
+        {
+          $instance = $attribute->newInstance();
+          if (is_a($instance, Column::class))
+          {
+            # Get column name and pair with $value
+            $key = empty($instance->name) ? $prop : $instance->name;
+            $assignmentList[$key] = $value;
+          }
+        }
+      }
+    }
+
     $result =
       $this->query
         ->update(tableName: $this->tableName)
-        ->set(assignmentList: ['deleted_at' => $now])
+        ->set(assignmentList: $assignmentList)
+        ->where("id=${id}")->execute();
+
+    if ($result->isOK())
+    {
+      return $this->findOne(id: $id);
+    }
+
+    return false;
+  }
+
+  public function softRemove(int $id): IEntity|stdClass|false
+  {
+    $className = $this->entity;
+    $entity = $this->findOne(id: $id);
+    $entity = $className::newInstanceFromObject($entity);
+
+    if (is_null($entity))
+    {
+      exit(new NotFoundErrorResponse());
+    }
+
+    $id = $entity->id;
+    $now = date(DATE_ATOM);
+    $assignmentList = ['deleted_at' => $now];
+
+    if (property_exists($this->entity, 'status'))
+    {
+      $status = new ReflectionProperty($this->entity, 'status');
+      $attributes = $status->getAttributes(Column::class);
+      if (!empty($attributes))
+      {
+        foreach($attributes as $attribute)
+        {
+          $instance = $attribute->newInstance();
+          if ($instance->dataType === SQLDataTypes::ENUM)
+          {
+            $deleteIsValidStatus = match (gettype($instance->lengthOrValues)) {
+              'string' => str_contains($instance->lengthOrValues, 'delete'),
+              'array' => in_array('deleted', $instance->lengthOrValues),
+              default => false
+            };
+
+            if ($deleteIsValidStatus)
+            {
+              $entity->status = 'deleted';
+              $assignmentList['status'] = 'deleted';
+            }
+          }
+        }
+      }
+    }
+
+    $result =
+      $this->query
+        ->update(tableName: $this->tableName)
+        ->set(assignmentList: $assignmentList)
         ->where("id=${id}")
         ->execute();
 
@@ -235,9 +338,40 @@ class BaseRepository implements IRepository
     return false;
   }
 
-  public function removeRange(array $entities): array|false
+  public function softRemoveRange(array $ids): array|false
   {
-    return [];
+    Debugger::respond(response: new NotImplementedErrorResponse(message: 'BaseRepository->softRemoveRange()'));
+    return false;
+  }
+
+  public function remove(int $id): IEntity|stdClass|false
+  {
+    $entity = $this->testsRepository->findOne(id: $id);
+
+    if (is_null($entity))
+    {
+      exit(new NotFoundErrorResponse());
+    }
+
+    $id = $entity->id;
+    $result =
+      $this->query
+        ->deleteFrom(tableName: $this->tableName)
+        ->where("id=${id}")
+        ->execute();
+
+    if ($result->isOK())
+    {
+      return $entity;
+    }
+
+    return false;
+  }
+
+  public function removeRange(array $ids): array|false
+  {
+    Debugger::respond(response: new NotImplementedErrorResponse(message: 'BaseRepository->removeRange()'));
+    return false;
   }
 }
 
