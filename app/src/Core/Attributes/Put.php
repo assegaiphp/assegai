@@ -37,6 +37,7 @@ class Put
 
     $body = file_get_contents('php://input');
     $this->body = json_decode( $body );
+
     if (json_last_error() !== JSON_ERROR_NONE)
     {
       $this->body = json_decode(json_encode([]));

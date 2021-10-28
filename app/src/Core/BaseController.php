@@ -4,7 +4,7 @@ namespace LifeRaft\Core;
 
 use LifeRaft\Core\Attributes\Controller;
 use LifeRaft\Core\Interfaces\IController;
-use LifeRaft\Core\Attributes\Get;
+use LifeRaft\Core\Attributes\GET;
 use LifeRaft\Core\Attributes\POST;
 use LifeRaft\Core\Attributes\PUT;
 use LifeRaft\Core\Attributes\PATCH;
@@ -95,13 +95,13 @@ class BaseController implements IController
     }
 
     $activatedAttributeClass = match ($this->request->method()) {
-      RequestMethod::GET      => Get::class,
+      RequestMethod::GET      => GET::class,
       RequestMethod::POST     => POST::class,
       RequestMethod::PUT      => PUT::class,
       RequestMethod::PATCH    => PATCH::class,
       RequestMethod::DELETE   => DELETE::class,
       RequestMethod::OPTIONS  => OPTIONS::class,
-      default                 => Get::class
+      default                 => GET::class
     };
 
     $reflection = new ReflectionClass( objectOrClass: $this );
@@ -136,7 +136,7 @@ class BaseController implements IController
 
           $canActivate = preg_match( pattern: $pattern, subject: '/' . $subject );
 
-          if ($canActivate)
+          if ($canActivate && $instance->canActivate)
           {
             $handler = new Handler( method: $method, attribute: $instance);
             break;

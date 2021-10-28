@@ -6,10 +6,10 @@ use Attribute;
 use LifeRaft\Core\Config;
 use LifeRaft\Database\Queries\SQLDataTypes;
 
-#[Attribute(Attribute::TARGET_PARAMETER)]
+#[Attribute(Attribute::TARGET_PROPERTY)]
 final class PasswordColumn extends Column
 {
-  private ?int $passwordHashAlgorithm = null;
+  private mixed $passwordHashAlgorithm = null;
   public function __construct(
     public string $name = 'password',
     public string $alias = '',

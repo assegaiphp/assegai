@@ -3,7 +3,6 @@
 namespace LifeRaft\Database\Attributes\Columns;
 
 use Attribute;
-use LifeRaft\Database\Attributes\Columns\Column;
 use LifeRaft\Database\Queries\SQLDataTypes;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
