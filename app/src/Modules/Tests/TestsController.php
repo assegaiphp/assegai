@@ -7,6 +7,7 @@ use LifeRaft\Core\Attributes\Delete;
 use LifeRaft\Core\BaseController;
 use LifeRaft\Core\Responses\Response;
 use LifeRaft\Core\Attributes\Get;
+use LifeRaft\Core\Attributes\Patch;
 use LifeRaft\Core\Attributes\Post;
 use LifeRaft\Core\Attributes\Put;
 use LifeRaft\Core\Request;
@@ -77,13 +78,41 @@ class TestsController extends BaseController
       return new BadRequestErrorResponse();
     }
 
+    return new Response(data: $result, dataOnly: true, status: HttpStatus::NoContent() );
+  }
+
+  #[Patch(path: '/:id', action: Patch::UPDATE_ACTION)]
+  public function partialUpdate(int $id, stdClass $body): Response
+  {
+    $body->id = $id;
+    $result = $this->testsRepository->partialUpdate(body: $body);
+
+    if ($result === false)
+    {
+      return new BadRequestErrorResponse();
+    }
+
+    return new Response(data: $result, dataOnly: true );
+  }
+
+  #[Patch(path: '/:id', action: Patch::DELETE_ACTION)]
+  public function softRemove(int $id): Response
+  {
+    $result = $this->testsRepository->softRemove(id: $id);
+
+    if ($result === false)
+    {
+      return new BadRequestErrorResponse();
+    }
+
     return new Response(data: $result, dataOnly: true );
   }
 
   #[Delete]
   public function removeAll(array $ids): Response
   {
-    return new Response(data: "This action removes all entities with", dataOnly: true);
+    $idsString = implode(', ', $ids);
+    return new Response(data: "This action removes all entities with ids $idsString", dataOnly: true);
   }
 
   #[Delete(path: '/:id')]
