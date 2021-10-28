@@ -12,12 +12,14 @@ class Post
 {
   public array $tokens = [];
   public null|stdClass|array $body = null;
+  public bool $canActivate = false;
 
   public function __construct(
     public string $path = '',
     public array $args = [],
     public ?HttpStatusCode $status = null
   ) {
+    global $request;
     $this->tokens = explode('/', trim($path, '/'));
     $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
     if (is_null($this->status))
@@ -44,6 +46,7 @@ class Post
     };
 
     $this->args['body'] = $this->body;
+    $this->canActivate = $request->method() === 'POST';
   }
 }
 

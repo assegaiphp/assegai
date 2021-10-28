@@ -10,11 +10,13 @@ class Put
 {
   public array $tokens = [];
   public null|stdClass|array $body = null;
+  public bool $canActivate = false;
 
   public function __construct(
     public string $path = '',
     public array $args = []
   ) {
+    global $request;
     $this->tokens = explode('/', trim($path, '/'));
     $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
 
@@ -40,6 +42,8 @@ class Put
       $this->body = json_decode(json_encode([]));
     }
     $this->args['body'] = $this->body;
+
+    $this->canActivate = $request->method() === 'PUT';
   }
 }
 

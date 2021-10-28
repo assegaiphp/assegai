@@ -8,10 +8,13 @@ use Attribute;
 class Delete
 {
   public array $tokens = [];
+  public bool $canActivate = false;
+
   public function __construct(
     public string $path = '',
     public array $args = []
   ) {
+    global $request;
     $this->tokens = explode('/', trim($path, '/'));
     $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
 
@@ -29,6 +32,8 @@ class Delete
         $this->args[trim($token, ':')] = $value;
       }
     }
+
+    $this->canActivate = $request->method() === 'DELETE';
   }
 }
 
