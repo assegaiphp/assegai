@@ -14,8 +14,10 @@ interface IRepository {
   public function addRange(array $entities): array|false;
   
 
-  public function remove(IEntity $entity): IEntity|stdClass|false;
-  public function removeRange(array $entities): array|false;
+  public function softRemove(int $id): IEntity|stdClass|false;
+  public function softRemoveRange(array $ids): array|false;
+  public function remove(int $id): IEntity|stdClass|false;
+  public function removeRange(array $ids): array|false;
 }
 
 ?>

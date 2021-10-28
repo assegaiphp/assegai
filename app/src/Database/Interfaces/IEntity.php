@@ -13,6 +13,7 @@ interface IEntity {
   public static function newInstanceFromObject(stdClass $object): IEntity;
   public static function newInstanceFromArray(array $array): IEntity;
   public static function columns(array $exclude = []): array;
+  public static function isValidEntity(stdClass|IEntity $object): bool;
   public function values(array $exclude = []): array;
   public function columnValuePairs(array $exclude = []): array;
   public function toArray(array $exclude = []): array;
