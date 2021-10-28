@@ -22,7 +22,7 @@ class RequestMethod
  */
 class Request
 {
-  protected mixed $body;
+  protected mixed $body = null;
   protected array $allHeaders = [];
   protected ?App $app = null;
 
