@@ -137,8 +137,8 @@ class TestsController extends BaseController
       return new NotFoundErrorResponse();
     }
     $entityName = $this->testsRepository->entityName();
-    $entity = $entityName::newInstanceFromObject($entity);
-    $entity = $this->testsRepository->remove($entity);
+    $entity     = $entityName::newInstanceFromObject($entity);
+    $entity     = $this->testsRepository->remove($entity);
 
     return new Response(data: $entity, status: HttpStatus::NoContent());
   }
