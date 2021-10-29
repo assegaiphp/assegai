@@ -10,7 +10,8 @@ use LifeRaft\Core\Responses\BadRequestErrorResponse;
  * resource.
  * 
  * A PATCH request is considered a set of instructions on how to modify a 
- * resource. Contrast this with PUT; which is a complete representation of a resource.
+ * resource. Contrast this with PUT; which is a complete representation of 
+ * a resource.
  * 
  * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH
  */

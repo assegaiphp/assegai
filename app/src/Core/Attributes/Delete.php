@@ -4,6 +4,11 @@ namespace LifeRaft\Core\Attributes;
 
 use Attribute;
 
+/**
+ * The HTTP DELETE request method deletes the specified resource.
+ * 
+ * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/DELETE
+ */
 #[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
 class Delete
 {
