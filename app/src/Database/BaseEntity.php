@@ -6,12 +6,42 @@ use LifeRaft\Database\Attributes\Columns\CreateDateColumn;
 use LifeRaft\Database\Attributes\Columns\DeleteDateColumn;
 use LifeRaft\Database\Attributes\Columns\PrimaryGeneratedColumn;
 use LifeRaft\Database\Attributes\Columns\UpdateDateColumn;
+use LifeRaft\Database\Attributes\Entity;
 use LifeRaft\Database\Interfaces\IEntity;
 use ReflectionClass;
+use ReflectionProperty;
 use stdClass;
 
+#[Entity]
 class BaseEntity implements IEntity
 {
+  protected array $representations = [];
+  protected ?string $tableName = null;
+  protected ?string $orderBy = null;
+  protected ?string $engine = null;
+  protected ?string $database = null;
+  protected ?string $schema = null;
+  protected ?bool $synchronize = true;
+  protected ?bool $withRowId = false;
+
+  public function __construct()
+  {
+    $reflection = new ReflectionClass(objectOrClass: $this);
+    $attributes = $reflection->getAttributes(Entity::class);
+
+    foreach ($attributes as $entityAttribute)
+    {
+      $instance = $entityAttribute->newInstance();
+      $this->tableName    = $instance->tableName;
+      $this->orderBy      = $instance->orderBy;
+      $this->engine       = $instance->engine;
+      $this->database     = $instance->database;
+      $this->schema       = $instance->schema;
+      $this->synchronize  = $instance->synchronize;
+      $this->withRowId    = $instance->withRowId;
+    }
+  }
+
   #[PrimaryGeneratedColumn]
   public int $id = 0;
 
@@ -115,6 +145,18 @@ class BaseEntity implements IEntity
     }
 
     return $isValid;
+  }
+
+  /**
+   * This method is an alias for `$tableName`.
+   * MongoDB stores documents in collections. Collections are analogous 
+   * to tables in relational databases.
+   * 
+   * @return string Returns the collection name.
+   */
+  public function collectionName(): string
+  {
+    return $this->tableName;
   }
 
   public function values(array $exclude = []): array
