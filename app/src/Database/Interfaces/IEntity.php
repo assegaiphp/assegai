@@ -18,6 +18,7 @@ interface IEntity {
   public function columnValuePairs(array $exclude = []): array;
   public function toArray(array $exclude = []): array;
   public function toJSON(): string;
+  public function schema(string $dialect = 'mysql'): string;
 }
 
 ?>

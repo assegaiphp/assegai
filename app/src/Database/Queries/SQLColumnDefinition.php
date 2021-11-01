@@ -20,7 +20,7 @@ class SQLColumnDefinition
     private string $comment = "",
   )
   {
-    $queryString = "`$this->name` ";
+    $queryString = !empty($this->name) ? "`$this->name` " : '';
     if (is_null($this->lengthOrValues))
     {
       $this->lengthOrValues = match($this->dataType) {
@@ -34,15 +34,37 @@ class SQLColumnDefinition
     {
       switch($this->dataType) {
         case SQLDataTypes::TINYINT:
-        case SQLDataTypes::TINYINT_UNSIGNED:
         case SQLDataTypes::SMALLINT:
-        case SQLDataTypes::SMALLINT_UNSIGNED:
         case SQLDataTypes::INT:
-        case SQLDataTypes::INT_UNSIGNED:
         case SQLDataTypes::BIGINT:
+          $queryString .= $this->dataType;
+          if (!empty($this->lengthOrValues))
+          {
+            $queryString .= "(" . $this->lengthOrValues . ") ";
+          }
+          else
+          {
+            $queryString .= " ";
+          }
+          break;
+        case SQLDataTypes::TINYINT_UNSIGNED:
+        case SQLDataTypes::SMALLINT_UNSIGNED:
+        case SQLDataTypes::INT_UNSIGNED:
         case SQLDataTypes::BIGINT_UNSIGNED:
+          $queryString .= $this->dataType;
+          if (!empty($this->lengthOrValues))
+          {
+            $length = $this->lengthOrValues;
+            $queryString = str_replace(' UNSIGNED', "($length) UNSIGNED ", $queryString);
+          }
+          else
+          {
+            $queryString .= " ";
+          }
+          break;
         case SQLDataTypes::VARCHAR:
           $queryString .= $this->dataType . "(" . $this->lengthOrValues . ") ";
+
           break;
 
         case SQLDataTypes::ENUM:
@@ -51,10 +73,9 @@ class SQLColumnDefinition
             $this->lengthOrValues = [];
           }
           $queryString .= $this->dataType . "(";
-          foreach ($lengthOrValues as $value)
+          foreach ($this->lengthOrValues as $value)
           {
             $queryString .= "'$value', ";
-            
           }
           $queryString = trim($queryString, ', ');
           $queryString .= ") ";
@@ -68,17 +89,24 @@ class SQLColumnDefinition
       $queryString .= "$this->dataType ";
     }
 
+    if (SQLDataTypes::isNumeric($this->dataType) && is_string($this->defaultValue))
+    {
+      $this->defaultValue = $this->allowNull || $this->autoIncrement ? null : 0;
+    }
+
     if (!is_null($this->defaultValue))
     {
       $temporalDatatypes = [
         // SQLDataTypes::DATE,
         SQLDataTypes::DATETIME
       ];
+      $stringExamptions = ['CURRENT_TIMESTAMP'];
       $queryString .= "DEFAULT " . match(gettype($this->defaultValue)) {
-        'object' => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue),
+        'object'  => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue),
         'boolean' => intval($this->defaultValue),
-        'string' => ( !in_array($this->dataType, $temporalDatatypes) ) ? "'" . $this->defaultValue . "'" : $this->defaultValue,
-        default => $this->defaultValue
+        // 'string'  => ( !in_array($this->dataType, $temporalDatatypes) ) ? "'" . $this->defaultValue . "'" : $this->defaultValue,
+        'string'  => !in_array($this->defaultValue, $stringExamptions) ? "'" . $this->defaultValue . "'" : $this->defaultValue,
+        default   => $this->defaultValue
       } . " ";
     }
     if ($this->autoIncrement && SQLDataTypes::isNumeric($this->dataType))
@@ -104,6 +132,8 @@ class SQLColumnDefinition
     {
       $queryString .= "COMMENT $this->comment ";
     }
+    $queryString = str_replace('((', '(', $queryString);
+    $queryString = str_replace('))', ')', $queryString);
     
     $this->queryString = trim($queryString);
   }

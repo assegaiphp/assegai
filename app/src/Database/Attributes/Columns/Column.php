@@ -3,6 +3,7 @@
 namespace LifeRaft\Database\Attributes\Columns;
 
 use Attribute;
+use LifeRaft\Database\Queries\SQLColumnDefinition;
 use LifeRaft\Database\Queries\SQLDataTypes;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
@@ -15,6 +16,7 @@ class Column
   const CURRENT_TIMESTAMP = 'CURRENT_TIMESTAMP';
 
   public string $value;
+  public string $sqlDefinition = '';
 
   public function __construct(
     public string $name = '',
@@ -34,6 +36,30 @@ class Column
     public bool $canUpdate = true
   )
   {
+
+    # Build definition string
+    $sqlLengthOrValues = $this->lengthOrValues;
+    if (is_null($sqlLengthOrValues)) {
+      $sqlLengthOrValues = match ($this->dataType) {
+        SQLDataTypes::VARCHAR => '10',
+        SQLDataTypes::DECIMAL => '16,2',
+        default => null
+      };
+    }
+
+    $this->sqlDefinition = new SQLColumnDefinition(
+      name: $this->name,
+      dataType: $this->dataType,
+      lengthOrValues: $sqlLengthOrValues,
+      defaultValue: $this->defaultValue,
+      allowNull: $this->allowNull,
+      autoIncrement: $this->autoIncrement,
+      onUpdate: $this->onUpdate,
+      isUnique: $this->isUnique,
+      isPrimaryKey: $this->isPrimaryKey,
+      comment: $this->comment
+    );
+
     $this->lengthOrValues = match(gettype($this->lengthOrValues)) {
       'array' => empty($this->lengthOrValues) ? '' : '(' . implode(',', $this->lengthOrValues) . ')',
       'NULL'  => '',

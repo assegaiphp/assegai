@@ -46,7 +46,7 @@ class TestsController extends BaseController
   }
 
   #[Post]
-  public function createTest(stdClass|array $body): Response
+  public function create(stdClass|array $body): Response
   {
     if (is_array(value: $body))
     {
