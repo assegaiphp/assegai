@@ -20,6 +20,17 @@ final class DBFactory
     'mongodb' => [],
   ];
 
+  public static function getSQLConnection(string $dbName, ?string $dialect = 'mysql'): PDO {
+    return match ($dialect) {
+      'mysql'       => DBFactory::getMySQLConnection(dbName: $dbName),
+      'mariadb'     => DBFactory::getMariaDBConnection(dbName: $dbName),
+      'pgsql'       => DBFactory::getPostgreSQLConnection(dbName: $dbName),
+      'postgresql'  => DBFactory::getPostgreSQLConnection(dbName: $dbName),
+      'sqlite'      => DBFactory::getSQLiteConnection(dbName: $dbName),
+      default       => DBFactory::getMySQLConnection(dbName: $dbName)
+    };
+  }
+
   public static function getMySQLConnection(string $dbName): PDO
   {
     $type = 'mysql';
