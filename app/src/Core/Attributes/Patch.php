@@ -19,7 +19,7 @@ use LifeRaft\Core\Responses\BadRequestErrorResponse;
 class Patch
 {
   const UPDATE_ACTION = 'UPDATE';
-  const DELETE_ACTION = 'DELETE';
+  const DELETE_ACTION = 'REMOVE';
   const RESTORE_ACTION = 'RESTORE';
 
   public array $tokens = [];

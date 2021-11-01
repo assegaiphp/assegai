@@ -56,6 +56,11 @@ class Post
       default => $body
     };
 
+    if (is_null($this->body))
+    {
+      $this->body = new stdClass;
+    }
+
     $this->args['body'] = $this->body;
     $this->canActivate = $request->method() === 'POST';
   }
