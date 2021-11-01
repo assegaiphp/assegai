@@ -215,6 +215,41 @@ class BaseEntity implements IEntity
     return json_encode($this->toArray());
   }
 
+  public function schema(string $dialect = 'mysql'): string
+  {
+    $statement = "CREATE TABLE `$this->tableName` (";
+    $reflection = new ReflectionClass(objectOrClass: $this);
+    $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
+
+    switch ($dialect) {
+      case 'mysql':
+      default:
+        foreach ($properties as $property)
+        {
+          $attributes = $property->getAttributes();
+
+          foreach ($attributes as $attribute)
+          {
+            if (str_ends_with($attribute->getName(), 'Column'))
+            {
+              $instance = $attribute->newInstance();
+              if (empty($instance->name))
+              {
+                $propName = $property->getName();
+                $statement .= "`$propName`" . " ";
+              }
+              $statement .= $instance->sqlDefinition . ", ";
+            }
+          }
+        }
+        break;
+    }
+    $statement = trim($statement, ', ');
+    $statement .= ")";
+
+    return trim($statement);
+  }
+
   public function __toString(): string
   {
     return $this->toJSON();
