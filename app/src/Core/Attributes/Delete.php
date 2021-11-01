@@ -37,6 +37,13 @@ class Delete
         $this->args[trim($token, ':')] = $value;
       }
     }
+    $body = file_get_contents('php://input');
+
+    if (!empty($body) && (str_starts_with($body, '{') && str_ends_with($body, '}')))
+    {
+      $this->body = json_decode($body);
+      $this->args['body'] = $this->body;
+    }
 
     $this->canActivate = $request->method() === 'DELETE';
   }
