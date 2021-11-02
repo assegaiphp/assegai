@@ -54,6 +54,11 @@ class BaseEntity implements IEntity
   #[DeleteDateColumn]
   public string $deletedAt = '';
 
+  public function tableName(): ?string
+  {
+    return $this->tableName;
+  }
+
   public static function newInstanceFromObject(stdClass $object): IEntity
   {
     $className = get_called_class();

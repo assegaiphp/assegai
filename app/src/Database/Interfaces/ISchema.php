@@ -10,8 +10,8 @@ interface ISchema
   public static function alter(string $entityClass): ?bool;
   public static function info(string $entityClass): ?string;
   public static function truncate(string $entityClass): ?bool;
-  public static function drop(string $name): ?bool;
-  public static function dropIfExists(string $name): ?bool;
+  public static function drop(string $entityClass): ?bool;
+  public static function dropIfExists(string $entityClass): ?bool;
 }
 
 ?>

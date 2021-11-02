@@ -34,9 +34,28 @@ class Schema implements ISchema
     }
   }
 
-  public static function createIfNotExists(string $entityClass): ?bool
+  public static function createIfNotExists(string $entityClass, ?SchemaOptions $options = null): ?bool
   {
-    return false;
+    if (is_null($options))
+    {
+      $options = new SchemaOptions();
+    }
+
+    $reflection = new ReflectionClass(objectOrClass: $entityClass);
+    $instance = $reflection->newInstance();
+    $query = $instance->schema(dialect: $options->dialect());
+    
+    try 
+    {
+      $db = DBFactory::getSQLConnection(dbName: $options->dbName(), dialect: $options->dialect()); 
+      $statement = $db->prepare(query: $query);
+
+      return $statement->execute();
+    }
+    catch(\Exception $e)
+    {
+      exit($e->getMessage());
+    }
   }
 
   public static function rename(string $from, string $to): ?bool
@@ -59,12 +78,32 @@ class Schema implements ISchema
     return false;
   }
 
-  public static function drop(string $name): ?bool
+  public static function drop(string $entityClass, ?SchemaOptions $options = null): ?bool
   {
-    return false;
+    if (is_null($options))
+    {
+      $options = new SchemaOptions();
+    }
+
+    $reflection = new ReflectionClass(objectOrClass: $entityClass);
+    $instance = $reflection->newInstance();
+    $tableName = $instance->tableName();
+    $query = "DROP TABLE `${tableName}`";
+    
+    try 
+    {
+      $db = DBFactory::getSQLConnection(dbName: $options->dbName(), dialect: $options->dialect()); 
+      $statement = $db->prepare(query: $query);
+
+      return $statement->execute();
+    }
+    catch(\Exception $e)
+    {
+      exit($e->getMessage());
+    }
   }
 
-  public static function dropIfExists(string $name): ?bool
+  public static function dropIfExists(string $entityClass): ?bool
   {
     return false;
   }

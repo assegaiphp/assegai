@@ -3,12 +3,14 @@
 namespace LifeRaft\Database\Queries;
 
 use LifeRaft\Database\Traits\ExecutableTrait;
+use LifeRaft\Database\Traits\JoinableTrait;
 use LifeRaft\Database\Traits\SQLAggregatorTrait;
 
 final class SQLTableReference
 {
   use ExecutableTrait;
   use SQLAggregatorTrait;
+  use JoinableTrait;
 
   public function __construct(
     private SQLQuery $query,
@@ -19,7 +21,7 @@ final class SQLTableReference
 
     if (is_string($tableReferences))
     {
-      $queryString .= "`$tableReferences`";
+      $queryString .= "$tableReferences";
     }
     else
     {
@@ -28,11 +30,11 @@ final class SQLTableReference
         if (is_numeric($alias))
         {
           # We don't have an alias
-          $queryString .= "`${reference}`${separate}";
+          $queryString .= "${reference}${separate}";
         }
         else
         {
-          $queryString .= "`${reference}` AS ${alias}${separate}";
+          $queryString .= "${reference} AS ${alias}${separate}";
         }
       }
       $queryString = trim($queryString, $separate);

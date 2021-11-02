@@ -7,6 +7,9 @@ use LifeRaft\Database\Queries\SQLDataTypes;
 use LifeRaft\Database\Queries\SQLKeyPart;
 use LifeRaft\Database\Queries\SQLPrimaryGeneratedColumn as PrimaryColumn;
 use LifeRaft\Database\Queries\SQLQuery;
+use LifeRaft\Database\Schema;
+use LifeRaft\Database\SchemaOptions;
+use LifeRaft\Modules\Users\UserEntity;
 use PHPUnit\Framework\TestCase;
 
 final class SqlQueryTest extends TestCase
@@ -308,6 +311,40 @@ final class SqlQueryTest extends TestCase
     $result =
       $query->truncateTable(tableName: SqlQueryTest::TEST_TABLE_NAME)->execute();
     $this->assertTrue(condition: $result->isOK());
+  }
+
+  public function testLeftJoinATable(): void
+  {    
+    $this->assertTrue(Schema::create(entityClass: UserEntity::class, options: new SchemaOptions(dbName: SqlQueryTest::TEST_DB_NAME)));
+    
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query->select()
+        ->all()
+        ->from(tableReferences: 'tests t')
+        ->innerJoin(tableReferences: 'user_tests ut')
+        ->on(searchCondition: 't.id = ut.test_id')
+        ->innerJoin(tableReferences: 'users u')
+        ->on(searchCondition: 'ut.user_id = u.id')
+        ->execute();
+    $this->assertTrue(condition: $result->isOK());
+    $this->assertTrue(Schema::drop(entityClass: UserEntity::class, options: new SchemaOptions(dbName: 'assegai_test')));
+  }
+
+  public function testRightJoinATable(): void
+  {    
+    $query = new SQLQuery( db: DBFactory::getMariaDBConnection( dbName: SqlQueryTest::TEST_DB_NAME ) );
+    $result =
+      $query->select()
+        ->all()
+        ->from(tableReferences: 'tests t')
+        ->innerJoin(tableReferences: 'user_tests ut')
+        ->on(searchCondition: 't.id = ut.test_id')
+        ->innerJoin(tableReferences: 'users u')
+        ->on(searchCondition: 'ut.user_id = u.id')
+        ->execute();
+    $this->assertTrue(condition: $result->isOK());
+    $this->assertTrue(Schema::drop(entityClass: UserEntity::class, options: new SchemaOptions(dbName: 'assegai_test')));
   }
 }
 
