@@ -3,6 +3,7 @@
 use LifeRaft\Modules\Home\HomeModule;
 use LifeRaft\Modules\Tests\TestsModule;
 use LifeRaft\Modules\Users\UsersModule;
+use LifeRaft\Modules\Authentication\AuthenticationModule;
 
 return [
   '/' => HomeModule::class,
@@ -12,8 +13,8 @@ return [
   'people' => HomeModule::class,
   'subjects' => HomeModule::class,
   'tests' => TestsModule::class,
-  'followings' => HomeModule::class,
   'users' => UsersModule::class,
+  'authentication' => AuthenticationModule::class,
 ];
 
 ?>
