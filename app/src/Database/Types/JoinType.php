@@ -2,6 +2,7 @@
 
 namespace LifeRaft\Database\Types;
 
+/* TODO: Change to enum with PHP 8.1 */
 final class JoinType
 {
   public function __construct(
