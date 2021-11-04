@@ -40,7 +40,7 @@ final class RequestTest extends TestCase
     $request = new Request;
     $app = new App( request: $request, config: require('app/config/default.php') );
 
-    $this->assertIsArray($request->to_array(), 'Can convert to array');
+    $this->assertIsArray($request->toArray(), 'Can convert to array');
   }
 
   public function testConvertToJson(): void
@@ -48,7 +48,7 @@ final class RequestTest extends TestCase
     $request = new Request;
     $app = new App( request: $request, config: require('app/config/default.php') );
 
-    $this->assertJson($request->to_json(), 'Can convert to array');
+    $this->assertJson($request->toJSON(), 'Can convert to array');
   }
 
   public function testConvertToString(): void

@@ -29,7 +29,7 @@ class ErrorResponse extends Response
         return $this->message;
     }
 
-    public function to_array(): array
+    public function toArray(): array
     {
         return [
             'message' => $this->message(),

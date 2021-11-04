@@ -90,15 +90,15 @@ class Response
 
   public function __toString(): string
   {
-    return $this->to_json();
+    return $this->toJSON();
   }
 
   public function __serialize(): array
   {
-    return $this->to_array();
+    return $this->toArray();
   }
 
-  public function to_array(): array
+  public function toArray(): array
   {
     return [
       'total' => $this->total(),
@@ -108,7 +108,7 @@ class Response
     ];
   }
 
-  public function to_json(): string
+  public function toJSON(): string
   {
     if ($this->dataOnly)
     {
@@ -120,7 +120,7 @@ class Response
       return json_encode( ! is_array($this->data()) ? $this->data() : $this->data()[array_key_first( $this->data() )] );
     }
 
-    return json_encode($this->to_array());
+    return json_encode($this->toArray());
   }
 }
 

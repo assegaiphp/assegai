@@ -86,7 +86,7 @@ final class ResponseTest extends TestCase
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
-    $this->assertIsArray((new Response)->to_array());
+    $this->assertIsArray((new Response)->toArray());
   }
 
   public function testConvertToJson(): void
@@ -95,7 +95,7 @@ final class ResponseTest extends TestCase
     $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
-    $this->assertJson((new Response)->to_json());
+    $this->assertJson((new Response)->toJSON());
   }
 }
 

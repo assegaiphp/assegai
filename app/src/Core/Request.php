@@ -73,7 +73,7 @@ class Request
     $this->app = $app;
   }
 
-  public function to_array(): array
+  public function toArray(): array
   {
     return [
       'app'       => $this->app,
@@ -89,19 +89,19 @@ class Request
     ];
   }
 
-  public function to_json(): string
+  public function toJSON(): string
   {
-    return json_encode($this->to_array());
+    return json_encode($this->toArray());
   }
 
   public function __toString(): string
   {
-    return $this->to_json();
+    return $this->toJSON();
   }
 
   public function __serialize(): array
   {
-    return $this->to_array();
+    return $this->toArray();
   }
 
   public function header(string $name): string
