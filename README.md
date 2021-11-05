@@ -10,7 +10,7 @@ Assegai is a framework for building effecient, scalable <a href="https://php.net
 
 ## Philosophy
 
-<p>In recent years, PHP has gained a lot of features out the box that make it a really compelling language for developers. Assegai aims to take advantage of these wonderful features and provide an application architecture out the box which allows for the effortless creation of highly testable, scalable, loosely coupled and esily maintainable applications. The architecture is heavily inspired by Nestjs.</p>
+<p>In recent years, PHP has gained a lot of features out the box that make it a really compelling language for developers. Assegai aims to take advantage of these wonderful features and provide an application architecture which allows for the effortless creation of highly testable, scalable, loosely coupled and esily maintainable applications. The architecture is heavily inspired by Nestjs.</p>
 
 ## Getting started
 
@@ -30,7 +30,7 @@ With official support, you can get expert help straight from the Assegai core te
 
 ## Support
 
-Assegai is an MIT-licensed open source project. It can grouw thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.assegai.ml/support).
+Assegai is an MIT-licensed open source project. It can grow thanks to sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.assegai.ml/support).
 
 ## Stay in touch
 
