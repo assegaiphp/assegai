@@ -11,4 +11,5 @@ storage/videos/*
 .data/
 
 /vendor/
+/docs/
 composer-installer
