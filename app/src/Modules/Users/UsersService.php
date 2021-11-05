@@ -1,13 +1,13 @@
 <?php
 
-namespace LifeRaft\Modules\Authentication;
+namespace LifeRaft\Modules\Users;
 
 use LifeRaft\Core\Attributes\Injectable;
 use LifeRaft\Core\Result;
 use LifeRaft\Core\BaseService;
 
 #[Injectable]
-class AuthenticationService extends BaseService
+class UsersService extends BaseService
 {
   public function findAll(): Result
   {
@@ -21,7 +21,7 @@ class AuthenticationService extends BaseService
 
   public function create(mixed $entity): Result
   {
-    return new Result(data: [$entity]);
+    return new Result();
   }
 
   public function update(): Result
@@ -35,11 +35,6 @@ class AuthenticationService extends BaseService
   }
 
   public function delete(): Result
-  {
-    return new Result();
-  }
-
-  public function validateUser(string $usernam, string $password): Result
   {
     return new Result();
   }
