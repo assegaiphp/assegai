@@ -48,9 +48,9 @@ class App
   {
     $this->parseURL();
 
-    $activatedModule = $this->getActivatedModule();
-    $activatedController = $this->getActivatedController( module: $activatedModule );
-    $response = $activatedController->handleRequest( url: $this->url );
+    $activatedModule      = $this->getActivatedModule();
+    $activatedController  = $this->getActivatedController( module: $activatedModule );
+    $response             = $activatedController->handleRequest( url: $this->url );
 
     $this->respond(response: $response);  
   }
