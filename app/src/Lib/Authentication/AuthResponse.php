@@ -12,12 +12,21 @@ final class AuthResponse extends Response
   private array $authentication = [];
 
   public function __construct(
-    private mixed $data = [],
-    private ?ResponseType $type = null,
-    private ?HttpStatusCode $status = null
+    protected mixed $data = [],
+    protected ?ResponseType $type = null,
+    protected ?HttpStatusCode $status = null
   )
   {
     parent::__construct(data: $data, type: $type, status: $status, dataOnly: true);
+    $this->accessToken = match(gettype($this->data)) {
+      'array' => isset($this->data['accessToken']) ? $this->data['accessToken'] : '',
+      default => $this->data
+    };
+  }
+
+  public function accessToken(): string
+  {
+    return $this->accessToken;
   }
 
   public function toArray(): array
@@ -26,6 +35,11 @@ final class AuthResponse extends Response
       'accessToken' => $this->accessToken,
       'authentication' => $this->authentication,
     ];
+  }
+
+  public function toJSON(): string
+  {
+    return json_encode(value: $this->toArray());
   }
 }
 
