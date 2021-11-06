@@ -21,7 +21,7 @@ Stack Overflow is a much better place to ask questions since:
 
 To save yours and our time, we will systematically close all issues that are requests for general support and redirect people to Stack Overflow.
 
-If you would like to thcat about the question in real-time, you can reach out via [our discord channel]()
+If you would like to thcat about the question in real-time, you can reach out via [our discord channel][discord]
 
 ## <a name="issues-and-bugs"></a> Found a Bug?
 
@@ -263,5 +263,5 @@ A detailed explanation can be found in this [document][commit-message-format]
 [commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
 [dev-doc]: https://github.com/amasiye/assegai-php/blob/master/docs/DEVELOPER.md
 [github]: https://github.com/amasiye/assegai-php
-[discord]: https://discordapp.com/invite/G7Qnnhy
+[discord]: https://discord.gg/sR9hPAXR4z
 [individual-cla]: http://code.google.com/legal/individual-cla-v1.0.html
