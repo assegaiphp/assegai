@@ -13,6 +13,7 @@ use LifeRaft\Core\Attributes\Put;
 use LifeRaft\Core\Request;
 use LifeRaft\Core\RequestMethod;
 use LifeRaft\Database\Interfaces\IEntity;
+use LifeRaft\Lib\Authentication\AuthResponse;
 use stdClass;
 
 #[Controller(
@@ -50,7 +51,7 @@ class AuthenticationController extends BaseController
   public function create(stdClass|array $body): Response
   {
     $result = $this->authenticationService->create(entity: $body);
-    return new Response( data: $result, dataOnly: true );
+    return new AuthResponse( data: $result );
   }
 
   #[Put(path: '/:id')]
