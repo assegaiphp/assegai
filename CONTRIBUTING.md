@@ -210,7 +210,7 @@ Must be one of the following:
 - **build**: Changes that affect the build system or external dependencies (example scopes: composer, assegai)
 - **chore**: Updating tasks etc; no production code change
 - **ci**: Changes to our CI configuration files and scripts (example scopes: )
-- **docks**: Documentation only changes
+- **docs**: Documentation only changes
 - **feat**: A new feature
 - **fix**: A bug fix
 - **perf**: A code change that improves performance
