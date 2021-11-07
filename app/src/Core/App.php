@@ -7,6 +7,8 @@ use LifeRaft\Core\Interfaces\IModule;
 use LifeRaft\Core\Responses\BadRequestErrorResponse;
 use LifeRaft\Core\Responses\HttpStatus;
 use LifeRaft\Core\Responses\Response;
+use LifeRaft\Core\Routing\Router;
+use LifeRaft\Modules\Home\HomeModule;
 use ReflectionClass;
 
 class App
@@ -16,7 +18,8 @@ class App
 
   public function __construct(
     private Request $request,
-    private array $config = []
+    private Router $router,
+    private array $config = [],
   ) {
     $request->set_app(app: $this);
     if ($this->request->method() === RequestMethod::OPTIONS)
@@ -100,20 +103,25 @@ class App
 
   private function getActivatedModule(): IModule
   {
-    # Get route base
-    $endpoint = $this->url()[0];
-
     # Load routes
     $routes = require_once('app/routes.php');
-    $module = isset($routes['/']) ? $routes['/'] : LifeRaft\Modules\Home\HomeModule::class;
 
-    # If route base matches registered route call controller else call Home controller
-    if (isset($routes[$endpoint]))
+    if (!is_array($routes))
     {
-      $module = $routes[$endpoint];
+      exit(new BadRequestErrorResponse(message: 'Invalid route'));
     }
 
-    return new $module();
+    $this->router->setRoutes(routes: $routes);
+
+    $this->router->route();
+    $activatedRoute = $this->router->activatedRoute();
+
+    if (is_null($activatedRoute))
+    {
+      return new HomeModule();
+    }
+
+    return $activatedRoute->module();
   }
 
   /**
