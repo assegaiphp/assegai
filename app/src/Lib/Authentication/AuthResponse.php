@@ -5,6 +5,7 @@ namespace LifeRaft\Lib\Authentication;
 use LifeRaft\Core\Responses\HttpStatusCode;
 use LifeRaft\Core\Responses\Response;
 use LifeRaft\Core\Responses\ResponseType;
+use LifeRaft\Core\Result;
 
 final class AuthResponse extends Response
 {
@@ -20,6 +21,10 @@ final class AuthResponse extends Response
     parent::__construct(data: $data, type: $type, status: $status, dataOnly: true);
     $this->accessToken = match(gettype($this->data)) {
       'array' => isset($this->data['accessToken']) ? $this->data['accessToken'] : '',
+      'object' => match (get_class($this->data)) {
+        Result::class => isset($this->data['accessToken']) ? $this->data['accessToken'] : '',
+        default => strval($this->data)
+      },
       default => $this->data
     };
   }
