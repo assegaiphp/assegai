@@ -39,6 +39,10 @@ class BaseModule implements IModule
     if (is_null($this->controllers)) { $this->controllers = []; }
     if (is_null($this->imports)) { $this->imports = []; }
     if (is_null($this->exports)) { $this->exports = []; }
+
+    # For each imported module
+
+    # get exported class
   }
 
   public function id(): string
