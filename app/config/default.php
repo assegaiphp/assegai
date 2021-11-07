@@ -46,9 +46,12 @@ return [
   'authentication' => [
     'default_strategy' => 'local',
     'jwt' => [
-      'audience'  => 'https://yourdomain.com',
-      'issuer'    => 'assegai',
-      'lifespan'  => '1 hour',
+      'audience'                => 'https://yourdomain.com',
+      'issuer'                  => 'assegai',
+      'lifespan'                => '1 hour',
+      'entityName'              => 'user',
+      'entityIdFieldname'       => 'email',
+      'entityPasswordFieldname' => 'password',
     ]
   ]
 ];
