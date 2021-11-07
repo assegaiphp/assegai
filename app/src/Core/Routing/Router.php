@@ -10,7 +10,7 @@ final class Router
     private ?array $routes = null
   ) { }
 
-  public function activatedRoute(): Route
+  public function activatedRoute(): ?Route
   {
     return $this->activatedRoute;
   }
@@ -20,7 +20,7 @@ final class Router
     $this->routes = $routes;
   }
 
-  public function route(): Route
+  public function route(): void
   {
     foreach ($this->routes as $route)
     {
@@ -30,8 +30,6 @@ final class Router
         break;
       }
     }
-
-    return $this->activatedRoute();
   }
 
   private function setActivatedRoute(Route $route): void

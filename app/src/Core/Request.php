@@ -3,8 +3,8 @@
 namespace LifeRaft\Core;
 
 /**
- * The **Request** class represents the HTTP request and has properties for
- *  the request query string, parameters, HTTP headers, and body
+ * The **Request** class represents the HTTP request and has properties for 
+ * the request query string, parameters, HTTP headers, and body
  */
 class Request
 {
