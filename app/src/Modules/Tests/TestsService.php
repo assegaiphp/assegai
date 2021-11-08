@@ -5,16 +5,12 @@ namespace LifeRaft\Modules\Tests;
 use LifeRaft\Core\Attributes\Injectable;
 use LifeRaft\Core\Result;
 use LifeRaft\Core\BaseService;
+use stdClass;
 
 #[Injectable]
 class TestsService extends BaseService
 {
-  public function findAll(): Result
-  {
-    return new Result();
-  }
-
-  public function find(int $id): Result
+  public function find(array $conditions): Result
   {
     return new Result();
   }
@@ -24,17 +20,22 @@ class TestsService extends BaseService
     return new Result();
   }
 
-  public function update(): Result
+  public function update(stdClass|array $entity): Result
   {
     return new Result();
   }
 
-  public function patch(): Result
+  public function patch(stdClass|array $params): Result
   {
     return new Result();
   }
 
-  public function delete(): Result
+  public function delete(array $conditions): Result
+  {
+    return new Result();
+  }
+
+  public function deleteOne(int $id): Result
   {
     return new Result();
   }

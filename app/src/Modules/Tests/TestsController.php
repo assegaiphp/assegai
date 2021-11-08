@@ -41,7 +41,7 @@ class TestsController extends BaseController
   #[Get(path: '/:id')]
   public function find(int $id): Response
   {
-    $data = $this->testsRepository->findOne(id: $id);
+    $data = $this->testsRepository->findOne("id=" . $id);
     return new Response( data: $data );
   }
 
@@ -71,7 +71,7 @@ class TestsController extends BaseController
   {
     $entity = TestEntity::newInstanceFromObject(object: $body);
     $entity->id = $id;
-    $result = $this->testsRepository->update(entity: $entity);
+    $result = $this->testsRepository->update(id: $id, changes: $entity);
 
     if ($result === false)
     {
@@ -131,7 +131,7 @@ class TestsController extends BaseController
   #[Delete(path: '/:id')]
   public function remove(int $id): Response
   {
-    $entity = $this->testsRepository->findOne(id: $id);
+    $entity = $this->testsRepository->findOne("id=" . $id);
     if (is_null($entity))
     {
       return new NotFoundErrorResponse();

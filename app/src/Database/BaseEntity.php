@@ -112,6 +112,10 @@ class BaseEntity implements IEntity
           {
             $columns[$instance->alias] = $instance->name;
           }
+          else if(!empty($instance->name))
+          {
+            $columns[$prop->getName()] = $instance->name;
+          }
           else
           {
             array_push($columns, $prop->getName());

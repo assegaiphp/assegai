@@ -111,19 +111,19 @@ class BaseRepository implements IRepository
     return $entities;
   }
 
-  public function findOne(int $id, bool $filterDeleted = true): null|IEntity|stdClass
+  public function findOne(string $conditions, bool $filterDeleted = true): null|IEntity|stdClass
   {
     $statement =
       $this->query
         ->select()
         ->all(columns: $this->entity::columns(exclude: ['password']))
         ->from(tableReferences: $this->tableName)
-        ->where("id=$id");
+        ->where(condition: $conditions);
     if ($filterDeleted)
     {
       $statement = $statement->and(condition: "(deleted_at='1000-01-01 00:00:00' OR deleted_at=NULL)");
     }
-    $result = $statement->execute();
+    $result = $statement->limit(limit: 1)->execute();
 
     if ($result->isOK())
     {
@@ -173,7 +173,7 @@ class BaseRepository implements IRepository
 
     if ($result->isOK())
     {
-      return $this->findOne(id: $this->query->lastInsertId());
+      return $this->findOne("id=" . $this->query->lastInsertId());
     }
 
     return false;
@@ -211,19 +211,19 @@ class BaseRepository implements IRepository
     return $entities;
   }
 
-  public function update(IEntity $entity): IEntity|stdClass|false
+  public function update(int|string $id, IEntity|stdClass $changes): IEntity|stdClass|false
   {
-    if (!$this->entity::isValidEntity($entity))
+    if (!$this->entity::isValidEntity($changes))
     {
       Debugger::respond(new BadRequestErrorResponse(message: 'Invalid entity'));
       return false;
     }
-    $id = $entity->id;
-    $result = $this->query->update(tableName: $this->tableName)->set(assignmentList: $entity->columnValuePairs(exclude: $this->readOnlyFields))->where("id=${id}")->execute();
+
+    $result = $this->query->update(tableName: $this->tableName)->set(assignmentList: $changes->columnValuePairs(exclude: $this->readOnlyFields))->where("id=${id}")->execute();
 
     if ($result->isOK())
     {
-      return $this->findOne(id: $entity->id);
+      return $this->findOne("id=" . $id);
     }
 
     return false;
@@ -236,7 +236,7 @@ class BaseRepository implements IRepository
       exit(new BadRequestErrorResponse(message: 'Missing id field'));
     }
     $id = $body->id;
-    $entity = $this->findOne(id: $id);
+    $entity = $this->findOne("id=" . $id);
 
     if (is_null($entity))
     {
@@ -278,16 +278,22 @@ class BaseRepository implements IRepository
 
     if ($result->isOK())
     {
-      return $this->findOne(id: $id);
+      return $this->findOne("id=" . $id);
     }
 
+    return false;
+  }
+
+  public function updateRange(array $changeList): array|false
+  {
+    exit(new NotImplementedErrorResponse(message: get_called_class()));
     return false;
   }
 
   public function softRemove(int $id): IEntity|stdClass|false
   {
     $className = $this->entity;
-    $entity = $this->findOne(id: $id);
+    $entity = $this->findOne("id=" . $id);
     $entity = $className::newInstanceFromObject($entity);
 
     if (is_null($entity))
@@ -349,7 +355,7 @@ class BaseRepository implements IRepository
 
   public function remove(int $id): IEntity|stdClass|false
   {
-    $entity = $this->testsRepository->findOne(id: $id);
+    $entity = $this->testsRepository->findOne("id=" . $id);
 
     if (is_null($entity))
     {
@@ -380,7 +386,7 @@ class BaseRepository implements IRepository
   public function restore(int $id): IEntity|stdClass|false
   {
     $className = $this->entity;
-    $entity = $this->findOne(id: $id, filterDeleted: false);
+    $entity = $this->findOne("id=" . $id, filterDeleted: false);
     $entity = $className::newInstanceFromObject($entity);
 
     if (is_null($entity))
