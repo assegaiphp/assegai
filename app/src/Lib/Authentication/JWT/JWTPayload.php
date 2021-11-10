@@ -12,9 +12,9 @@ final class JWTPayload
   private string $jti = '';
 
   public function __construct(
-    private ?string $aud,
-    private ?string $iss,
-    private ?string $sub,
+    private ?string $aud = null,
+    private ?string $iss = null,
+    private ?string $sub = null,
     private ?string $lifespan = '1 hour',
   )
   {

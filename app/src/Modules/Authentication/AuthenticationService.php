@@ -7,6 +7,9 @@ use LifeRaft\Core\Result;
 use LifeRaft\Core\BaseService;
 use LifeRaft\Core\Config;
 use LifeRaft\Lib\Authentication\Authenticator;
+use LifeRaft\Lib\Authentication\JWT\JWTHeader;
+use LifeRaft\Lib\Authentication\JWT\JWTPayload;
+use LifeRaft\Lib\Authentication\JWT\JWTToken;
 use LifeRaft\Lib\Authentication\Strategies\JWTStrategy;
 use LifeRaft\Lib\Authentication\Strategies\LocalStrategy;
 use LifeRaft\Lib\Authentication\Strategies\OAuthStrategy;
@@ -66,7 +69,8 @@ class AuthenticationService extends BaseService
       case 'local':
         if (isset(Config::get('authentication')['jwt']))
         {
-
+          $usernameFieldName = Config::get('authentication')['jwt']['entityIdFieldname'];
+          $passwordFieldName = Config::get('authentication')['jwt']['entityPasswordFieldname'];
         }
         break;
 
@@ -77,7 +81,18 @@ class AuthenticationService extends BaseService
 
     $isOK = is_bool($data) ? $data : true;
 
-    return new Result(data: [$data], isOK: $isOK);
+    if ($isOK)
+    {
+      $token = new JWTToken(
+        header: new JWTHeader(),
+        payload: new JWTPayload(sub: $data->id),
+      );
+    }
+
+    return new Result(data: [
+      'accessToken' => $token,
+      'user' => $data
+    ], isOK: $isOK);
   }
 
   public function update(): Result

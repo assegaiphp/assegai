@@ -14,7 +14,7 @@ final class JWTHeader
 
   public function toArray(): array
   {
-    return ['alg' => $this->alg, 'typ' => $this->type];
+    return ['alg' => $this->alg, 'typ' => $this->typ];
   }
 
   public function toJSON(): string

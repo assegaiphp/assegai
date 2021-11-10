@@ -5,6 +5,7 @@ namespace LifeRaft\Lib\Authentication\Strategies;
 use LifeRaft\Core\App;
 use LifeRaft\Core\Config;
 use LifeRaft\Core\Interfaces\IService;
+use LifeRaft\Core\Responses\NotFoundErrorResponse;
 use LifeRaft\Database\Interfaces\IEntity;
 use LifeRaft\Modules\Users\UsersService;
 
@@ -35,17 +36,25 @@ final class LocalStrategy extends BaseAuthenticationStrategy
     $entityClassName = Config::get('authentication')['jwt']['entityClassName'];
     $entity = new $entityClassName;
 
-    $usernameField = isset(Config::get('authentication')['jwt']['usernameField'])
-      ? Config::get('authentication')['jwt']['usernameField']
+    $usernameField = isset(Config::get('authentication')['jwt']['entityIdFieldname'])
+      ? Config::get('authentication')['jwt']['entityIdFieldname']
+      : 'username';
+    $passwordField = isset(Config::get('authentication')['jwt']['entityPasswordFieldname'])
+      ? Config::get('authentication')['jwt']['entityPasswordFieldname']
       : 'username';
 
     $result = $this->usersService->findOne(conditions: "`$usernameField`='$username'");
 
+    if ($result->isOK())
+    {
+      if (empty($result->value()))
+      {
+        exit(new NotFoundErrorResponse(message: "Incorrect $usernameField and/or $passwordField. Please try again."));
+      }
 
-    // $this->usersService->find
-    exit(var_export($result, true));
+      return $entity::newInstanceFromObject(object: $result->value()[0]);
+    }
 
-    return $entity;
     return false;
   }
 }

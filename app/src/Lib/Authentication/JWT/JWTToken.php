@@ -19,6 +19,11 @@ final class JWTToken implements IToken
   {
     return $this->header . '.' . $this->payload . '.' . $this->signature;
   }
+
+  public function __toString(): string
+  {
+    return $this->value();
+  }
 }
 
 ?>
