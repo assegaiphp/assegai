@@ -12,7 +12,7 @@ class BaseService implements IService
 
   protected string $id;
 
-  public function __construct()
+  public function __construct(...$args)
   {
     $this->id = uniqid();
 

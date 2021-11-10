@@ -3,39 +3,13 @@
 namespace LifeRaft\Modules\Users;
 
 use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\Result;
-use LifeRaft\Core\BaseService;
+use LifeRaft\Core\BaseCrudService;
 
 #[Injectable]
-class UsersService extends BaseService
+class UsersService extends BaseCrudService
 {
-  public function findAll(): Result
+  public function __construct()
   {
-    return new Result();
-  }
-
-  public function find(int $id): Result
-  {
-    return new Result();
-  }
-
-  public function create(mixed $entity): Result
-  {
-    return new Result();
-  }
-
-  public function update(): Result
-  {
-    return new Result();
-  }
-
-  public function patch(): Result
-  {
-    return new Result();
-  }
-
-  public function delete(): Result
-  {
-    return new Result();
+    parent::__construct(repository: new UsersRepository);
   }
 }

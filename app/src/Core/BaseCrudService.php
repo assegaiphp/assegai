@@ -52,7 +52,10 @@ class BaseCrudService extends BaseService
   public function create(IEntity $entity): Result
   {
     $result = $this->repository->add(entity: $entity);
-    return new Result(data: [$result]);
+
+    $isOk = is_bool($result) ? $result : true;
+
+    return new Result(data: [$result], isOK: $isOk);
   }
 
   /**

@@ -11,6 +11,7 @@ use LifeRaft\Core\Attributes\Patch;
 use LifeRaft\Core\Attributes\Post;
 use LifeRaft\Core\Attributes\Put;
 use LifeRaft\Core\Request;
+use LifeRaft\Core\Responses\BadRequestErrorResponse;
 use LifeRaft\Database\Interfaces\IEntity;
 use stdClass;
 
@@ -21,11 +22,7 @@ class UsersController extends BaseController
     protected Request $request,
     protected UsersService $usersService,
     protected UsersRepository $usersRepository
-  )
-  {
-    // debug_print_backtrace();
-    // exit;    
-  }
+  ) { }
 
   #[Get]
   public function findAll(): Response
@@ -42,8 +39,19 @@ class UsersController extends BaseController
   #[Post]
   public function create(stdClass|array $body): Response
   {
-    exit(var_export($this->repository, true));
-    return new Response( data: ['This action creates a new users entity'], dataOnly: true );
+    $entity = match (gettype($body)) {
+      'array' => UserEntity::newInstanceFromArray(array: $body),
+      default => UserEntity::newInstanceFromObject(object: $body),
+    };
+
+    $result = $this->usersService->create(entity: $entity);
+
+    if ($result->isError())
+    {
+      return new BadRequestErrorResponse();
+    }
+
+    return new Response( data: $result, dataOnly: true );
   }
 
   #[Put(path: '/:id')]
