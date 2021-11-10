@@ -69,7 +69,23 @@ class BaseModule implements IModule
 
       if (!empty($attributes))
       {
-        $instance = $reflection->newInstance();
+        $constructor = $reflection->getConstructor();
+        $constructorParams = $constructor->getParameters();
+        $instanceArgs = [];
+
+        foreach ($constructorParams as $param)
+        {
+          $paramClass = $param->getType()->getName();
+          $paramInstance = new $paramClass;
+          $paramReflection = new ReflectionClass(objectOrClass: $paramClass);
+          $paramAttributes = $paramReflection->getAttributes(Injectable::class);
+          if (!empty($paramAttributes))
+          {
+            $instanceArgs[$param->getName()] = $paramInstance;
+          }
+        }
+
+        $instance = $reflection->newInstanceArgs(args: $instanceArgs);
         $this->injectables[$reflection->getName()] = $instance;
       }
     }
