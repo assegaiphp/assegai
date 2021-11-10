@@ -64,17 +64,21 @@ class BaseModule implements IModule
   {
     foreach ($this->providers as $provider)
     {
-      $reflection = new \ReflectionClass($provider);
-      $attributes = $reflection->getAttributes(Injectable::class);
+      $reflectionClass = new \ReflectionClass($provider);
+      $attributes = $reflectionClass->getAttributes(Injectable::class);
 
       if (!empty($attributes))
       {
-        $constructor = $reflection->getConstructor();
+        $constructor = $reflectionClass->getConstructor();
         $constructorParams = $constructor->getParameters();
         $instanceArgs = [];
-
+        
         foreach ($constructorParams as $param)
         {
+          if (empty($param->getType()))
+          {
+            continue;
+          }
           $paramClass = $param->getType()->getName();
           $paramInstance = new $paramClass;
           $paramReflection = new ReflectionClass(objectOrClass: $paramClass);
@@ -85,8 +89,8 @@ class BaseModule implements IModule
           }
         }
 
-        $instance = $reflection->newInstanceArgs(args: $instanceArgs);
-        $this->injectables[$reflection->getName()] = $instance;
+        $instance = $reflectionClass->newInstanceArgs(args: $instanceArgs);
+        $this->injectables[$reflectionClass->getName()] = $instance;
       }
     }
 
