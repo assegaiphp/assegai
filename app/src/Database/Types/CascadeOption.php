@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Types;
+namespace Assegai\Database\Types;
 
 final class CascadeOption
 {

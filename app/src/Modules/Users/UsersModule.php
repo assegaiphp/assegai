@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Modules\Users;
+namespace Assegai\Modules\Users;
 
-use LifeRaft\Core\BaseModule;
-use LifeRaft\Core\Attributes\Module;
+use Assegai\Core\BaseModule;
+use Assegai\Core\Attributes\Module;
 
 #[Module(
   controllers: [UsersController::class],

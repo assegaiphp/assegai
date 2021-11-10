@@ -1,11 +1,11 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication;
+namespace Assegai\Lib\Authentication;
 
-use LifeRaft\Core\Responses\HttpStatusCode;
-use LifeRaft\Core\Responses\Response;
-use LifeRaft\Core\Responses\ResponseType;
-use LifeRaft\Core\Result;
+use Assegai\Core\Responses\HttpStatusCode;
+use Assegai\Core\Responses\Response;
+use Assegai\Core\Responses\ResponseType;
+use Assegai\Core\Result;
 
 final class AuthResponse extends Response
 {

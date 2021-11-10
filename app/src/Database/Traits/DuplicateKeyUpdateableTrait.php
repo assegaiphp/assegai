@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Database\Traits;
+namespace Assegai\Database\Traits;
 
-use LifeRaft\Database\Queries\SQLInsertIntoMultipleStatement;
-use LifeRaft\Database\Queries\SQLInsertIntoStatement;
+use Assegai\Database\Queries\SQLInsertIntoMultipleStatement;
+use Assegai\Database\Queries\SQLInsertIntoStatement;
 
 trait DuplicateKeyUpdateableTrait
 {

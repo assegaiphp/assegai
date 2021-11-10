@@ -1,19 +1,19 @@
 <?php
 
-namespace LifeRaft\Database;
+namespace Assegai\Database;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\Config;
-use LifeRaft\Core\Debugger;
-use LifeRaft\Core\Responses\BadRequestErrorResponse;
-use LifeRaft\Core\Responses\NotFoundErrorResponse;
-use LifeRaft\Core\Responses\NotImplementedErrorResponse;
-use LifeRaft\Database\Attributes\Columns\Column;
-use LifeRaft\Database\Attributes\Repository;
-use LifeRaft\Database\Interfaces\IEntity;
-use LifeRaft\Database\Interfaces\IRepository;
-use LifeRaft\Database\Queries\SQLDataTypes;
-use LifeRaft\Database\Queries\SQLQuery;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\Config;
+use Assegai\Core\Debugger;
+use Assegai\Core\Responses\BadRequestErrorResponse;
+use Assegai\Core\Responses\NotFoundErrorResponse;
+use Assegai\Core\Responses\NotImplementedErrorResponse;
+use Assegai\Database\Attributes\Columns\Column;
+use Assegai\Database\Attributes\Repository;
+use Assegai\Database\Interfaces\IEntity;
+use Assegai\Database\Interfaces\IRepository;
+use Assegai\Database\Queries\SQLDataTypes;
+use Assegai\Database\Queries\SQLQuery;
 use PDO;
 use ReflectionClass;
 use ReflectionProperty;

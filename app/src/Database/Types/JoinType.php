@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Types;
+namespace Assegai\Database\Types;
 
 /* TODO: Change to enum with PHP 8.1 */
 final class JoinType

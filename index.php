@@ -1,8 +1,8 @@
 <?php
 
-use LifeRaft\Core\App;
-use LifeRaft\Core\Request;
-use LifeRaft\Core\Routing\Router;
+use Assegai\Core\App;
+use Assegai\Core\Request;
+use Assegai\Core\Routing\Router;
 
 require_once 'app/bootstrap.php';
 

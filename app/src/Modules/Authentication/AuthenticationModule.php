@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Modules\Authentication;
+namespace Assegai\Modules\Authentication;
 
-use LifeRaft\Core\BaseModule;
-use LifeRaft\Core\Attributes\Module;
+use Assegai\Core\BaseModule;
+use Assegai\Core\Attributes\Module;
 
 #[Module(
   controllers: [AuthenticationController::class],

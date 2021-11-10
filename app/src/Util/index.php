@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Util;
+namespace Assegai\Util;
 
 function isMatch(string $pattern, string $subject, string $delimiter = '/'): bool
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use LifeRaft\Database\BaseEntity;
+use Assegai\Database\BaseEntity;
 use PHPUnit\Framework\TestCase;
 
 final class BaseEntityTest extends TestCase

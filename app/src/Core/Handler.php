@@ -1,13 +1,13 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
-use LifeRaft\Core\Attributes\Delete;
-use LifeRaft\Core\Attributes\Get;
-use LifeRaft\Core\Attributes\Post;
-use LifeRaft\Core\Attributes\Options;
-use LifeRaft\Core\Attributes\Patch;
-use LifeRaft\Core\Attributes\Put;
+use Assegai\Core\Attributes\Delete;
+use Assegai\Core\Attributes\Get;
+use Assegai\Core\Attributes\Post;
+use Assegai\Core\Attributes\Options;
+use Assegai\Core\Attributes\Patch;
+use Assegai\Core\Attributes\Put;
 
 class Handler
 {

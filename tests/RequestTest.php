@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use LifeRaft\Core\App;
-use LifeRaft\Core\Request;
+use Assegai\Core\App;
+use Assegai\Core\Request;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase

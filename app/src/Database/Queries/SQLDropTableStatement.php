@@ -1,8 +1,8 @@
 <?php
 
-namespace LifeRaft\Database\Queries;
+namespace Assegai\Database\Queries;
 
-use LifeRaft\Database\Traits\ExecutableTrait;
+use Assegai\Database\Traits\ExecutableTrait;
 
 /**
  * Removes one or more tables. You must have the [DROP](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_drop) privelege for each table.

@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication;
+namespace Assegai\Lib\Authentication;
 
-use LifeRaft\Core\Responses\NotImplementedErrorResponse;
-use LifeRaft\Lib\Authentication\Interfaces\IToken;
+use Assegai\Core\Responses\NotImplementedErrorResponse;
+use Assegai\Lib\Authentication\Interfaces\IToken;
 
 class AuthToken implements IToken
 {

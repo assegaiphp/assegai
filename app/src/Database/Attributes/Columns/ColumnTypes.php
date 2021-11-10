@@ -9,7 +9,7 @@ foreach ($columnClassFilesnames as $filename)
   if (str_ends_with($filename, 'Column.php'))
   {
     $className = substr($filename, 0, -4);
-    array_push($types, "LifeRaft\\Database\\Attributes\\Columns\\${className}");
+    array_push($types, "Assegai\\Database\\Attributes\\Columns\\${className}");
   }
 }
 

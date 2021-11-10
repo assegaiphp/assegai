@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Modules\Tests;
+namespace Assegai\Modules\Tests;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\Result;
-use LifeRaft\Core\BaseService;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\Result;
+use Assegai\Core\BaseService;
 use stdClass;
 
 #[Injectable]

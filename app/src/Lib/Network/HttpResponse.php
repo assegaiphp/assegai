@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Lib\Network;
+namespace Assegai\Lib\Network;
 
-use LifeRaft\Core\Responses\HttpStatus;
-use LifeRaft\Core\Responses\HttpStatusCode;
+use Assegai\Core\Responses\HttpStatus;
+use Assegai\Core\Responses\HttpStatusCode;
 
 final class HttpResponse
 {

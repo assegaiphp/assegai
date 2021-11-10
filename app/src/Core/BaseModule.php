@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\Attributes\Module;
-use LifeRaft\Core\Interfaces\IModule;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\Attributes\Module;
+use Assegai\Core\Interfaces\IModule;
 use ReflectionClass;
 
 class BaseModule implements IModule

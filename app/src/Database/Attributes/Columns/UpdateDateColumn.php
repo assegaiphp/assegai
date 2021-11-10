@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Database\Attributes\Columns;
+namespace Assegai\Database\Attributes\Columns;
 
 use Attribute;
-use LifeRaft\Database\Queries\SQLDataTypes;
+use Assegai\Database\Queries\SQLDataTypes;
 
 /**
  * `UpdateDateColumn` is a special column that is automatically set to the entity's update time each time you call save of entity manager or repository. You don't need to set this column - it will be automatically set.

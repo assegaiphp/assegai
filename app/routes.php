@@ -1,10 +1,10 @@
 <?php
 
-use LifeRaft\Core\Routing\Route;
-use LifeRaft\Modules\Home\HomeModule;
-use LifeRaft\Modules\Tests\TestsModule;
-use LifeRaft\Modules\Users\UsersModule;
-use LifeRaft\Modules\Authentication\AuthenticationModule;
+use Assegai\Core\Routing\Route;
+use Assegai\Modules\Home\HomeModule;
+use Assegai\Modules\Tests\TestsModule;
+use Assegai\Modules\Users\UsersModule;
+use Assegai\Modules\Authentication\AuthenticationModule;
 
 return [
   new Route(path: '/', module: HomeModule::class),

@@ -1,8 +1,8 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication\JWT;
+namespace Assegai\Lib\Authentication\JWT;
 
-use LifeRaft\Lib\Authentication\Interfaces\IToken;
+use Assegai\Lib\Authentication\Interfaces\IToken;
 
 final class JWTToken implements IToken
 {

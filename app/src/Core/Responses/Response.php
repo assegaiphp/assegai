@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Core\Responses;
+namespace Assegai\Core\Responses;
 
-use LifeRaft\Core\Request;
-use LifeRaft\Core\Result;
+use Assegai\Core\Request;
+use Assegai\Core\Result;
 
 class Response
 {

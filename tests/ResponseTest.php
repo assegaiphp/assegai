@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use LifeRaft\Core\App;
-use LifeRaft\Core\Request;
-use LifeRaft\Core\Responses\HttpStatus;
-use LifeRaft\Core\Responses\HttpStatusCode;
-use LifeRaft\Core\Responses\Response;
-use LifeRaft\Core\Responses\ResponseType;
+use Assegai\Core\App;
+use Assegai\Core\Request;
+use Assegai\Core\Responses\HttpStatus;
+use Assegai\Core\Responses\HttpStatusCode;
+use Assegai\Core\Responses\Response;
+use Assegai\Core\Responses\ResponseType;
 use PHPUnit\Framework\TestCase;
 
 final class ResponseTest extends TestCase

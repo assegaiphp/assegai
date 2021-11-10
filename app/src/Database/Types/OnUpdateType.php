@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Types;
+namespace Assegai\Database\Types;
 
 /**
  * ON_UPDATE type to be used to specify update strategy when some relation is being updated.

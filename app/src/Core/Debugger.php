@@ -1,8 +1,8 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
-use LifeRaft\Core\Responses\Response;
+use Assegai\Core\Responses\Response;
 
 class Debugger
 {

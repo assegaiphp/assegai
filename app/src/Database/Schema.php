@@ -1,8 +1,8 @@
 <?php
 
-namespace LifeRaft\Database;
+namespace Assegai\Database;
 
-use LifeRaft\Database\Interfaces\ISchema;
+use Assegai\Database\Interfaces\ISchema;
 use ReflectionClass;
 
 /**

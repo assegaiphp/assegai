@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core\Responses;
+namespace Assegai\Core\Responses;
 
 class ForbiddenErrorResponse extends ErrorResponse
 {

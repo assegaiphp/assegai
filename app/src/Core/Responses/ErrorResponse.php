@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core\Responses;
+namespace Assegai\Core\Responses;
 
 class ErrorResponse extends Response
 {

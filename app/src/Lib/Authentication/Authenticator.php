@@ -1,8 +1,8 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication;
+namespace Assegai\Lib\Authentication;
 
-use LifeRaft\Lib\Authentication\Interfaces\IAuthStrategy;
+use Assegai\Lib\Authentication\Interfaces\IAuthStrategy;
 
 /**
  * The `Authenticator` class houses methods for issuing and managing user 

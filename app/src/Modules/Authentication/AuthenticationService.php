@@ -1,19 +1,19 @@
 <?php
 
-namespace LifeRaft\Modules\Authentication;
+namespace Assegai\Modules\Authentication;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\Result;
-use LifeRaft\Core\BaseService;
-use LifeRaft\Core\Config;
-use LifeRaft\Lib\Authentication\Authenticator;
-use LifeRaft\Lib\Authentication\JWT\JWTHeader;
-use LifeRaft\Lib\Authentication\JWT\JWTPayload;
-use LifeRaft\Lib\Authentication\JWT\JWTToken;
-use LifeRaft\Lib\Authentication\Strategies\JWTStrategy;
-use LifeRaft\Lib\Authentication\Strategies\LocalStrategy;
-use LifeRaft\Lib\Authentication\Strategies\OAuthStrategy;
-use LifeRaft\Modules\Users\UsersService;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\Result;
+use Assegai\Core\BaseService;
+use Assegai\Core\Config;
+use Assegai\Lib\Authentication\Authenticator;
+use Assegai\Lib\Authentication\JWT\JWTHeader;
+use Assegai\Lib\Authentication\JWT\JWTPayload;
+use Assegai\Lib\Authentication\JWT\JWTToken;
+use Assegai\Lib\Authentication\Strategies\JWTStrategy;
+use Assegai\Lib\Authentication\Strategies\LocalStrategy;
+use Assegai\Lib\Authentication\Strategies\OAuthStrategy;
+use Assegai\Modules\Users\UsersService;
 use stdClass;
 
 #[Injectable]

@@ -1,7 +1,7 @@
 <?php
 require_once 'src/Core/Config.php';
 
-use LifeRaft\Core\Config;
+use Assegai\Core\Config;
 
 Config::hydrate();
 

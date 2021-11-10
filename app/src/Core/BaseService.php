@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\Interfaces\IService;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\Interfaces\IService;
 
 #[Injectable]
 class BaseService implements IService

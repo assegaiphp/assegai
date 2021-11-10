@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Database\Attributes\Columns;
+namespace Assegai\Database\Attributes\Columns;
 
 use Attribute;
-use LifeRaft\Database\Queries\SQLColumnDefinition;
-use LifeRaft\Database\Queries\SQLDataTypes;
+use Assegai\Database\Queries\SQLColumnDefinition;
+use Assegai\Database\Queries\SQLDataTypes;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Column

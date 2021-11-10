@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Lib\Network;
+namespace Assegai\Lib\Network;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\Interfaces\IService;
-use LifeRaft\Core\RequestMethod;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\Interfaces\IService;
+use Assegai\Core\RequestMethod;
 
 #[Injectable]
 final class HttpService implements IService

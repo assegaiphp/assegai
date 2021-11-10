@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core\Routing;
+namespace Assegai\Core\Routing;
 
 final class Router
 {

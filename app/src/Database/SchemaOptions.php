@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database;
+namespace Assegai\Database;
 
 class SchemaOptions
 {

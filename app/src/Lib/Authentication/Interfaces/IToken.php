@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication\Interfaces;
+namespace Assegai\Lib\Authentication\Interfaces;
 
 interface IToken
 {

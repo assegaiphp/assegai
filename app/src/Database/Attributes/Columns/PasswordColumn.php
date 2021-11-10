@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Database\Attributes\Columns;
+namespace Assegai\Database\Attributes\Columns;
 
 use Attribute;
-use LifeRaft\Core\Config;
-use LifeRaft\Database\Queries\SQLDataTypes;
+use Assegai\Core\Config;
+use Assegai\Database\Queries\SQLDataTypes;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class PasswordColumn extends Column

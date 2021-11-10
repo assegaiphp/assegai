@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core\Injection;
+namespace Assegai\Core\Injection;
 
 class Injector
 {}

@@ -1,8 +1,8 @@
 <?php
 
-use LifeRaft\Database\Schema;
-use LifeRaft\Database\SchemaOptions;
-use LifeRaft\Modules\Users\UserEntity;
+use Assegai\Database\Schema;
+use Assegai\Database\SchemaOptions;
+use Assegai\Modules\Users\UserEntity;
 use PHPUnit\Framework\TestCase;
 
 final class SchemaTest extends TestCase

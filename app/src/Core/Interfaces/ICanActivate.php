@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core\Interfaces;
+namespace Assegai\Core\Interfaces;
 
 interface ICanActivate
 {

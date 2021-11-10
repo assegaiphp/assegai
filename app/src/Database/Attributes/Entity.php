@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Attributes;
+namespace Assegai\Database\Attributes;
 
 use Attribute;
 

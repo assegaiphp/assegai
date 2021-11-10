@@ -8,7 +8,7 @@ require_once 'src/Util/index.php';
 
 spl_autoload_register(function ($class) {
   $namespaces = explode('\\', $class);
-  if ($namespaces[0] == 'LifeRaft')
+  if ($namespaces[0] == 'Assegai')
   {
     $namespaces[0] = 'src';
   }

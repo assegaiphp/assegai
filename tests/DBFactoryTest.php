@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use LifeRaft\Database\DBFactory;
+use Assegai\Database\DBFactory;
 use PHPUnit\Framework\TestCase;
 
 final class DBFactoryTest extends TestCase

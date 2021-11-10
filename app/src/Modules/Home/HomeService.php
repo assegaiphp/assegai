@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Modules\Home;
+namespace Assegai\Modules\Home;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\BaseService;
-use LifeRaft\Core\Result;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\BaseService;
+use Assegai\Core\Result;
 
 #[Injectable]
 class HomeService extends BaseService

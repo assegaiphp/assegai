@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Types;
+namespace Assegai\Database\Types;
 
 /**
  * DEFERRABLE type to be used to specify if foreign key constraints can be deferred.

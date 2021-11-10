@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Database\Traits;
+namespace Assegai\Database\Traits;
 
-use LifeRaft\Database\Queries\SQLJoinExpression;
-use LifeRaft\Database\Types\JoinType;
+use Assegai\Database\Queries\SQLJoinExpression;
+use Assegai\Database\Types\JoinType;
 
 trait JoinableTrait
 {

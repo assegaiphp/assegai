@@ -1,12 +1,12 @@
 <?php
 
-namespace LifeRaft\Database\Attributes\Relations;
+namespace Assegai\Database\Attributes\Relations;
 
-use LifeRaft\Database\Types\CascadeOption;
-use LifeRaft\Database\Types\DeferrableType;
-use LifeRaft\Database\Types\OnDeleteType;
-use LifeRaft\Database\Types\OnUpdateType;
-use LifeRaft\Database\Types\OrphanedRowActionType;
+use Assegai\Database\Types\CascadeOption;
+use Assegai\Database\Types\DeferrableType;
+use Assegai\Database\Types\OnDeleteType;
+use Assegai\Database\Types\OnUpdateType;
+use Assegai\Database\Types\OrphanedRowActionType;
 
 final class RelationsOptions
 {

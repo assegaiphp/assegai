@@ -1,20 +1,20 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
-use LifeRaft\Core\Attributes\Controller;
-use LifeRaft\Core\Interfaces\IController;
-use LifeRaft\Core\Attributes\GET;
-use LifeRaft\Core\Attributes\POST;
-use LifeRaft\Core\Attributes\PUT;
-use LifeRaft\Core\Attributes\PATCH;
-use LifeRaft\Core\Attributes\DELETE;
-use LifeRaft\Core\Attributes\OPTIONS;
-use LifeRaft\Core\Responses\HttpStatusCode;
-use LifeRaft\Core\Responses\MethodNotAllowedErrorResponse;
-use LifeRaft\Core\Responses\NotFoundErrorResponse;
-use LifeRaft\Core\Responses\NotImplementedErrorResponse;
-use LifeRaft\Core\Responses\Response;
+use Assegai\Core\Attributes\Controller;
+use Assegai\Core\Interfaces\IController;
+use Assegai\Core\Attributes\GET;
+use Assegai\Core\Attributes\POST;
+use Assegai\Core\Attributes\PUT;
+use Assegai\Core\Attributes\PATCH;
+use Assegai\Core\Attributes\DELETE;
+use Assegai\Core\Attributes\OPTIONS;
+use Assegai\Core\Responses\HttpStatusCode;
+use Assegai\Core\Responses\MethodNotAllowedErrorResponse;
+use Assegai\Core\Responses\NotFoundErrorResponse;
+use Assegai\Core\Responses\NotImplementedErrorResponse;
+use Assegai\Core\Responses\Response;
 use ReflectionClass;
 use ReflectionMethod;
 

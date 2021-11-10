@@ -1,11 +1,11 @@
 <?php
 
-namespace LifeRaft\Modules\Users;
+namespace Assegai\Modules\Users;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Core\BaseCrudService;
-use LifeRaft\Database\Interfaces\IEntity;
-use LifeRaft\Core\Result;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\BaseCrudService;
+use Assegai\Database\Interfaces\IEntity;
+use Assegai\Core\Result;
 
 #[Injectable]
 class UsersService extends BaseCrudService

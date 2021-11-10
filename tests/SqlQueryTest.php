@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-use LifeRaft\Database\DBFactory;
-use LifeRaft\Database\Queries\SQLColumnDefinition as Column;
-use LifeRaft\Database\Queries\SQLDataTypes;
-use LifeRaft\Database\Queries\SQLKeyPart;
-use LifeRaft\Database\Queries\SQLPrimaryGeneratedColumn as PrimaryColumn;
-use LifeRaft\Database\Queries\SQLQuery;
-use LifeRaft\Database\Schema;
-use LifeRaft\Database\SchemaOptions;
-use LifeRaft\Modules\Users\UserEntity;
+use Assegai\Database\DBFactory;
+use Assegai\Database\Queries\SQLColumnDefinition as Column;
+use Assegai\Database\Queries\SQLDataTypes;
+use Assegai\Database\Queries\SQLKeyPart;
+use Assegai\Database\Queries\SQLPrimaryGeneratedColumn as PrimaryColumn;
+use Assegai\Database\Queries\SQLQuery;
+use Assegai\Database\Schema;
+use Assegai\Database\SchemaOptions;
+use Assegai\Modules\Users\UserEntity;
 use PHPUnit\Framework\TestCase;
 
 final class SqlQueryTest extends TestCase

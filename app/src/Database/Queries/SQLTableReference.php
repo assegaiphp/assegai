@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Database\Queries;
+namespace Assegai\Database\Queries;
 
-use LifeRaft\Database\Traits\ExecutableTrait;
-use LifeRaft\Database\Traits\JoinableTrait;
-use LifeRaft\Database\Traits\SQLAggregatorTrait;
+use Assegai\Database\Traits\ExecutableTrait;
+use Assegai\Database\Traits\JoinableTrait;
+use Assegai\Database\Traits\SQLAggregatorTrait;
 
 final class SQLTableReference
 {

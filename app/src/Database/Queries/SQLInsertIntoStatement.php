@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Database\Queries;
+namespace Assegai\Database\Queries;
 
-use LifeRaft\Database\Traits\DuplicateKeyUpdateableTrait;
-use LifeRaft\Database\Traits\ExecutableTrait;
+use Assegai\Database\Traits\DuplicateKeyUpdateableTrait;
+use Assegai\Database\Traits\ExecutableTrait;
 
 /**
  * Inserts new rows into an existing table.

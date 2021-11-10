@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Lib\Network;
+namespace Assegai\Lib\Network;
 
 final class HttpRequestOptions
 {

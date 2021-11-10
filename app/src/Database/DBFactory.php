@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Database;
+namespace Assegai\Database;
 
-use LifeRaft\Core\Config;
-use LifeRaft\Core\Responses\InternalServerErrorResponse;
+use Assegai\Core\Config;
+use Assegai\Core\Responses\InternalServerErrorResponse;
 use PDO;
 
 /**

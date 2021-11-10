@@ -1,13 +1,13 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication\Strategies;
+namespace Assegai\Lib\Authentication\Strategies;
 
-use LifeRaft\Core\App;
-use LifeRaft\Core\Config;
-use LifeRaft\Core\Interfaces\IService;
-use LifeRaft\Core\Responses\NotFoundErrorResponse;
-use LifeRaft\Database\Interfaces\IEntity;
-use LifeRaft\Modules\Users\UsersService;
+use Assegai\Core\App;
+use Assegai\Core\Config;
+use Assegai\Core\Interfaces\IService;
+use Assegai\Core\Responses\NotFoundErrorResponse;
+use Assegai\Database\Interfaces\IEntity;
+use Assegai\Modules\Users\UsersService;
 
 final class LocalStrategy extends BaseAuthenticationStrategy
 {

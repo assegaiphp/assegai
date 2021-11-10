@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Interfaces;
+namespace Assegai\Database\Interfaces;
 
 use stdClass;
 

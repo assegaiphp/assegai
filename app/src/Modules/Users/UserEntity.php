@@ -1,13 +1,13 @@
 <?php
 
-namespace LifeRaft\Modules\Users;
+namespace Assegai\Modules\Users;
 
-use LifeRaft\Database\Attributes\Columns\Column;
-use LifeRaft\Database\Attributes\Columns\EmailColumn;
-use LifeRaft\Database\Attributes\Columns\PasswordColumn;
-use LifeRaft\Database\Attributes\Entity;
-use LifeRaft\Database\BaseEntity;
-use LifeRaft\Database\Queries\SQLDataTypes;
+use Assegai\Database\Attributes\Columns\Column;
+use Assegai\Database\Attributes\Columns\EmailColumn;
+use Assegai\Database\Attributes\Columns\PasswordColumn;
+use Assegai\Database\Attributes\Entity;
+use Assegai\Database\BaseEntity;
+use Assegai\Database\Queries\SQLDataTypes;
 
 #[Entity(tableName: 'users')]
 class UserEntity extends BaseEntity

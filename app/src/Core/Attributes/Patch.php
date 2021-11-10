@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Core\Attributes;
+namespace Assegai\Core\Attributes;
 
 use Attribute;
-use LifeRaft\Core\Responses\BadRequestErrorResponse;
+use Assegai\Core\Responses\BadRequestErrorResponse;
 
 /**
  * The **HTTP PATCH request method** applies partial modifications to a 

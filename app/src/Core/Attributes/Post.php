@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Core\Attributes;
+namespace Assegai\Core\Attributes;
 
 use Attribute;
-use LifeRaft\Core\Responses\HttpStatus;
-use LifeRaft\Core\Responses\HttpStatusCode;
+use Assegai\Core\Responses\HttpStatus;
+use Assegai\Core\Responses\HttpStatusCode;
 use stdClass;
 
 /**

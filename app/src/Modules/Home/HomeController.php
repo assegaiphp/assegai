@@ -1,12 +1,12 @@
 <?php
 
-namespace LifeRaft\Modules\Home;
+namespace Assegai\Modules\Home;
 
-use LifeRaft\Core\Attributes\Controller;
-use LifeRaft\Core\BaseController;
-use LifeRaft\Core\Attributes\Get;
-use LifeRaft\Core\RequestMethod;
-use LifeRaft\Core\Responses\Response;
+use Assegai\Core\Attributes\Controller;
+use Assegai\Core\BaseController;
+use Assegai\Core\Attributes\Get;
+use Assegai\Core\RequestMethod;
+use Assegai\Core\Responses\Response;
 
 #[Controller(forbiddenMethods: [
   RequestMethod::DELETE,

@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Core\Interfaces;
+namespace Assegai\Core\Interfaces;
 
-use LifeRaft\Core\Responses;
-use LifeRaft\Core\Responses\Response;
+use Assegai\Core\Responses;
+use Assegai\Core\Responses\Response;
 
 interface IController
 {

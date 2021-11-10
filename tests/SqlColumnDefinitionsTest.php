@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use LifeRaft\Database\Queries\SQLColumnDefinition as Column;
-use LifeRaft\Database\Queries\SQLDataTypes;
+use Assegai\Database\Queries\SQLColumnDefinition as Column;
+use Assegai\Database\Queries\SQLDataTypes;
 use PHPUnit\Framework\TestCase;
 
 final class SqlColumnDefinitionsTest extends TestCase

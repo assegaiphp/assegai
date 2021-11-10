@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Database\Queries;
+namespace Assegai\Database\Queries;
 
-use LifeRaft\Core\Config;
-use LifeRaft\Core\Responses\BadRequestErrorResponse;
-use LifeRaft\Core\Responses\ConflictErrorResponse;
+use Assegai\Core\Config;
+use Assegai\Core\Responses\BadRequestErrorResponse;
+use Assegai\Core\Responses\ConflictErrorResponse;
 use stdClass;
 
 final class SQLQuery

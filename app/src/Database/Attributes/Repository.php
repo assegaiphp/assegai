@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Database\Attributes;
+namespace Assegai\Database\Attributes;
 
 use Attribute;
-use LifeRaft\Database\BaseEntity;
-use LifeRaft\Database\DBFactory;
+use Assegai\Database\BaseEntity;
+use Assegai\Database\DBFactory;
 
 #[Attribute]
 class Repository

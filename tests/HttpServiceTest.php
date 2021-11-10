@@ -1,6 +1,6 @@
 <?php
 
-use LifeRaft\Lib\Network\HttpService;
+use Assegai\Lib\Network\HttpService;
 use PHPUnit\Framework\TestCase;
 
 final class HttpServiceTest extends TestCase

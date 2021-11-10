@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Modules\Tests;
+namespace Assegai\Modules\Tests;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Database\Attributes\Repository;
-use LifeRaft\Database\BaseRepository;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Database\Attributes\Repository;
+use Assegai\Database\BaseRepository;
 
 #[Repository(
   entity: TestEntity::class,

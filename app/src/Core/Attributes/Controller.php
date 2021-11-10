@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Core\Attributes;
+namespace Assegai\Core\Attributes;
 
 use Attribute;
-use LifeRaft\Core\RequestMethod;
-use LifeRaft\Core\Responses\HttpStatusCode;
+use Assegai\Core\RequestMethod;
+use Assegai\Core\Responses\HttpStatusCode;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Controller

@@ -1,21 +1,21 @@
 <?php
 
-namespace LifeRaft\Modules\Tests;
+namespace Assegai\Modules\Tests;
 
-use LifeRaft\Core\Attributes\Controller;
-use LifeRaft\Core\Attributes\Delete;
-use LifeRaft\Core\BaseController;
-use LifeRaft\Core\Responses\Response;
-use LifeRaft\Core\Attributes\Get;
-use LifeRaft\Core\Attributes\Patch;
-use LifeRaft\Core\Attributes\Post;
-use LifeRaft\Core\Attributes\Put;
-use LifeRaft\Core\Request;
-use LifeRaft\Core\RequestMethod;
-use LifeRaft\Core\Responses\BadRequestErrorResponse;
-use LifeRaft\Core\Responses\HttpStatus;
-use LifeRaft\Core\Responses\NotFoundErrorResponse;
-use LifeRaft\Database\Interfaces\IEntity;
+use Assegai\Core\Attributes\Controller;
+use Assegai\Core\Attributes\Delete;
+use Assegai\Core\BaseController;
+use Assegai\Core\Responses\Response;
+use Assegai\Core\Attributes\Get;
+use Assegai\Core\Attributes\Patch;
+use Assegai\Core\Attributes\Post;
+use Assegai\Core\Attributes\Put;
+use Assegai\Core\Request;
+use Assegai\Core\RequestMethod;
+use Assegai\Core\Responses\BadRequestErrorResponse;
+use Assegai\Core\Responses\HttpStatus;
+use Assegai\Core\Responses\NotFoundErrorResponse;
+use Assegai\Database\Interfaces\IEntity;
 use stdClass;
 
 #[Controller(path: 'tests', forbiddenMethods: [RequestMethod::DELETE])]

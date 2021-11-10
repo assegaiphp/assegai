@@ -49,7 +49,7 @@ return [
       'audience'                => 'https://yourdomain.com',
       'issuer'                  => 'assegai',
       'lifespan'                => '1 hour',
-      'entityClassName'         => LifeRaft\Modules\Users\UserEntity::class,
+      'entityClassName'         => Assegai\Modules\Users\UserEntity::class,
       'entityIdFieldname'       => 'email',
       'entityPasswordFieldname' => 'password',
     ]

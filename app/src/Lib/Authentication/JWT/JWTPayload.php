@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication\JWT;
+namespace Assegai\Lib\Authentication\JWT;
 
 use DateTime;
-use LifeRaft\Core\Config;
+use Assegai\Core\Config;
 
 final class JWTPayload
 {

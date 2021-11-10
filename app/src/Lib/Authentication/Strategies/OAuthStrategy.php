@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication\Strategies;
+namespace Assegai\Lib\Authentication\Strategies;
 
 final class OAuthStrategy extends BaseAuthenticationStrategy
 {

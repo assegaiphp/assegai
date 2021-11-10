@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core\Routing\Types;
+namespace Assegai\Core\Routing\Types;
 
 final class PathMatchingStrategy
 {

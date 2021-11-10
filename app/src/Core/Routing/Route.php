@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Core\Routing;
+namespace Assegai\Core\Routing;
 
-use LifeRaft\Core\Interfaces\IModule;
-use LifeRaft\Core\Routing\Types\PathMatchingStrategy;
+use Assegai\Core\Interfaces\IModule;
+use Assegai\Core\Routing\Types\PathMatchingStrategy;
 
 class Route
 {

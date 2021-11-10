@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Database\Queries;
+namespace Assegai\Database\Queries;
 
 final class SQLKeyPart
 {

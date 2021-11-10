@@ -1,8 +1,8 @@
 <?php
 
-namespace LifeRaft\Database\Queries;
+namespace Assegai\Database\Queries;
 
-use LifeRaft\Database\Traits\ExecutableTrait;
+use Assegai\Database\Traits\ExecutableTrait;
 
 final class SQLTruncateStatement
 {

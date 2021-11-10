@@ -1,18 +1,18 @@
 <?php
 
-namespace LifeRaft\Modules\Users;
+namespace Assegai\Modules\Users;
 
-use LifeRaft\Core\Attributes\Controller;
-use LifeRaft\Core\Attributes\Delete;
-use LifeRaft\Core\BaseController;
-use LifeRaft\Core\Responses\Response;
-use LifeRaft\Core\Attributes\Get;
-use LifeRaft\Core\Attributes\Patch;
-use LifeRaft\Core\Attributes\Post;
-use LifeRaft\Core\Attributes\Put;
-use LifeRaft\Core\Request;
-use LifeRaft\Core\Responses\BadRequestErrorResponse;
-use LifeRaft\Database\Interfaces\IEntity;
+use Assegai\Core\Attributes\Controller;
+use Assegai\Core\Attributes\Delete;
+use Assegai\Core\BaseController;
+use Assegai\Core\Responses\Response;
+use Assegai\Core\Attributes\Get;
+use Assegai\Core\Attributes\Patch;
+use Assegai\Core\Attributes\Post;
+use Assegai\Core\Attributes\Put;
+use Assegai\Core\Request;
+use Assegai\Core\Responses\BadRequestErrorResponse;
+use Assegai\Database\Interfaces\IEntity;
 use stdClass;
 
 #[Controller(path: 'users', forbiddenMethods: [])]

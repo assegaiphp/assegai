@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
 use \ArrayObject;
 

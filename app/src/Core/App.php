@@ -1,14 +1,14 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
-use LifeRaft\Core\Interfaces\IController;
-use LifeRaft\Core\Interfaces\IModule;
-use LifeRaft\Core\Responses\BadRequestErrorResponse;
-use LifeRaft\Core\Responses\HttpStatus;
-use LifeRaft\Core\Responses\Response;
-use LifeRaft\Core\Routing\Router;
-use LifeRaft\Modules\Home\HomeModule;
+use Assegai\Core\Interfaces\IController;
+use Assegai\Core\Interfaces\IModule;
+use Assegai\Core\Responses\BadRequestErrorResponse;
+use Assegai\Core\Responses\HttpStatus;
+use Assegai\Core\Responses\Response;
+use Assegai\Core\Routing\Router;
+use Assegai\Modules\Home\HomeModule;
 use ReflectionClass;
 
 class App
@@ -126,7 +126,7 @@ class App
 
   /**
    * 
-   * Returns a `LifeRaft\Core\IController` that best matches the requested endpoint
+   * Returns a `Assegai\Core\IController` that best matches the requested endpoint
    */
   private function getActivatedController(IModule $module): IController
   {

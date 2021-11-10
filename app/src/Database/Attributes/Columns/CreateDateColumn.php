@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Database\Attributes\Columns;
+namespace Assegai\Database\Attributes\Columns;
 
 use Attribute;
-use LifeRaft\Database\Queries\SQLDataTypes;
+use Assegai\Database\Queries\SQLDataTypes;
 
 /**
  * `CreateDateColumn` is a special column that is automatically set to the entity's insertion date. You don't need to set this column - it will be automatically set.

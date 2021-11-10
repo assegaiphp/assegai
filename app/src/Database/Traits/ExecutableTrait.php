@@ -1,8 +1,8 @@
 <?php
 
-namespace LifeRaft\Database\Traits;
+namespace Assegai\Database\Traits;
 
-use LifeRaft\Database\Queries\SQLQueryResult;
+use Assegai\Database\Queries\SQLQueryResult;
 
 trait ExecutableTrait
 {

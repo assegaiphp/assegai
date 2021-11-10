@@ -1,13 +1,13 @@
 <?php
 
-namespace LifeRaft\Database;
+namespace Assegai\Database;
 
-use LifeRaft\Database\Attributes\Columns\CreateDateColumn;
-use LifeRaft\Database\Attributes\Columns\DeleteDateColumn;
-use LifeRaft\Database\Attributes\Columns\PrimaryGeneratedColumn;
-use LifeRaft\Database\Attributes\Columns\UpdateDateColumn;
-use LifeRaft\Database\Attributes\Entity;
-use LifeRaft\Database\Interfaces\IEntity;
+use Assegai\Database\Attributes\Columns\CreateDateColumn;
+use Assegai\Database\Attributes\Columns\DeleteDateColumn;
+use Assegai\Database\Attributes\Columns\PrimaryGeneratedColumn;
+use Assegai\Database\Attributes\Columns\UpdateDateColumn;
+use Assegai\Database\Attributes\Entity;
+use Assegai\Database\Interfaces\IEntity;
 use ReflectionClass;
 use ReflectionProperty;
 use stdClass;

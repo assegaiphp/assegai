@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use LifeRaft\Database\Queries\SQLQueryResult;
+use Assegai\Database\Queries\SQLQueryResult;
 use PHPUnit\Framework\TestCase;
 
 final class SqlQueryResultTest extends TestCase

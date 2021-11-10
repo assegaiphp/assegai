@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication\JWT;
+namespace Assegai\Lib\Authentication\JWT;
 
 final class JWTHeader
 {

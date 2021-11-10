@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
 /**
  * The **RequestMethod** class enumerates the multiple HTTP request methods.

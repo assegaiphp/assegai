@@ -1,6 +1,6 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
 /**
  * The **Request** class represents the HTTP request and has properties for 

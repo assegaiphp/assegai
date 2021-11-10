@@ -1,9 +1,9 @@
 <?php
 
-namespace LifeRaft\Database\Queries;
+namespace Assegai\Database\Queries;
 
-use LifeRaft\Database\Queries\SQLQuery;
-use LifeRaft\Database\Queries\SQLTableReference;
+use Assegai\Database\Queries\SQLQuery;
+use Assegai\Database\Queries\SQLTableReference;
 
 final class SQLSelectExpression
 {

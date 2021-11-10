@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Modules\Home;
+namespace Assegai\Modules\Home;
 
-use LifeRaft\Core\Attributes\Module;
-use LifeRaft\Core\BaseModule;
-use LifeRaft\Modules\Home\HomeService;
+use Assegai\Core\Attributes\Module;
+use Assegai\Core\BaseModule;
+use Assegai\Modules\Home\HomeService;
 
 #[Module(
   controllers: [HomeController::class],
