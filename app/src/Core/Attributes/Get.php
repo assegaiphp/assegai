@@ -3,6 +3,7 @@
 namespace LifeRaft\Core\Attributes;
 
 use Attribute;
+use stdClass;
 
 /**
  * The HTTP GET method requests a representation of the specified resource. 
@@ -40,6 +41,28 @@ class Get
       }
     }
 
+    $body = $_GET;
+    unset($body['path']);
+    $exclude = ['limit', 'skip', 'sort', 'orderBy'];
+
+    foreach ($body as $key => $param)
+    {
+      if (in_array($key, $exclude))
+      {
+        unset($body[$key]);
+        continue;
+      }
+      $this->args[$key] = $param;
+    }
+
+    $this->body = json_decode( json_encode($body) );
+
+    if (is_null($this->body))
+    {
+      $this->body = new stdClass;
+    }
+
+    $this->args['body'] = $this->body;
     $this->canActivate = $request->method() === 'GET';
   }
 }

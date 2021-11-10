@@ -3,6 +3,7 @@
 namespace LifeRaft\Core\Responses;
 
 use LifeRaft\Core\Request;
+use LifeRaft\Core\Result;
 
 class Response
 {
@@ -112,7 +113,11 @@ class Response
   {
     if ($this->dataOnly)
     {
-      return json_encode( $this->data() );
+      $data =
+        is_array($this->data()) && count($this->data()) === 1 
+        ? $this->data()[0]
+        : $this->data();
+      return json_encode( $data );
     }
 
     if ($this->total() === 1)

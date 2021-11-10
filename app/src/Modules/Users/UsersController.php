@@ -25,15 +25,44 @@ class UsersController extends BaseController
   ) { }
 
   #[Get]
-  public function findAll(): Response
+  public function findAll(mixed $body): Response
   {
-    return new Response( data: ['This action returns all users'], dataOnly: true );
+    $params = match(gettype($body)) {
+      'array' => $body,
+      default => get_object_vars($body)
+    };
+    $conditions = '';
+    foreach ($params as $key => $value)
+    {
+      $column = 
+        isset(UserEntity::columns()[$key])
+        ? UserEntity::columns()[$key]
+        : $key;
+      $conditions .= "`$column`=";
+      $conditions .= is_numeric($value) ? $value : "'$value' AND ";
+    }
+    $conditions = trim($conditions, 'AND ');
+    $result = $this->usersService->find(conditions: $conditions);
+
+    if ($result->isError())
+    {
+      return new BadRequestErrorResponse(message: 'Invalid request.');
+    }
+
+    return new Response( data: $result->value() );
   }
 
   #[Get(path: '/:id')]
   public function find(int $id): Response
   {
-    return new Response( data: ['This action returns the users entity with id: ' . $id], dataOnly: true );
+    $result = $this->usersService->findOne(conditions: "`id`=$id");
+
+    if ($result->isError())
+    {
+      return new BadRequestErrorResponse();
+    }
+
+    return new Response( data: $result->value(), dataOnly: true );
   }
 
   #[Post]
@@ -51,7 +80,7 @@ class UsersController extends BaseController
       return new BadRequestErrorResponse();
     }
 
-    return new Response( data: $result, dataOnly: true );
+    return new Response( data: $result->value(), dataOnly: true );
   }
 
   #[Put(path: '/:id')]

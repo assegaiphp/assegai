@@ -16,6 +16,7 @@ use LifeRaft\Core\Responses\NotFoundErrorResponse;
 use LifeRaft\Core\Responses\NotImplementedErrorResponse;
 use LifeRaft\Core\Responses\Response;
 use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Controllers are responsible for handling incoming requests and returning 
@@ -71,7 +72,19 @@ class BaseController implements IController
         return new NotFoundErrorResponse();
       }
 
-      return call_user_func_array([$this, $handler->method()->name], $handler->attribute()->args);
+      $methodParams = [];
+      $methodReflection = new ReflectionMethod(objectOrMethod: $this, method: $handler->method()->name);
+      $parametersReflection = $methodReflection->getParameters();
+
+      foreach ($parametersReflection as $param)
+      {
+        if ( isset($handler->attribute()->args[$param->getName()]) )
+        {
+          $methodParams[$param->getName()] = $handler->attribute()->args[$param->getName()];
+        }
+      }
+
+      return call_user_func_array([$this, $handler->method()->name], $methodParams);
     }
     catch (\Exception $e)
     {
@@ -120,9 +133,9 @@ class BaseController implements IController
 
         foreach ($attributes as $attribute)
         {
-          $instance = $attribute->newInstance();
+          $attributeInstance = $attribute->newInstance();
 
-          $path = '/' . $this->prefix . '/' . $instance->path;
+          $path = '/' . $this->prefix . '/' . $attributeInstance->path;
           $path = str_replace('///', '/', $path);
           $path = str_replace('//', '/', $path);
           if ($path === '/')
@@ -136,9 +149,9 @@ class BaseController implements IController
 
           $canActivate = preg_match( pattern: $pattern, subject: '/' . $subject );
 
-          if ($canActivate && $instance->canActivate)
+          if ($canActivate && $attributeInstance->canActivate)
           {
-            $handler = new Handler( method: $method, attribute: $instance);
+            $handler = new Handler( method: $method, attribute: $attributeInstance);
             break;
           }
         }
