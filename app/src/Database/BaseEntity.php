@@ -176,7 +176,22 @@ class BaseEntity implements IEntity
 
     foreach ($columns as $index => $column)
     {
-      $value = is_numeric($index) ? $this->$column : $this->$index;
+      $propName = is_numeric($index) ? $column : $index;
+      $value = $this->$propName;
+      if (empty($value))
+      {
+        $columnAttribute = new ReflectionProperty(get_class($this), $propName);
+        $attributes = $columnAttribute->getAttributes();
+
+        foreach ($attributes as $attribute)
+        {
+          $attrInstance = $attribute->newInstance();
+          if (isset($attrInstance->defaultValue) && !empty($attrInstance->defaultValue))
+          {
+            $value = $attrInstance->defaultValue;
+          }
+        }
+      }
       array_push($values, $value);
     }
 
