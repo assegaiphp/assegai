@@ -81,7 +81,7 @@ class BaseRepository implements IRepository
     return false;
   }
 
-  public function find(string $conditions): array
+  public function find(?string $conditions): array
   {
     $entities = [];
 
@@ -93,13 +93,32 @@ class BaseRepository implements IRepository
         fetchMode: $this->fetchMode
       );
 
-      $result = 
+      $statement = 
         $this->query
           ->select()
           ->all()
-          ->from(tableReferences: $this->tableName)
-          ->where(condition: $conditions)
-          ->and(condition: '`deleted_at` IS NOT NULL')->execute();
+          ->from(tableReferences: $this->tableName);
+      
+      if (!empty($conditions))
+      {
+        $statement = $statement->where(condition: $conditions)->and(condition: '`deleted_at` IS NOT NULL');
+      }
+      else
+      {
+        $statement = $statement->where(condition: '`deleted_at` IS NOT NULL');
+      }
+
+      if (isset($_GET['limit']))
+      {
+        $limit = $_GET['limit'];
+        $skip = isset($_GET['skip']) ? $_GET['skip'] : 0;
+        $statement->limit(limit: $limit, offset: $skip);
+      }
+
+      # TODO: Implement orderBy
+
+      $result = $statement->execute();
+
       if ($result->isOK())
       {
         $entities = $result->value();

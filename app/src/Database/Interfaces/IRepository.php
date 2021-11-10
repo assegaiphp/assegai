@@ -19,7 +19,7 @@ interface IRepository {
    * @return array Returns a list of entities that meet the specified 
    * conditions.
    */
-  public function find(string $conditions): array;
+  public function find(?string $conditions): array;
 
   /**
    * Finds all entities in the repository.
