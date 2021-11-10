@@ -39,6 +39,7 @@ final class SQLInsertIntoStatement
   {
     $queryString = "VALUES(";
     $separator = ', ';
+    $quoteExemptions = ['CURRENT_TIMESTAMP'];
 
     foreach ($valuesList as $index => $value)
     {
@@ -46,7 +47,11 @@ final class SQLInsertIntoStatement
       {
         $value = password_hash($value, $this->query->passwordHashAlgorithm());
       }
-      $queryString .= is_numeric($value) ? "${value}${separator}" : "'${value}'${separator}";
+      if (is_bool($value))
+      {
+        $value = (int)$value;
+      }
+      $queryString .= is_numeric($value) || in_array($value, $quoteExemptions) ? "${value}${separator}" : "'${value}'${separator}";
     }
 
     $queryString = trim(string: $queryString, characters: $separator) . ") ";
