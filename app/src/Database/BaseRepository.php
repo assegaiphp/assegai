@@ -93,7 +93,13 @@ class BaseRepository implements IRepository
         fetchMode: $this->fetchMode
       );
 
-      $result = $this->query->select()->all()->from(tableReferences: $this->tableName)->where(condition: 'deleted_at IS NOT NULL')->execute();
+      $result = 
+        $this->query
+          ->select()
+          ->all()
+          ->from(tableReferences: $this->tableName)
+          ->where(condition: $conditions)
+          ->and(condition: '`deleted_at` IS NOT NULL')->execute();
       if ($result->isOK())
       {
         $entities = $result->value();
