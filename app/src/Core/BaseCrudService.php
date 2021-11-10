@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
 
-use LifeRaft\Core\Attributes\Injectable;
-use LifeRaft\Database\Interfaces\IEntity;
-use LifeRaft\Database\Interfaces\IRepository;
+use Assegai\Core\Attributes\Injectable;
+use Assegai\Database\Interfaces\IEntity;
+use Assegai\Database\Interfaces\IRepository;
 use stdClass;
 
 /**

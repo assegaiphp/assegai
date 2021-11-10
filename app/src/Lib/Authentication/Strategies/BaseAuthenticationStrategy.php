@@ -1,10 +1,10 @@
 <?php
 
-namespace LifeRaft\Lib\Authentication\Strategies;
+namespace Assegai\Lib\Authentication\Strategies;
 
-use LifeRaft\Core\App;
-use LifeRaft\Core\Interfaces\IService;
-use LifeRaft\Lib\Authentication\Interfaces\IAuthStrategy;
+use Assegai\Core\App;
+use Assegai\Core\Interfaces\IService;
+use Assegai\Lib\Authentication\Interfaces\IAuthStrategy;
 
 class BaseAuthenticationStrategy implements IAuthStrategy
 {
