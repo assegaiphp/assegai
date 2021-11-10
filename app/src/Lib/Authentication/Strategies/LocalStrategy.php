@@ -2,13 +2,51 @@
 
 namespace LifeRaft\Lib\Authentication\Strategies;
 
-use LifeRaft\Lib\Authentication\Interfaces\IAuthStrategy;
+use LifeRaft\Core\App;
+use LifeRaft\Core\Config;
+use LifeRaft\Core\Interfaces\IService;
+use LifeRaft\Database\Interfaces\IEntity;
+use LifeRaft\Modules\Users\UsersService;
 
-final class LocalStrategy implements IAuthStrategy
+final class LocalStrategy extends BaseAuthenticationStrategy
 {
+  public function __construct(
+    protected UsersService $usersService,
+    protected ?string $name = '',
+    protected ?App $app = null,
+    protected ?IService $authenticationService = null,
+  )
+  {
+    parent::__construct(
+      name: $name,
+      app: $app,
+      authenticationService: $this->authenticationService,
+      entityService: $this->usersService
+    );
+  }
+
   public function authenticate(mixed $data, mixed $params): mixed
   {
-    
+
+  }
+
+  public function validate(string $username, string $password): IEntity|false
+  {
+    $entityClassName = Config::get('authentication')['jwt']['entityClassName'];
+    $entity = new $entityClassName;
+
+    $usernameField = isset(Config::get('authentication')['jwt']['usernameField'])
+      ? Config::get('authentication')['jwt']['usernameField']
+      : 'username';
+
+    $result = $this->usersService->findOne(conditions: "`$usernameField`='$username'");
+
+
+    // $this->usersService->find
+    exit(var_export($result, true));
+
+    return $entity;
+    return false;
   }
 }
 

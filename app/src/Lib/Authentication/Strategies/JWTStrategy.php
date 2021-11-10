@@ -8,16 +8,21 @@ use LifeRaft\Core\Interfaces\IService;
 use LifeRaft\Database\Interfaces\IEntity;
 use LifeRaft\Modules\Users\UsersService;
 
-final class LocalStrategy extends BaseAuthenticationStrategy
+final class JWTStrategy extends BaseAuthenticationStrategy
 {
   public function __construct(
-    protected IService $entityService,
+    protected UsersService $usersService,
     protected ?string $name = '',
     protected ?App $app = null,
     protected ?IService $authenticationService = null,
-    protected ?UsersService $usersService = null
   )
   {
+    parent::__construct(
+      name: $name,
+      app: $app,
+      authenticationService: $this->authenticationService,
+      entityService: $this->usersService
+    );
   }
 
   public function authenticate(mixed $data, mixed $params): mixed
@@ -27,7 +32,7 @@ final class LocalStrategy extends BaseAuthenticationStrategy
 
   public function validate(string $username, string $password): IEntity
   {
-    $entityClassName = Config::get('authentication')['jwt']('entityClassName');
+    $entityClassName = Config::get('authentication')['jwt']['entityClassName'];
     $entity = new $entityClassName;
 
     // $this->usersService->find
