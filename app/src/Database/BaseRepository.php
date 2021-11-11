@@ -96,7 +96,7 @@ class BaseRepository implements IRepository
       $statement = 
         $this->query
           ->select()
-          ->all()
+          ->all(columns: $this->entity::columns(exclude: ['password']))
           ->from(tableReferences: $this->tableName);
       
       if (!empty($conditions))
@@ -194,7 +194,12 @@ class BaseRepository implements IRepository
     $columns = $entity->columns(exclude: $this->readOnlyFields);
     $values = $entity->values(exclude: $this->readOnlyFields);
 
-    $result = $this->query->insertInto(tableName: $this->tableName)->singleRow(columns: $columns)->values( valuesList: $values )->execute();
+    $result =
+      $this->query
+        ->insertInto(tableName: $this->tableName)
+        ->singleRow(columns: $columns)
+        ->values( valuesList: $values )
+        ->execute();
 
     if ($result->isOK())
     {
