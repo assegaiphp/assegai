@@ -49,6 +49,7 @@ return [
       'audience'                => 'https://yourdomain.com',
       'issuer'                  => 'assegai',
       'lifespan'                => '1 hour',
+      'entityName'              => 'user',
       'entityClassName'         => Assegai\Modules\Users\UserEntity::class,
       'entityIdFieldname'       => 'email',
       'entityPasswordFieldname' => 'password',
