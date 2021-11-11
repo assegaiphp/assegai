@@ -6,35 +6,35 @@ return [
   'default_password_hash_algo' => PASSWORD_DEFAULT,
   'databases' => [
     'mysql' => [
-      'navigator_local_db' => [
+      'db_name' => [
         'host'      => 'localhost',
-        'user'      => 'navigator',
-        'password'  => '2m80tina',
-        'name'      => 'navigator_local_db',
+        'user'      => '',
+        'password'  => '',
+        'name'      => 'db_name',
         'port'      => 3306,
       ]
     ],
     'mariadb' => [
-      'navigator_local_db' => [
+      'db_name' => [
         'host'      => 'localhost',
-        'user'      => 'navigator',
-        'password'  => '2m80tina',
-        'name'      => 'navigator_local_db',
+        'user'      => '',
+        'password'  => '',
+        'name'      => 'db_name',
         'port'      => 3306,
       ]
     ],
     'pgsql' => [
-      'navigator_local_db' => [
+      'db_name' => [
         'host'      => 'localhost',
-        'user'      => 'navigator',
-        'password'  => '2m80tina',
-        'name'      => 'navigator_local_db',
+        'user'      => '',
+        'password'  => '',
+        'name'      => 'db_name',
         'port'      => 5432,
       ]
     ],
     'sqlite' => [
-      'assegai_test' => [
-        'path' => '.data/assegai_test.sq3'
+      'db_name' => [
+        'path' => '.data/db_name.sq3'
       ]
     ],
     'mongodb' => [],
