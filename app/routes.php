@@ -1,18 +1,20 @@
 <?php
 
-use LifeRaft\Modules\Home;
-use LifeRaft\Modules\Queries;
-use LifeRaft\Modules\Users;
+use Assegai\Core\Routing\Route;
+use Assegai\Modules\Home\HomeModule;
+use Assegai\Modules\Tests\TestsModule;
+use Assegai\Modules\Users\UsersModule;
+use Assegai\Modules\Authentication\AuthenticationModule;
 
 return [
-  '/' => Home\HomeController::class,
-  'authentication' => Queries\QueriesController::class,
-  'trackings' => Queries\QueriesController::class,
-  'queries' => Queries\QueriesController::class,
-  'people' => Queries\QueriesController::class,
-  'subjects' => Queries\QueriesController::class,
-  'followings' => Queries\QueriesController::class,
-  'users' => Users\UsersController::class,
+  new Route(path: '/', module: HomeModule::class),
+  new Route(path: 'trackings', module: HomeModule::class),
+  new Route(path: 'queries', module: HomeModule::class),
+  new Route(path: 'people', module: HomeModule::class),
+  new Route(path: 'subjects', module: HomeModule::class),
+  new Route(path: 'tests', module: TestsModule::class),
+  new Route(path: 'users', module: UsersModule::class),
+  new Route(path: 'authentication', module: AuthenticationModule::class),
 ];
 
 ?>

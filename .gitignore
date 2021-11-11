@@ -6,5 +6,10 @@ logs/*
 storage/audio/*
 storage/images/*
 storage/videos/*
-.idea
-.vscode
+.idea/
+.vscode/
+.data/
+
+/vendor/
+/docs/
+composer-installer

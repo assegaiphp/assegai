@@ -1,21 +1,37 @@
 <?php
 
-namespace LifeRaft\Modules\Home;
+namespace Assegai\Modules\Home;
 
-use LifeRaft\Core\Controller;
-use LifeRaft\Core\Response;
+use Assegai\Core\Attributes\Controller;
+use Assegai\Core\BaseController;
+use Assegai\Core\Attributes\Get;
+use Assegai\Core\RequestMethod;
+use Assegai\Core\Responses\Response;
 
-class HomeController extends Controller
+#[Controller(forbiddenMethods: [
+  RequestMethod::DELETE,
+  RequestMethod::HEAD,
+  RequestMethod::PATCH,
+  RequestMethod::POST,
+  RequestMethod::PUT,
+])]
+class HomeController extends BaseController
 {
-  public function handle_request(array $url): Response
-  {
-    // $data = [
-    //   'name' => 'Social Navigator API.',
-    //   'description' => 'Social Navigator powered by Life Raft API'
-    // ];
-    $data = $_SERVER;
+  public function __construct(
+    private HomeService $homeService
+  ) { }
 
-    return new Response( data: $data, data_only: true );
+  #[Get]
+  public function default(): Response
+  {
+    $data = [
+      'name'        => 'Social Navigator API.',
+      'description' => 'Social Navigator powered by Life Raft API',
+      'version'     => '1.0.0',
+      'copyright'   => '© ' . date('Y') . ' Life Raft',
+    ];
+
+    return new Response( data: $data, dataOnly: true );
   }
 }
 

@@ -1,107 +1,149 @@
 <?php
 
-namespace LifeRaft\Core;
+namespace Assegai\Core;
+
+use Assegai\Core\Interfaces\IController;
+use Assegai\Core\Interfaces\IModule;
+use Assegai\Core\Responses\BadRequestErrorResponse;
+use Assegai\Core\Responses\HttpStatus;
+use Assegai\Core\Responses\Response;
+use Assegai\Core\Routing\Router;
+use Assegai\Modules\Home\HomeModule;
+use ReflectionClass;
 
 class App
 {
-    private string $path = '/';
-    private array $url = [];
-    private Request $request;
+  private string $path = '/';
+  private array $url = [];
 
-    public function __construct(
-        private array $config = []
-    ) {
-        $this->request = new Request( app: $this );
-        if ($this->request->method() === RequestMethod::OPTIONS)
-        {
-            http_response_code(HttpStatus::OK()->code());
-            exit;
-        }
-    }
-
-    /**
-     * Gets or sets the application configuration.
-     */
-    public function config(array|null $config = null): array
+  public function __construct(
+    private Request $request,
+    private Router $router,
+    private array $config = [],
+  ) {
+    $request->set_app(app: $this);
+    if ($this->request->method() === RequestMethod::OPTIONS)
     {
-        if (!empty($config))
-        {
-            $this->config = $config;
-        }
-
-        return $this->config = !is_null($config) ? $config : [];
+      http_response_code(HttpStatus::OK()->code());
+      exit;
     }
+  }
 
-    public function run(): void
+  public function request(): Request
+  {
+    return $this->request;
+  }
+
+  /**
+   * Gets or sets the application configuration.
+   */
+  public function config(array|null $config = null): array
+  {
+    if (!empty($config))
     {
-        $this->parse_url();
-        $controller = $this->route();
-        $response = $controller->handle_request( url: $this->url );
-        header('Content-Type: ' . $response->type());
-        echo $response;
-        exit;
+      $this->config = $config;
     }
 
-    private function parse_url(): void
+    return $this->config = !is_null($config) ? $config : [];
+  }
+
+  public function run(): void
+  {
+    $this->parseURL();
+
+    $activatedModule      = $this->getActivatedModule();
+    $activatedController  = $this->getActivatedController( module: $activatedModule );
+    $response             = $activatedController->handleRequest( url: $this->url );
+
+    $this->respond(response: $response);  
+  }
+
+  public function respond(Response $response): void
+  {
+    exit($response);
+  }
+
+  private function parseURL(): void
+  {
+    if (isset($_GET['path']) && !empty($_GET['path']))
     {
-        if (isset($_GET['path']) && !empty($_GET['path']))
-        {
-            $this->path = $_GET['path'];
-        }
-        else
-        {
-            $this->path = '/';
-        }
-
-        $this->url = explode('/', $this->path);
-
-        if (empty($this->url) || $this->url[0] == 'index.php')
-        {
-            $this->url = ['home'];
-        }
+      $this->path = $_GET['path'];
     }
-
-    /**
-     * Returns the requested path.
-     * 
-     * @return string Returns the requested path.
-     */
-    public function path(): string
+    else
     {
-        return $this->path;
+      $this->path = '/';
     }
-    /**
-     * Returns the requested url.
-     * 
-     * @return string Returns the requested url.
-     */
-    public function url(): array
+
+    $this->url = explode('/', $this->path);
+
+    if (empty($this->url) || $this->url[0] == 'index.php')
     {
-        return $this->url;
+      $this->url = ['home'];
     }
+  }
 
-    /**
-     * Returns a `LifeRaft\Core\Controller` that best matches the requested endpoint
-     */
-    private function route(): Controller
+  /**
+   * Returns the requested path.
+   * 
+   * @return string Returns the requested path.
+   */
+  public function path(): string
+  {
+    return $this->path;
+  }
+  /**
+   * Returns the requested url.
+   * 
+   * @return string Returns the requested url.
+   */
+  public function url(): array
+  {
+    return $this->url;
+  }
+
+  private function getActivatedModule(): IModule
+  {
+    # Load routes
+    $routes = require_once('app/routes.php');
+
+    if (!is_array($routes))
     {
-        $controller = null;
-
-        # Get route base
-        $endpoint = $this->url()[0];
-
-        # Load routes
-        $routes = require_once('app/routes.php');
-        $route_controller = isset($routes['/']) ? $routes['/'] : LifeRaft\Modules\Home\HomeController::class;
-
-        # If route base matches registered route call controller else call Home controller
-        if (isset($routes[$endpoint]))
-        {
-            $route_controller = $routes[$endpoint];
-        }
-
-        return new $route_controller( request: $this->request );
+      exit(new BadRequestErrorResponse(message: 'Invalid route'));
     }
+
+    $this->router->setRoutes(routes: $routes);
+
+    $this->router->route();
+    $activatedRoute = $this->router->activatedRoute();
+
+    if (is_null($activatedRoute))
+    {
+      return new HomeModule();
+    }
+
+    return $activatedRoute->module();
+  }
+
+  /**
+   * 
+   * Returns a `Assegai\Core\IController` that best matches the requested endpoint
+   */
+  private function getActivatedController(IModule $module): IController
+  {
+    $activatedController = $module->rootControllerName();
+    
+    if (is_null($activatedController))
+    {
+      Debugger::log_error('Missing contrller: ' . get_called_class());
+      exit(new BadRequestErrorResponse());
+    }
+
+    $module->resolveInjectables();
+
+    $dependencies = $module->getDependencies(classname: $activatedController);
+
+    $reflection = new ReflectionClass($activatedController);
+
+    return $reflection->newInstanceArgs( args: $dependencies );
+  }
 }
-
-?>

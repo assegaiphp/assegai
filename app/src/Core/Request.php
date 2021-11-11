@@ -1,29 +1,20 @@
 <?php
 
-namespace LifeRaft\Core;
-
-class RequestMethod
-{
-  const GET = 'GET';
-  const POST = 'POST';
-  const PUT = 'PUT';
-  const PATCH = 'PATCH';
-  const DELETE = 'DELETE';
-  const OPTIONS = 'OPTIONS';
-  const HEAD = 'HEAD';
-}
+namespace Assegai\Core;
 
 /**
- * 
+ * The **Request** class represents the HTTP request and has properties for 
+ * the request query string, parameters, HTTP headers, and body
  */
 class Request
 {
-  protected mixed $body;
-  protected array $all_headers = [];
+  protected mixed $body = null;
+  protected array $allHeaders = [];
+  protected ?App $app = null;
 
-  public function __construct(
-    public App $app
-  ) {
+  protected static Request $instance;
+
+  public function __construct() {
     $this->body = match ($this->method()) {
       RequestMethod::GET      => $_GET,
       RequestMethod::POST     => !empty($_POST) ? $_POST : ( !empty($_FILES) ? $_FILES : file_get_contents('php://input') ),
@@ -43,19 +34,39 @@ class Request
     {
       if (str_starts_with($key, 'HTTP_'))
       {
-        $this->all_headers[$key] = $value;
+        $this->allHeaders[$key] = $value;
       }
+    }
+
+    if (isset(Request::$instance) || empty(Request::$instance))
+    {
+      Request::$instance = $this;
     }
   }
 
-  public function to_array(): array
+  public static function instance(): Request
+  {
+    return Request::$instance;
+  }
+
+  public function app(): App
+  {
+    return $this->app;
+  }
+
+  public function set_app(App $app): void
+  {
+    $this->app = $app;
+  }
+
+  public function toArray(): array
   {
     return [
       'app'       => $this->app,
       'body'      => $this->body(),
       'cookies'   => $this->cookies(),
       'fresh'     => $this->fresh(),
-      'headers'   => $this->all_headers(),
+      'headers'   => $this->allHeaders(),
       'host_name' => $this->host_name(),
       'method'    => $this->method(),
       'remote_ip' => $this->remote_ip(),
@@ -64,22 +75,22 @@ class Request
     ];
   }
 
-  public function to_json(): string
+  public function toJSON(): string
   {
-    return json_encode($this->to_array());
+    return json_encode($this->toArray());
   }
 
   public function __toString(): string
   {
-    return $this->to_json();
+    return $this->toJSON();
   }
 
   public function __serialize(): array
   {
-    return $this->to_array();
+    return $this->toArray();
   }
 
-  public function header(string $name): string|null
+  public function header(string $name): string
   {
     $key = strtoupper($name);
 
@@ -93,17 +104,32 @@ class Request
       return $_SERVER[$key];
     }
 
-    return null;
+    return '';
   }
 
-  public function all_headers(): array
+  public function allHeaders(): array
   {
-    return $this->all_headers;
+    return $this->allHeaders;
   }
 
   public function uri(): string
   {
-    return $_SERVER['REQUEST_URI']; 
+    return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/'; 
+  }
+
+  public function path(): string
+  {
+    return isset($_GET['path']) ? $_GET['path'] : '/';
+  }
+
+  public function limit(): int
+  {
+    return isset($_GET['limit']) ? $_GET['limit'] : Config::get('request')['DEFAULT_LIMIT'];
+  }
+
+  public function skip(): int
+  {
+    return isset($_GET['skip']) ? $_GET['skip'] : Config::get('request')['DEFAULT_SKIP'];
   }
 
   public function body(): mixed
@@ -123,17 +149,17 @@ class Request
 
   public function host_name(): string
   {
-    return $_SERVER['HTTP_HOST']; 
+    return isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost'; 
   }
 
   public function method(): string
   {
-    return $_SERVER['REQUEST_METHOD'];
+    return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
   }
 
   public function remote_ip(): string
   {
-    return $_SERVER['REMOTE_ADDR'];
+    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '::1';
   }
 
   public function remote_ips(): string
@@ -143,7 +169,12 @@ class Request
 
   public function protocol(): string
   {
-    return $_SERVER['REQUEST_SCHEME'];
+    return isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
+  }
+
+  public function query(): string
+  {
+    return isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
   }
 }
 

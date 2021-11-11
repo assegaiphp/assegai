@@ -6,6 +6,10 @@ Header set Access-Control-Allow-Origin "*"
 
 RewriteEngine On
 
+# Turn off directory slash so requests aren't rewritten as GET requests
+DirectorySlash Off
+SetHandler index.php
+
 # Base path of the app
 RewriteBase /
 
@@ -13,3 +17,8 @@ RewriteCond %{REQUEST_FILENAME}% !-d
 RewriteCond %{REQUEST_FILENAME}% !-f
 
 RewriteRule ^(.+)$ index.php?path=$1 [QSA,L]
+
+<Files ~ ".gitignore$">
+  Order allow,deny
+  Deny from all
+</Files>

@@ -1,0 +1,8 @@
+#!/bin/bash
+test_name="tests"
+
+if test ! -z $1 ; then
+  test_name=$1
+fi
+
+./vendor/bin/phpunit --testdox $test_name ${@:1}
