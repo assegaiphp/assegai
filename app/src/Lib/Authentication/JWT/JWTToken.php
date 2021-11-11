@@ -11,8 +11,16 @@ final class JWTToken implements IToken
   public function __construct(
     private JWTHeader $header,
     private JWTPayload $payload,
-  )
+  ) { }
+
+  public function header(): JWTHeader
   {
+    return $this->header;
+  }
+
+  public function payload(): JWTPayload
+  {
+    return $this->payload;
   }
 
   public function value(): string

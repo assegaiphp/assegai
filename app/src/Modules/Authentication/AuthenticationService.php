@@ -26,16 +26,6 @@ class AuthenticationService extends BaseService
     parent::__construct();
   }
 
-  public function findAll(): Result
-  {
-    return new Result();
-  }
-
-  public function find(int $id): Result
-  {
-    return new Result();
-  }
-
   public function create(mixed $entity): Result
   {
     $strategy = Config::get('authentication')['default_strategy'];
@@ -91,23 +81,12 @@ class AuthenticationService extends BaseService
 
     return new Result(data: [
       'accessToken' => $token,
+      'authentication' => [
+        'strategy' => $strategyType,
+        'payload' => $token->payload()->toArray()
+      ],
       'user' => $data
     ], isOK: $isOK);
-  }
-
-  public function update(): Result
-  {
-    return new Result();
-  }
-
-  public function patch(): Result
-  {
-    return new Result();
-  }
-
-  public function delete(): Result
-  {
-    return new Result();
   }
 
   public function validateUser(string $username, string $password): Result

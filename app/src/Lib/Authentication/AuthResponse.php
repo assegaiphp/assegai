@@ -2,15 +2,20 @@
 
 namespace Assegai\Lib\Authentication;
 
+use Assegai\Core\Config;
 use Assegai\Core\Responses\HttpStatusCode;
 use Assegai\Core\Responses\Response;
 use Assegai\Core\Responses\ResponseType;
 use Assegai\Core\Result;
+use Assegai\Database\Interfaces\IEntity;
+use stdClass;
 
 final class AuthResponse extends Response
 {
   private string $accessToken = '';
   private array $authentication = [];
+  private null|IEntity|stdClass $entity = null;
+  private string $entityName = 'user';
 
   public function __construct(
     protected mixed $data = [],
@@ -27,6 +32,21 @@ final class AuthResponse extends Response
       },
       default => $this->data
     };
+
+    if (isset($this->data['authentication']))
+    {
+      $this->authentication = $this->data['authentication'];
+    }
+    
+    $this->entityName =
+      isset(Config::get('authentication')['jwt']['entityName'])
+        ? Config::get('authentication')['jwt']['entityName']
+        : 'user';
+
+    if ($this->data instanceof Result)
+    {
+      $this->entity = $this->data[$this->entityName];
+    }
   }
 
   public function accessToken(): string
@@ -37,8 +57,9 @@ final class AuthResponse extends Response
   public function toArray(): array
   {
     return [
-      'accessToken' => $this->accessToken,
-      'authentication' => $this->authentication,
+      'accessToken'     => $this->accessToken,
+      'authentication'  => $this->authentication,
+      $this->entityName => json_decode($this->entity->toJSON())
     ];
   }
 
