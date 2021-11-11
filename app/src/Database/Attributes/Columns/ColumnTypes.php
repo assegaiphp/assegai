@@ -1,7 +1,7 @@
 <?php
 
 $types = [];
-$workingDirectory = scandir('.');
+$workingDirectory = scandir('app/src/Database/Attributes/Columns/');
 $columnClassFilesnames = array_slice($workingDirectory, 2);
 
 foreach ($columnClassFilesnames as $filename)

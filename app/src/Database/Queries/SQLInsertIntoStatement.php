@@ -29,7 +29,26 @@ final class SQLInsertIntoStatement
     if (!empty($columns))
     {
       $queryString = "(" . implode(', ', $columns) . ") ";
-      $this->hashableIndexes = array_keys( array_intersect( $columns, $this->query->passwordHashFields() ) );
+      
+      $columnIndex = 0;
+      foreach ($columns as $index => $column)
+      {
+        if (is_numeric($index))
+        {
+          if(in_array($column, $this->query->passwordHashFields()))
+          {
+            array_push($this->hashableIndexes, $index);
+          }
+        }
+        else
+        {
+          if (in_array($index, $this->query->passwordHashFields()))
+          {
+            array_push($this->hashableIndexes, $columnIndex);
+          }
+        }
+        ++$columnIndex;
+      }
     }
 
     $this->query->appendQueryString($queryString);
