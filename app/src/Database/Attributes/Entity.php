@@ -20,7 +20,8 @@ class Entity
    * If it will be set to false then schema sync will and migrations ignore this entity.
    * By default schema synchronization is enabled for all entities.
    * @param null|bool $withRowId If set to 'true' this option disables Sqlite's default behaviour of secretly creating
-   * an integer primary key column named 'rowid' on table creation. 
+   * an integer primary key column named 'rowid' on table creation.
+   * @param null|array $protected A list of property names that will be ommitted during object serialization. Default = ['password'].
    * @see https://www.sqlite.org/withoutrowid.html.
    */
   public function __construct(
@@ -31,6 +32,7 @@ class Entity
     public ?string $schema = null,
     public ?bool $synchronize = true,
     public ?bool $withRowId = false,
+    public ?array $protected = ['password']
   ) { }
 }
 

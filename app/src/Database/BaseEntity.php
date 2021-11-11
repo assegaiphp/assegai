@@ -15,14 +15,15 @@ use stdClass;
 #[Entity]
 class BaseEntity implements IEntity
 {
-  protected array $representations = [];
-  protected ?string $tableName = null;
-  protected ?string $orderBy = null;
-  protected ?string $engine = null;
-  protected ?string $database = null;
-  protected ?string $schema = null;
-  protected ?bool $synchronize = true;
-  protected ?bool $withRowId = false;
+  protected array $representations  = [];
+  protected ?string $tableName      = null;
+  protected ?string $orderBy        = null;
+  protected ?string $engine         = null;
+  protected ?string $database       = null;
+  protected ?string $schema         = null;
+  protected ?bool $synchronize      = true;
+  protected ?bool $withRowId        = false;
+  protected array $protected        = [];
 
   public function __construct()
   {
@@ -31,7 +32,7 @@ class BaseEntity implements IEntity
 
     foreach ($attributes as $entityAttribute)
     {
-      $instance = $entityAttribute->newInstance();
+      $instance           = $entityAttribute->newInstance();
       $this->tableName    = $instance->tableName;
       $this->orderBy      = $instance->orderBy;
       $this->engine       = $instance->engine;
@@ -39,6 +40,7 @@ class BaseEntity implements IEntity
       $this->schema       = $instance->schema;
       $this->synchronize  = $instance->synchronize;
       $this->withRowId    = $instance->withRowId;
+      $this->protected    = $instance->protected;
     }
   }
 
@@ -222,13 +224,27 @@ class BaseEntity implements IEntity
 
   public function toArray(array $exclude = []): array
   {
+    $columnAttributeTypes = require('app/src/Database/Attributes/Columns/ColumnTypes.php');
     $vars = get_object_vars($this);
     $array = [];
+    if (!empty($this->protected))
+    {
+      $exclude = array_merge($exclude, $this->protected);
+    }
     foreach ($vars as $prop => $value)
     {
       if (!in_array($prop, $exclude))
       {
-        $array[$prop] = $value;
+        $propReflection = new ReflectionProperty(class: $this, property: $prop);
+        $propAttributes = $propReflection->getAttributes();
+
+        foreach($propAttributes as $attribute)
+        {
+          if (in_array($attribute->getName(), $columnAttributeTypes))
+          {
+            $array[$prop] = $value;
+          }
+        }
       }
     }
     return $array;
