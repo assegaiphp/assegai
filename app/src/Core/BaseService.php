@@ -28,4 +28,3 @@ class BaseService implements IService
   }
 }
 
-?>

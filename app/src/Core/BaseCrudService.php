@@ -30,10 +30,9 @@ class BaseCrudService extends BaseService
   /**
    * Finds one entity that meets the specified conditions.
    * 
-   * @param string $conditions The conditions by which to find the entity.
+   * @param string $conditions The conditions for finding the entity.
    * 
-   * @return null|IEntity|stdClass Returns an instance of the entity if found 
-   * otherwise `null`.
+   * @return Result Returns a `Result` object.
    */
   public function findOne(string $conditions): Result
   {
@@ -43,11 +42,31 @@ class BaseCrudService extends BaseService
   }
 
   /**
-   * Persists a range of new entities to the repository store.   * 
-   * @param array $entities The list entities to be added/created.
-   * 
-   * @return array|false Returns a list of successfully added entities 
-   * or `FALSE` otherwise.
+   * Updates a single entity identified by `$id`.
+   *
+   * @param IEntity|array $entity An object or associative array containing the changes to be made.
+   *
+   * @return Result Returns a `Result` object.
+   */
+  public function fullUpdate(IEntity|array $entity): Result
+  {
+    $id = is_array($entity)
+      ? ($entity['id'] ?? 0)
+      : ($entity->id ?? 0);
+    if (is_array($entity))
+    {
+      $entity = json_decode(json_encode($entity));
+    }
+    $result = $this->repository->update(id: $id, changes: $entity);
+
+    return new Result(data: [$result]);
+  }
+
+  /**
+   * Persists a range of new entities to the repository store.   *
+   * @param IEntity $entity The entity to be added/created.
+   *
+   * @return Result Returns a `Result` object.
    */
   public function create(IEntity $entity): Result
   {
@@ -61,34 +80,13 @@ class BaseCrudService extends BaseService
   /**
    * Updates a single entity identified by `$id`.
    * 
-   * @param IEntity $entity An object containing the changes to be made.
-   * 
-   * @return IEntity|stdClass|false Returns an instance of the updated entity 
-   * if successful or `FALSE` otherwise.
-   */
-  public function fullUpdate(IEntity|array $entity): Result
-  {
-    $id = is_array($entity) ? (isset($entity['id']) ? $entity['id'] : 0) : (isset($entity->id) ? $entity->id : 0);
-    if (is_array($entity))
-    {
-      $entity = json_decode(json_encode($entity));
-    }
-    $result = $this->repository->update(id: $id, changes: $entity);
-
-    return new Result(data: [$result]);
-  }
-
-  /**
-   * Updates a single entity identified by `$id`.
-   * 
-   * @param IEntity $changes An object containing the changes to be made.
-   * 
-   * @return IEntity|stdClass|false Returns an instance of the updated entity 
-   * if successful or `FALSE` otherwise.
+   * @param stdClass|array $changes An object or associative array containing the changes to be made.
+   *
+   * @return Result Returns a `Result` object.
    */
   public function partialUpdate(stdClass|array $changes): Result
   {
-    $id = is_array($changes) ? (isset($changes['id']) ? $changes['id'] : 0) : (isset($changes->id) ? $changes->id : 0);
+    $id = is_array($changes) ? ($changes['id'] ?? 0) : ($changes->id ?? 0);
     if (is_array($changes))
     {
       $changes = json_decode(json_encode($changes));
@@ -102,17 +100,19 @@ class BaseCrudService extends BaseService
    * Restores a soft removed entity identified by `$id`.
    * 
    * @param int $id The id of the removed entity to be restored.
-   * 
-   * @return IEntity|stdClass|false Returns an instance of the restored enity 
-   * if successful or false otherwise.
+   *
+   * @return Result Returns a `Result` object.
    */
   public function restore(int $id): Result
   {
-    if (method_exists($this->repository, 'restore')) {
+    if (method_exists($this->repository, 'restore'))
+    {
       $result = $this->repository->restore(id: $id);
       $isOk = is_bool(value: $result) ? $result : true;
       return new Result(data: [$result], isOK: $isOk);
     }
+
+    return new Result(data: ['restore method does not exist'], isOK: false);
   }
 
   /**
@@ -120,9 +120,8 @@ class BaseCrudService extends BaseService
    * Instead, a deleted_at timestamp is set on the record.
    * 
    * @param int $id The id of the entity to be removed.
-   * 
-   * @return IEntity|stdClass|false Returns an instance of the removed enity 
-   * if successful or false otherwise.
+   *
+   * @return Result Returns a `Result` object.
    */
   public function softRemove(int $id): Result
   {
@@ -132,11 +131,11 @@ class BaseCrudService extends BaseService
   }
 
   /**
-   * Soft removes a range of entities from a given list of enity ids.
+   * Soft removes a range of entities from a given list of entity ids.
    * 
-   * @param array $ids The list of entity ids for the entities to be removed.
-   * 
-   * @return array|false Returns a list of ids if successful 
+   * @param array $idsList The list of entity ids for the entities to be removed.
+   *
+   * @return Result Returns a `Result` object.
    */
   public function softRemoveRange(array $idsList): Result
   {
@@ -148,10 +147,9 @@ class BaseCrudService extends BaseService
   /**
    * Removes an entity, identified by `$id`, from the repository store.
    * 
-   * @param int $ids The id of the entity to be removed.
-   * 
-   * @return Result Returns a `Result` object containing results of the 
-   * operation.
+   * @param int $id The id of the entity to be removed.
+   *
+   * @return Result Returns a `Result` object.
    */
   public function remove(int $id): Result
   {
@@ -164,7 +162,7 @@ class BaseCrudService extends BaseService
    * Removes a range of entity, identified by `$idsList` list, from the 
    * repository store.
    * 
-   * @param array $idsList The list of ids of the enitities to be removed.
+   * @param array $idsList The list of ids of the entities to be removed.
    * 
    * @return Result Returns a `Result` object containing results of the 
    * operation.
@@ -177,4 +175,3 @@ class BaseCrudService extends BaseService
   }
 }
 
-?>

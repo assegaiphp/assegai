@@ -9,7 +9,9 @@ use Assegai\Core\Responses\HttpStatus;
 use Assegai\Core\Responses\Response;
 use Assegai\Core\Routing\Router;
 use Assegai\Modules\Home\HomeModule;
+use JetBrains\PhpStorm\NoReturn;
 use ReflectionClass;
+use ReflectionException;
 
 class App
 {
@@ -47,6 +49,7 @@ class App
     return $this->config = !is_null($config) ? $config : [];
   }
 
+  #[NoReturn]
   public function run(): void
   {
     $this->parseURL();
@@ -58,6 +61,7 @@ class App
     $this->respond(response: $response);  
   }
 
+  #[NoReturn]
   public function respond(Response $response): void
   {
     exit($response);
@@ -92,9 +96,9 @@ class App
     return $this->path;
   }
   /**
-   * Returns the requested url.
+   * Returns the requested url as a list of tokens.
    * 
-   * @return string Returns the requested url.
+   * @return array Returns the requested url as list of tokens.
    */
   public function url(): array
   {
@@ -126,15 +130,18 @@ class App
 
   /**
    * 
-   * Returns a `Assegai\Core\IController` that best matches the requested endpoint
+   * Returns a `Assegai\Core\IController` that best matches the requested endpoint.
+   *
+   * @param IModule $module The module where the controller is declared.
+   * @return IController Returns the activated controller.
    */
   private function getActivatedController(IModule $module): IController
   {
     $activatedController = $module->rootControllerName();
-    
+
     if (is_null($activatedController))
     {
-      Debugger::log_error('Missing contrller: ' . get_called_class());
+      Debugger::log_error('Missing controller: ' . get_called_class());
       exit(new BadRequestErrorResponse());
     }
 
@@ -142,8 +149,15 @@ class App
 
     $dependencies = $module->getDependencies(classname: $activatedController);
 
-    $reflection = new ReflectionClass($activatedController);
+    try
+    {
+      $reflection = new ReflectionClass($activatedController);
 
-    return $reflection->newInstanceArgs( args: $dependencies );
+      return $reflection->newInstanceArgs( args: $dependencies );
+    }
+    catch (ReflectionException $exception)
+    {
+      exit($exception->getMessage());
+    }
   }
 }

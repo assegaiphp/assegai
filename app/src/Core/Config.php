@@ -3,6 +3,8 @@
 namespace Assegai\Core;
 
 
+use Exception;
+
 /**
  * The Config class provides methods for retrieving or setting configuration
  * values.
@@ -61,7 +63,7 @@ class Config
       Config::hydrate();
     }
 
-    return isset($GLOBALS['config'][$name]) ? $GLOBALS['config'][$name] : NULL;
+    return $GLOBALS['config'][$name] ?? NULL;
   }
 
   public static function set(string $name, mixed $value): void
@@ -79,7 +81,7 @@ class Config
    */
   public static function environment(string $name): mixed
   {
-    return isset($_ENV[$name]) ? $_ENV[$name] : NULL;
+    return $_ENV[$name] ?? NULL;
   }
 
   /**
@@ -115,18 +117,19 @@ class Config
       $config = json_decode($config);
     }
 
-    return isset($config->$name) ? $config->$name : NULL;
+    return $config->$name ?? NULL;
   }
 
   /**
    * @param string $value The new value to set the configuration to.
-   * 
+   *
+   * @throws Exception
    */
-  public static function setWworkspace(string $name, mixed $value): void
+  public static function setWorkspace(string $name, mixed $value): void
   {
     if (!file_exists('assegai.json'))
     {
-      throw new \Exception('Missing workspace config file: assegai.json');
+      throw new Exception('Missing workspace config file: assegai.json');
     }
 
     $config = file_get_contents('assegai.json');
@@ -144,4 +147,3 @@ class Config
   }
 }
 
-?>

@@ -6,6 +6,8 @@ use Assegai\Core\Attributes\Injectable;
 use Assegai\Core\Attributes\Module;
 use Assegai\Core\Interfaces\IModule;
 use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 
 class BaseModule implements IModule
 {
@@ -22,7 +24,7 @@ class BaseModule implements IModule
   {
     $this->id = uniqid(prefix: 'module-');
 
-    $reflection = new \ReflectionClass($this);
+    $reflection = new ReflectionClass($this);
     $attributes = $reflection->getAttributes(Module::class);
 
     foreach ($attributes as $attribute)
@@ -62,36 +64,44 @@ class BaseModule implements IModule
 
   public function resolveInjectables(): array
   {
-    foreach ($this->providers as $provider)
+    try
     {
-      $reflectionClass = new \ReflectionClass($provider);
-      $attributes = $reflectionClass->getAttributes(Injectable::class);
-
-      if (!empty($attributes))
+      foreach ($this->providers as $provider)
       {
-        $constructor = $reflectionClass->getConstructor();
-        $constructorParams = $constructor->getParameters();
-        $instanceArgs = [];
-        
-        foreach ($constructorParams as $param)
-        {
-          if (empty($param->getType()))
-          {
-            continue;
-          }
-          $paramClass = $param->getType()->getName();
-          $paramInstance = new $paramClass;
-          $paramReflection = new ReflectionClass(objectOrClass: $paramClass);
-          $paramAttributes = $paramReflection->getAttributes(Injectable::class);
-          if (!empty($paramAttributes))
-          {
-            $instanceArgs[$param->getName()] = $paramInstance;
-          }
-        }
+        $reflectionClass = new ReflectionClass($provider);
+        $attributes = $reflectionClass->getAttributes(Injectable::class);
 
-        $instance = $reflectionClass->newInstanceArgs(args: $instanceArgs);
-        $this->injectables[$reflectionClass->getName()] = $instance;
+        if (!empty($attributes))
+        {
+          $constructor = $reflectionClass->getConstructor();
+          $constructorParams = $constructor->getParameters();
+          $instanceArgs = [];
+
+          foreach ($constructorParams as $param)
+          {
+            if (empty($param->getType()))
+            {
+              continue;
+            }
+            $paramClass = $param->getType()->getName();
+            $paramInstance = new $paramClass;
+            $paramReflection = new ReflectionClass(objectOrClass: $paramClass);
+            $paramAttributes = $paramReflection->getAttributes(Injectable::class);
+            if (!empty($paramAttributes))
+            {
+              $instanceArgs[$param->getName()] = $paramInstance;
+            }
+          }
+
+          $instance = $reflectionClass->newInstanceArgs(args: $instanceArgs);
+          $this->injectables[$reflectionClass->getName()] = $instance;
+        }
       }
+
+    }
+    catch (ReflectionException $exception)
+    {
+      exit($exception->getMessage());
     }
 
     return !is_null($this->injectables) ? $this->injectables : [];
@@ -110,26 +120,33 @@ class BaseModule implements IModule
   public function getDependencies(string $classname): array
   {
     global $app;
-
-    $reflection = new \ReflectionClass($classname);
-    $constructor = $reflection->getConstructor();
     $dependencies = [];
 
-    if ($constructor instanceof \ReflectionMethod)
+    try
     {
-      $params = $constructor->getParameters();
+      $reflection = new ReflectionClass($classname);
+      $constructor = $reflection->getConstructor();
 
-      foreach ($params as $param)
+      if ($constructor instanceof ReflectionMethod)
       {
-        if ($param->getName() === 'request')
+        $params = $constructor->getParameters();
+
+        foreach ($params as $param)
         {
-          $dependencies['request'] = $app->request();
-        }
-        else if (isset($this->injectables()[$param->getType()->getName()]))
-        {
-          $dependencies[$param->getName()] = $this->injectables()[$param->getType()->getName()];
+          if ($param->getName() === 'request')
+          {
+            $dependencies['request'] = $app->request();
+          }
+          else if (isset($this->injectables()[$param->getType()->getName()]))
+          {
+            $dependencies[$param->getName()] = $this->injectables()[$param->getType()->getName()];
+          }
         }
       }
+    }
+    catch (ReflectionException $exception)
+    {
+      exit($exception->getMessage());
     }
 
     return $dependencies;
@@ -137,4 +154,3 @@ class BaseModule implements IModule
 
 }
 
-?>

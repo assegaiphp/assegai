@@ -17,4 +17,3 @@ return [
   new Route(path: 'authentication', module: AuthenticationModule::class),
 ];
 
-?>

@@ -16,4 +16,3 @@ class RequestMethod
   const HEAD = 'HEAD';
 }
 
-?>

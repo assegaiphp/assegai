@@ -15,6 +15,8 @@ use Assegai\Core\Responses\MethodNotAllowedErrorResponse;
 use Assegai\Core\Responses\NotFoundErrorResponse;
 use Assegai\Core\Responses\NotImplementedErrorResponse;
 use Assegai\Core\Responses\Response;
+use Exception;
+use JetBrains\PhpStorm\NoReturn;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -86,9 +88,9 @@ class BaseController implements IController
 
       return call_user_func_array([$this, $handler->method()->name], $methodParams);
     }
-    catch (\Exception $e)
+    catch (Exception $e)
     {
-      throw new \Exception('RequestHandlingException: ' . $e->getMessage());
+      exit('RequestHandlingException: ' . $e->getMessage());
     }
   }
 
@@ -108,7 +110,6 @@ class BaseController implements IController
     }
 
     $activatedAttributeClass = match ($this->request->method()) {
-      RequestMethod::GET      => GET::class,
       RequestMethod::POST     => POST::class,
       RequestMethod::PUT      => PUT::class,
       RequestMethod::PATCH    => PATCH::class,
@@ -177,6 +178,7 @@ class BaseController implements IController
     return false;
   }
 
+  #[NoReturn]
   public function respond(Response $response): void
   {
     exit($response);

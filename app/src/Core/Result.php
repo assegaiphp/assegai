@@ -2,7 +2,7 @@
 
 namespace Assegai\Core;
 
-use \ArrayObject;
+use ArrayObject;
 
 class Result extends ArrayObject
 {
@@ -30,4 +30,3 @@ class Result extends ArrayObject
   }
 }
 
-?>
