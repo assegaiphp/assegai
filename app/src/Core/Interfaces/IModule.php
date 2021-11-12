@@ -17,4 +17,3 @@ interface IModule
   public function getDependencies(string $classname): array;
 }
 
-?>

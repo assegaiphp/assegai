@@ -9,4 +9,3 @@ interface ICanActivate
   public function canDeactivate(mixed $context): bool;
 }
 
-?>

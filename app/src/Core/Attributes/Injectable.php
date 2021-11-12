@@ -2,7 +2,7 @@
 
 namespace Assegai\Core\Attributes;
 
-use \Attribute;
+use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Injectable
@@ -12,4 +12,3 @@ class Injectable
   }
 }
 
-?>

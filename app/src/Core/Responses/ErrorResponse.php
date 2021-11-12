@@ -2,6 +2,8 @@
 
 namespace Assegai\Core\Responses;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 class ErrorResponse extends Response
 {
     public function __construct(
@@ -29,6 +31,7 @@ class ErrorResponse extends Response
         return $this->message;
     }
 
+    #[ArrayShape(['message' => "string", 'data' => "mixed", 'status' => "\Assegai\Core\Responses\HttpStatusCode"])]
     public function toArray(): array
     {
         return [
@@ -39,4 +42,3 @@ class ErrorResponse extends Response
     }
 }
 
-?>

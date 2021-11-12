@@ -17,6 +17,7 @@ class Get
 {
   public array $tokens = [];
   public bool $canActivate = false;
+  private stdClass $body;
 
   public function __construct(
     public string $path = '/',
@@ -24,7 +25,7 @@ class Get
   ) {
     global $request;
     $this->tokens = explode('/', trim($path, '/'));
-    $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
+    $requestedURI = explode(separator: '/', string: ($_GET['path'] ?? '/') );
 
     foreach ($this->tokens as $index => $token)
     {
@@ -67,4 +68,3 @@ class Get
   }
 }
 
-?>

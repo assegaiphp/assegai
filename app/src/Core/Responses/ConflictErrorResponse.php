@@ -15,4 +15,3 @@ final class ConflictErrorResponse extends ErrorResponse
   }
 }
 
-?>

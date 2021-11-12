@@ -2,7 +2,6 @@
 
 namespace Assegai\Core\Interfaces;
 
-use Assegai\Core\Responses;
 use Assegai\Core\Responses\Response;
 
 interface IController
@@ -12,4 +11,3 @@ interface IController
   public function respond(Response $response): void;
 }
 
-?>

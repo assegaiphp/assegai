@@ -2,6 +2,8 @@
 
 namespace Assegai\Core\Responses;
 
+use JetBrains\PhpStorm\Pure;
+
 class HttpStatusCode
 {
   public function __construct(
@@ -12,7 +14,7 @@ class HttpStatusCode
 
   public function __toString(): string
   {
-    return "{$this->code} - {$this->name}";
+    return "$this->code - $this->name";
   }
 
   public function code(): int
@@ -33,6 +35,7 @@ class HttpStatusCode
 
 class HttpStatus
 {
+  #[Pure]
   public static function Continue(): HttpStatusCode
   {
     return new HttpStatusCode(
@@ -50,6 +53,7 @@ class HttpStatus
    * - `PUT` or `POST`: The resource describing the result of the action is transmitted in the message body.
    * - `TRACE`: The message body contains the request message as received by the server.
    */
+  #[Pure]
   public static function OK(): HttpStatusCode
   {
     return new HttpStatusCode(
@@ -66,6 +70,7 @@ class HttpStatus
    * 
    * @return HttpStatusCode Returns an HttpStatusCode object.
    */
+  #[Pure]
   public static function Created(): HttpStatusCode {
     return new HttpStatusCode(
       code: 201,
@@ -83,6 +88,7 @@ class HttpStatus
    * 
    * @return HttpStatusCode Returns an HttpStatusCode object.
    */
+  #[Pure]
   public static function Accepted(): HttpStatusCode {
     return new HttpStatusCode(
       code: 202,
@@ -96,6 +102,7 @@ class HttpStatus
    * be useful. The user-agent may update its cached headers for this 
    * resource with the new ones.
    */
+  #[Pure]
   public static function NoContent(): HttpStatusCode {
     return new HttpStatusCode(
       code: 204,
@@ -107,6 +114,7 @@ class HttpStatus
   /**
    * The server could not understand the request due to invalid syntax.
    */
+  #[Pure]
   public static function BadRequest(): HttpStatusCode {
     return new HttpStatusCode(
       code: 400,
@@ -187,7 +195,7 @@ class HttpStatus
     return new HttpStatusCode(
       code: 500,
       name: 'Internal Server Error',
-      description: 'The server has encountered a situation it doesn\'t know how to handle.'
+      description: "The server has encountered a situation it doesn't know how to handle."
     );
   }
 
@@ -224,4 +232,3 @@ class HttpStatus
   }
 }
 
-?>

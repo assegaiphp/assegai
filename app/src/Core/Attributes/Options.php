@@ -8,13 +8,15 @@ use Attribute;
 class Options
 {
   public array $tokens = [];
+  private bool $canActivate;
+
   public function __construct(
     public string $path = '',
     public array $args = []
   ) {
     global $request;
     $this->tokens = explode('/', trim($path, '/'));
-    $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
+    $requestedURI = explode(separator: '/', string: ($_GET['path'] ?? '/') );
 
     foreach ($this->tokens as $index => $token)
     {
@@ -35,4 +37,3 @@ class Options
   }
 }
 
-?>

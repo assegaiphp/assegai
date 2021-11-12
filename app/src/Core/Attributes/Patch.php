@@ -33,7 +33,7 @@ class Patch
   ) {
     global $request;
     $this->tokens = explode('/', trim($path, '/'));
-    $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
+    $requestedURI = explode(separator: '/', string: ($_GET['path'] ?? '/') );
 
     foreach ($this->tokens as $index => $token)
     {
@@ -75,4 +75,3 @@ class Patch
   }
 }
 
-?>

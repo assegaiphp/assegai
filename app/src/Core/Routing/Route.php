@@ -8,10 +8,12 @@ use Assegai\Core\Routing\Types\PathMatchingStrategy;
 class Route
 {
   /**
-   * @param string $path 
-   * @param null|PathMatchingStrategy $path The path-matching strategy, one of 'prefix' or 'full'.
+   * @param string|null $path The path to match.
+   * @param null|PathMatchingStrategy $pathMatchingStrategy The path-matching strategy, one of 'prefix' or 'full'.
    * Default is 'prefix'.
-   * @param null|IModule $module The module to load when the path matches
+   * @param IModule|string|null $module The module to load when the path matches.
+   * @param string|null $redirectTo
+   * @param array $canActivate A list of Guards to check
    */
   public function __construct(
     protected ?string $path = null,
@@ -19,6 +21,7 @@ class Route
     protected null|IModule|string $module = null,
     protected ?string $redirectTo = null,
     protected array $canActivate = [],
+    protected array $children = []
   )
   {
     if (is_null($this->pathMatchingStrategy))

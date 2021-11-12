@@ -2,6 +2,9 @@
 
 namespace Assegai\Core\Responses;
 
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
+
 class ResponseType
 {
   public function __construct(
@@ -13,6 +16,7 @@ class ResponseType
     return $this->type;
   }
 
+  #[ArrayShape(['type' => "string"])]
   public function __serialize(): array
   {
     return ['type' => strval($this)];
@@ -26,45 +30,52 @@ class ResponseType
     }
   }
 
+  #[Pure]
   public static function TEXT(string $type): ResponseType
   {
-    return new ResponseType("text/{$type}");
+    return new ResponseType("text/$type");
   }
 
+  #[Pure]
   public static function JSON(): ResponseType
   {
     return new ResponseType('application/json');
   }
 
+  #[Pure]
   public static function HTML(): ResponseType
   {
     return ResponseType::TEXT('html');
   }
 
+  #[Pure]
   public static function PLAIN(): ResponseType
   {
     return ResponseType::TEXT('plain');
   }
 
+  #[Pure]
   public static function XML(): ResponseType
   {
     return ResponseType::TEXT('xml');
   }
 
+  #[Pure]
   public static function CSS(): ResponseType
   {
     return ResponseType::TEXT('css');
   }
 
+  #[Pure]
   public static function CSV(): ResponseType
   {
     return ResponseType::TEXT('csv');
   }
 
+  #[Pure]
   public static function JAVASCRIPT(): ResponseType
   {
     return ResponseType::TEXT('javascript');
   }
 }
 
-?>

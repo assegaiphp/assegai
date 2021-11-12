@@ -9,4 +9,3 @@ interface IArraySerializable
   public function fromArray(array $array): mixed;
 }
 
-?>

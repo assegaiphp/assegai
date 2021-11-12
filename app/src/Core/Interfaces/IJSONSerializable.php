@@ -9,4 +9,3 @@ interface IJSONSerializable
   public function fromJSON(string $jsonString): mixed;
 }
 
-?>

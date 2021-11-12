@@ -32,7 +32,7 @@ class Post
   ) {
     global $request;
     $this->tokens = explode('/', trim($path, '/'));
-    $requestedURI = explode(separator: '/', string: (isset($_GET['path']) ? $_GET['path'] : '/') );
+    $requestedURI = explode(separator: '/', string: ($_GET['path'] ?? '/') );
     if (is_null($this->status))
     {
       $this->status = HttpStatus::Created();
@@ -66,4 +66,3 @@ class Post
   }
 }
 
-?>

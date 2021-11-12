@@ -3,7 +3,8 @@
 namespace Assegai\Core\Responses;
 
 use Assegai\Core\Request;
-use Assegai\Core\Result;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class Response
 {
@@ -55,9 +56,9 @@ class Response
     return $this->skip;
   }
 
-  public function data(mixed $data = NULL): mixed
+  public function data(): mixed
   {
-    return !is_null($this->data) ? $this->data : [];
+    return $this->data ?? [];
   }
 
   public function setData(mixed $data): void
@@ -70,12 +71,13 @@ class Response
     }
   }
 
+  #[Pure]
   public function status(): HttpStatusCode
   {
     return is_null($this->status) ? HttpStatus::OK() : $this->status;
   }
 
-  public function setStatus(HttpStatus $status): void
+  public function setStatus(?HttpStatusCode $status): void
   {
     if (!is_null($status))
     {
@@ -94,11 +96,13 @@ class Response
     return $this->toJSON();
   }
 
+  #[ArrayShape(['total' => "int", 'limit' => "int", 'skip' => "int", 'data' => "mixed"])] #[Pure]
   public function __serialize(): array
   {
     return $this->toArray();
   }
 
+  #[ArrayShape(['total' => "int", 'limit' => "int", 'skip' => "int", 'data' => "mixed"])] #[Pure]
   public function toArray(): array
   {
     return [
@@ -129,4 +133,3 @@ class Response
   }
 }
 
-?>
