@@ -4,6 +4,7 @@ namespace Assegai\Core\Routing;
 
 use Assegai\Core\Interfaces\IModule;
 use Assegai\Core\Routing\Types\PathMatchingStrategy;
+use JetBrains\PhpStorm\Pure;
 
 class Route
 {
@@ -14,6 +15,7 @@ class Route
    * @param IModule|string|null $module The module to load when the path matches.
    * @param string|null $redirectTo
    * @param array $canActivate A list of Guards to check
+   * @param array $children
    */
   public function __construct(
     protected ?string $path = null,
@@ -29,7 +31,7 @@ class Route
       $this->pathMatchingStrategy = PathMatchingStrategy::PREFIX();
     }
 
-    if (!is_null($this->module) && is_string($this->module))
+    if (is_string($this->module))
     {
       $this->module = new $this->module;
     }
@@ -45,23 +47,16 @@ class Route
     return $this->module;
   }
 
+  #[Pure]
   protected function canMatch(): bool
   {
     $canMatch = false;
-    $path = '/' . (isset($_GET['path']) ? $_GET['path'] : '');
+    $path = '/' . ($_GET['path'] ?? '');
 
-    switch(strval($this->pathMatchingStrategy))
-    {
-      case strval(PathMatchingStrategy::FULL()):
-        $canMatch = $path === '/' . $this->path;
-        break;
-
-      case strval(PathMatchingStrategy::PREFIX()):
-      default:
-        $canMatch = str_starts_with(haystack: $path, needle: '/' . $this->path);
-    }
-
-    return $canMatch;
+    return match (strval($this->pathMatchingStrategy)) {
+      strval(PathMatchingStrategy::FULL()) => $path === '/' . $this->path,
+      default => str_starts_with(haystack: $path, needle: '/' . $this->path),
+    };
   }
 
   public function canRedirect(): bool
@@ -90,4 +85,3 @@ class Route
   }
 }
 
-?>
