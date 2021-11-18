@@ -4,6 +4,7 @@ namespace Assegai\Database;
 
 use Assegai\Core\Config;
 use Assegai\Core\Responses\InternalServerErrorResponse;
+use Exception;
 use PDO;
 
 /**
@@ -20,11 +21,11 @@ final class DBFactory
     'mongodb' => [],
   ];
 
-  public static function getSQLConnection(string $dbName, ?string $dialect = 'mysql'): PDO {
+  public static function getSQLConnection(string $dbName, ?string $dialect = 'mysql'): PDO
+  {
     return match ($dialect) {
-      'mysql'       => DBFactory::getMySQLConnection(dbName: $dbName),
       'mariadb'     => DBFactory::getMariaDBConnection(dbName: $dbName),
-      'pgsql'       => DBFactory::getPostgreSQLConnection(dbName: $dbName),
+      'pgsql',
       'postgresql'  => DBFactory::getPostgreSQLConnection(dbName: $dbName),
       'sqlite'      => DBFactory::getSQLiteConnection(dbName: $dbName),
       default       => DBFactory::getMySQLConnection(dbName: $dbName)
@@ -40,6 +41,11 @@ final class DBFactory
   
       try
       {
+        $host = null;
+        $port = null;
+        $name = null;
+        $user = null;
+        $password = null;
         extract($config);
         DBFactory::$connections[$type][$dbName] = new PDO(
           dsn: "mysql:host=$host;port=$port;dbname=$name",
@@ -47,7 +53,7 @@ final class DBFactory
           password: $password
         );
       }
-      catch (\Exception $e)
+      catch (Exception $e)
       {
         $errorMessage = strval(new InternalServerErrorResponse());
   
@@ -65,34 +71,7 @@ final class DBFactory
 
   public static function getMariaDBConnection(string $dbName): PDO
   {
-    $type = 'mariadb';
-    if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
-    {
-      $config = Config::get('databases')[$type][$dbName];
-  
-      try
-      {
-        extract($config);
-        DBFactory::$connections[$type][$dbName] = new PDO(
-          dsn: "mysql:host=$host;port=$port;dbname=$name",
-          username: $user,
-          password: $password
-        );
-      }
-      catch (\Exception $e)
-      {
-        $errorMessage = strval(new InternalServerErrorResponse());
-  
-        if (Config::environment('ENVIRONMENT') === 'DEV' && Config::environment('DEBUG') === 'TRUE')
-        {
-          $errorMessage .= "\n" . $e->getMessage();
-        }
-  
-        die($errorMessage);
-      }
-    }
-
-    return DBFactory::$connections[$type][$dbName];
+    return self::getMySQLConnection(dbName: $dbName);
   }
 
   public static function getPostgreSQLConnection(string $dbName): PDO
@@ -104,6 +83,11 @@ final class DBFactory
   
       try
       {
+        $host = null;
+        $port = null;
+        $name = null;
+        $user = null;
+        $password = null;
         extract($config);
         DBFactory::$connections[$type][$dbName] = new PDO(
           dsn: "pgsql:host=$host;port=$port;dbname=$name",
@@ -111,7 +95,7 @@ final class DBFactory
           password: $password
         );
       }
-      catch (\Exception $e)
+      catch (Exception $e)
       {
         $errorMessage = strval(new InternalServerErrorResponse());
   
@@ -136,10 +120,11 @@ final class DBFactory
   
       try
       {
+        $path = null;
         extract($config);
         DBFactory::$connections[$type][$dbName] = new PDO( dsn: "sqlite:$path" );
       }
-      catch (\Exception $e)
+      catch (Exception $e)
       {
         $errorMessage = strval(new InternalServerErrorResponse());
   
@@ -164,9 +149,9 @@ final class DBFactory
   
       try
       {
-  
+        # TODO Implement mongodb connection
       }
-      catch (\Exception $e)
+      catch (Exception $e)
       {
         $errorMessage = strval(new InternalServerErrorResponse());
   
@@ -183,4 +168,3 @@ final class DBFactory
   }
 }
 
-?>

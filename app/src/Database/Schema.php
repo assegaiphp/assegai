@@ -3,10 +3,11 @@
 namespace Assegai\Database;
 
 use Assegai\Database\Interfaces\ISchema;
+use Exception;
 use ReflectionClass;
 
 /**
- * The `Schema` class provides a database agnostic way of manipulating tables. It works well with all of the databases supported by [Assegai](https://assegai.io/docs/supported-databases), and has a unified API across all of these systems.
+ * The `Schema` class provides a database agnostic way of manipulating tables. It works well with all the databases supported by [Assegai](https://assegai.io/docs/supported-databases), and has a unified API across all of these systems.
  */
 class Schema implements ISchema
 {
@@ -17,18 +18,18 @@ class Schema implements ISchema
       $options = new SchemaOptions();
     }
 
-    $reflection = new ReflectionClass(objectOrClass: $entityClass);
-    $instance = $reflection->newInstance();
-    $query = $instance->schema(dialect: $options->dialect());
-    
     try 
     {
+      $reflection = new ReflectionClass(objectOrClass: $entityClass);
+      $instance = $reflection->newInstance();
+      $query = $instance->schema(dialect: $options->dialect());
+
       $db = DBFactory::getSQLConnection(dbName: $options->dbName(), dialect: $options->dialect()); 
       $statement = $db->prepare(query: $query);
 
       return $statement->execute();
     }
-    catch(\Exception $e)
+    catch(Exception $e)
     {
       exit($e->getMessage());
     }
@@ -41,18 +42,18 @@ class Schema implements ISchema
       $options = new SchemaOptions();
     }
 
-    $reflection = new ReflectionClass(objectOrClass: $entityClass);
-    $instance = $reflection->newInstance();
-    $query = $instance->schema(dialect: $options->dialect());
-    
     try 
     {
-      $db = DBFactory::getSQLConnection(dbName: $options->dbName(), dialect: $options->dialect()); 
+      $reflection = new ReflectionClass(objectOrClass: $entityClass);
+      $instance = $reflection->newInstance();
+      $query = $instance->schema(dialect: $options->dialect());
+
+      $db = DBFactory::getSQLConnection(dbName: $options->dbName(), dialect: $options->dialect());
       $statement = $db->prepare(query: $query);
 
       return $statement->execute();
     }
-    catch(\Exception $e)
+    catch(Exception $e)
     {
       exit($e->getMessage());
     }
@@ -85,19 +86,19 @@ class Schema implements ISchema
       $options = new SchemaOptions();
     }
 
-    $reflection = new ReflectionClass(objectOrClass: $entityClass);
-    $instance = $reflection->newInstance();
-    $tableName = $instance->tableName();
-    $query = "DROP TABLE `${tableName}`";
-    
     try 
     {
-      $db = DBFactory::getSQLConnection(dbName: $options->dbName(), dialect: $options->dialect()); 
+      $reflection = new ReflectionClass(objectOrClass: $entityClass);
+      $instance = $reflection->newInstance();
+      $tableName = $instance->tableName();
+      $query = "DROP TABLE `$tableName`";
+
+      $db = DBFactory::getSQLConnection(dbName: $options->dbName(), dialect: $options->dialect());
       $statement = $db->prepare(query: $query);
 
       return $statement->execute();
     }
-    catch(\Exception $e)
+    catch(Exception $e)
     {
       exit($e->getMessage());
     }
@@ -110,4 +111,3 @@ class Schema implements ISchema
 
 }
 
-?>

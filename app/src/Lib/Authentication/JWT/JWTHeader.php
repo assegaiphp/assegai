@@ -2,6 +2,8 @@
 
 namespace Assegai\Lib\Authentication\JWT;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 final class JWTHeader
 {
   const ALG_HS256 = 'HS256';
@@ -12,6 +14,7 @@ final class JWTHeader
     private string $typ = JWTHeader::TYP_JWT,
   ) { }
 
+  #[ArrayShape(['alg' => "string", 'typ' => "string"])]
   public function toArray(): array
   {
     return ['alg' => $this->alg, 'typ' => $this->typ];
@@ -28,4 +31,3 @@ final class JWTHeader
   }
 }
 
-?>

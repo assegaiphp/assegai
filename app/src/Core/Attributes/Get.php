@@ -56,7 +56,8 @@ class Get
       $this->args[$key] = $param;
     }
 
-    $this->body = json_decode( json_encode($body) );
+    $body = json_decode( json_encode($body) );
+    $this->body = is_array($body) ? new stdClass() : $body;
 
     if (is_null($this->body))
     {

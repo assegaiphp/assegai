@@ -7,4 +7,3 @@ interface IToken
   public function value(): string;
 }
 
-?>

@@ -14,6 +14,7 @@ use Assegai\Database\Interfaces\IEntity;
 use Assegai\Database\Interfaces\IRepository;
 use Assegai\Database\Queries\SQLDataTypes;
 use Assegai\Database\Queries\SQLQuery;
+use Exception;
 use PDO;
 use ReflectionClass;
 use ReflectionProperty;
@@ -30,7 +31,7 @@ class BaseRepository implements IRepository
   protected string $databaseType = '';
   protected string $databaseName = '';
   protected string $tableName = '';
-  protected int $fetchMode = \PDO::FETCH_CLASS;
+  protected int $fetchMode = PDO::FETCH_CLASS;
 
   public function __construct() {
     # Get db connection
@@ -49,17 +50,20 @@ class BaseRepository implements IRepository
       $this->readOnlyFields = $instance->readOnlyFields;
     }
 
-    if (is_null($this->dbContext) || empty($this->dbContext))
+    if (empty($this->dbContext))
     {
-      $this->dbContext = match ($instance->databaseType) {
-        'mysql'       => DBFactory::getMySQLConnection(dbName: $instance->databaseName),
-        'mariadb'     => DBFactory::getMariaDBConnection(dbName: $instance->databaseName),
-        'pgsql'       => DBFactory::getPostgreSQLConnection(dbName: $instance->databaseName),
-        'postgresql'  => DBFactory::getPostgreSQLConnection(dbName: $instance->databaseName),
-        'sqlite'      => DBFactory::getSQLiteConnection(dbName: $instance->databaseName),
-        'mongodb'     => DBFactory::getMongoDbConnection(dbName: $instance->databaseName),
-        default       => DBFactory::getMariaDBConnection(dbName: $instance->databaseName)
-      };
+      if (isset($instance))
+      {
+        $this->dbContext = match ($instance->databaseType) {
+          'mysql'       => DBFactory::getMySQLConnection(dbName: $instance->databaseName),
+          'pgsql',
+          'postgresql'  => DBFactory::getPostgreSQLConnection(dbName: $instance->databaseName),
+          'sqlite'      => DBFactory::getSQLiteConnection(dbName: $instance->databaseName),
+          'mongodb'     => DBFactory::getMongoDbConnection(dbName: $instance->databaseName),
+          default       => DBFactory::getMariaDBConnection(dbName: $instance->databaseName)
+        };
+
+      }
     }
 
     $this->query = new SQLQuery( db: $this->dbContext(), fetchClass: $this->entity, fetchMode: $this->fetchMode );
@@ -77,7 +81,7 @@ class BaseRepository implements IRepository
 
   public function commit(): bool
   {
-    exit(new NotImplementedErrorResponse(message: 'Commit message not implemented.'));
+    # TODO: Implement commit message
     return false;
   }
 
@@ -111,7 +115,7 @@ class BaseRepository implements IRepository
       if (isset($_GET['limit']))
       {
         $limit = $_GET['limit'];
-        $skip = isset($_GET['skip']) ? $_GET['skip'] : 0;
+        $skip = $_GET['skip'] ?? 0;
         $statement->limit(limit: $limit, offset: $skip);
       }
 
@@ -128,7 +132,7 @@ class BaseRepository implements IRepository
         exit(new BadRequestErrorResponse(message: strval($result)));
       }
     }
-    catch(\Exception $e)
+    catch(Exception $e)
     {
       exit(new BadRequestErrorResponse(message: $e->getMessage()));
     }
@@ -249,7 +253,12 @@ class BaseRepository implements IRepository
       return false;
     }
 
-    $result = $this->query->update(tableName: $this->tableName)->set(assignmentList: $changes->columnValuePairs(exclude: $this->readOnlyFields))->where("id=${id}")->execute();
+    $result =
+      $this->query
+        ->update(tableName: $this->tableName)
+        ->set(assignmentList: $changes->columnValuePairs(exclude: $this->readOnlyFields))
+        ->where("id=$id")
+        ->execute();
 
     if ($result->isOK())
     {
@@ -283,7 +292,7 @@ class BaseRepository implements IRepository
           continue;
         }
 
-        # Get colum attribute
+        # Get column attribute
         $reflectionProp = new ReflectionProperty($this->entity, $prop);
         $attributes = $reflectionProp->getAttributes();
 
@@ -304,7 +313,7 @@ class BaseRepository implements IRepository
       $this->query
         ->update(tableName: $this->tableName)
         ->set(assignmentList: $assignmentList)
-        ->where("id=${id}")->execute();
+        ->where("id=$id")->execute();
 
     if ($result->isOK())
     {
@@ -316,7 +325,7 @@ class BaseRepository implements IRepository
 
   public function updateRange(array $changeList): array|false
   {
-    exit(new NotImplementedErrorResponse(message: get_called_class()));
+    # TODO: Implement updateRange
     return false;
   }
 
@@ -354,7 +363,10 @@ class BaseRepository implements IRepository
 
             if ($deleteIsValidStatus)
             {
-              $entity->status = 'deleted';
+              if (property_exists($entity, 'status'))
+              {
+                $entity->status = 'deleted';
+              }
               $assignmentList['status'] = 'deleted';
             }
           }
@@ -366,7 +378,7 @@ class BaseRepository implements IRepository
       $this->query
         ->update(tableName: $this->tableName)
         ->set(assignmentList: $assignmentList)
-        ->where("id=${id}")
+        ->where("id=$id")
         ->execute();
 
     if ($result->isOK())
@@ -385,7 +397,7 @@ class BaseRepository implements IRepository
 
   public function remove(int $id): IEntity|stdClass|false
   {
-    $entity = $this->testsRepository->findOne("id=" . $id);
+    $entity = $this->findOne("id=" . $id);
 
     if (is_null($entity))
     {
@@ -396,7 +408,7 @@ class BaseRepository implements IRepository
     $result =
       $this->query
         ->deleteFrom(tableName: $this->tableName)
-        ->where("id=${id}")
+        ->where("id=$id")
         ->execute();
 
     if ($result->isOK())
@@ -447,7 +459,10 @@ class BaseRepository implements IRepository
 
             if ($deleteIsValidStatus)
             {
-              $entity->status = 'active';
+              if (property_exists($entity, 'status'))
+              {
+                $entity->status = 'active';
+              }
               $assignmentList['status'] = 'active';
             }
           }
@@ -459,7 +474,7 @@ class BaseRepository implements IRepository
       $this->query
         ->update(tableName: $this->tableName)
         ->set(assignmentList: $assignmentList)
-        ->where("id=${id}")
+        ->where("id=$id")
         ->execute();
 
     if ($result->isOK())
@@ -472,4 +487,3 @@ class BaseRepository implements IRepository
   }
 }
 
-?>

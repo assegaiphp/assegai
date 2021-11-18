@@ -14,15 +14,6 @@ return [
         'port'      => 3306,
       ]
     ],
-    'mariadb' => [
-      'db_name' => [
-        'host'      => 'localhost',
-        'user'      => '',
-        'password'  => '',
-        'name'      => 'db_name',
-        'port'      => 3306,
-      ]
-    ],
     'pgsql' => [
       'db_name' => [
         'host'      => 'localhost',

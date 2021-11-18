@@ -26,7 +26,7 @@ class Column
     public bool $allowNull = true,
     public bool $signed = true,
     public bool $zeroFilled = false,
-    public mixed $defaultValue = '',
+    public mixed $defaultValue = null,
     public bool $autoIncrement = false,
     public string $onUpdate = '',
     public bool $isUnique = false,

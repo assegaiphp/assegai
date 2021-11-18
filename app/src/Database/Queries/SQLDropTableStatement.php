@@ -11,6 +11,7 @@ final class SQLDropTableStatement
 {
   use ExecutableTrait;
 
+  /** @noinspection SyntaxError */
   public function __construct(
     private SQLQuery $query,
     private string $tableName,

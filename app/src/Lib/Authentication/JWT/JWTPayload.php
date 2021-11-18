@@ -4,10 +4,11 @@ namespace Assegai\Lib\Authentication\JWT;
 
 use DateTime;
 use Assegai\Core\Config;
+use JetBrains\PhpStorm\ArrayShape;
 
 final class JWTPayload
 {
-  private int $iat = 0;
+  private int $iat;
   private int $exp = 0;
   private string $jti = '';
 
@@ -25,20 +26,20 @@ final class JWTPayload
     {
       extract(Config::get('authentication')['jwt']);
 
-      $exp = isset($lifespan)
-        ? strtotime(datetime: $lifespan)
+      $exp = isset($this->lifespan)
+        ? strtotime(datetime: $this->lifespan)
         : strtotime(datetime: '1 hour');
 
       $this->exp = (is_bool($exp)) ? strtotime(datetime: '1 hour') : $exp;
 
       if (is_null($this->iss))
       {
-        $this->iss = isset($issuer) ? $issuer : 'assegai'; 
+        $this->iss = $issuer ?? 'assegai';
       }
 
       if (is_null($this->aud))
       {
-        $this->aud = isset($audience) ? $audience : 'https://yourdomain.com'; 
+        $this->aud = $audience ?? 'https://yourdomain.com';
       }
 
       if (is_null($this->sub))
@@ -49,10 +50,11 @@ final class JWTPayload
 
     if (is_null($this->exp))
     {
-      $this->exp = strtotime(datetime: '1 hour');
+      $this->exp = strtotime(datetime: $this->lifespan);
     }
   }
 
+  #[ArrayShape(['iat' => "int", 'exp' => "false|int", 'aud' => "null|string", 'iss' => "null|string", 'sub' => "null|string", 'jti' => "string"])]
   public function toArray(): array
   {
     return [
@@ -77,4 +79,3 @@ final class JWTPayload
 
 }
 
-?>

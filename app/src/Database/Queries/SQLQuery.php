@@ -207,6 +207,7 @@ final class SQLQuery
         '23000' => new ConflictErrorResponse(message: $message),
         default => new BadRequestErrorResponse()
       };
+      exit($message);
 
       exit($errorResponse);
     }

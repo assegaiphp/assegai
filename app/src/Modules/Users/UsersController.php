@@ -39,7 +39,7 @@ class UsersController extends BaseController
         ? UserEntity::columns()[$key]
         : $key;
       $conditions .= "`$column`=";
-      $conditions .= is_numeric($value) ? $value : "'$value' AND ";
+      $conditions .= (is_numeric($value) ? $value : "'$value'") . " AND ";
     }
     $conditions = trim($conditions, 'AND ');
     $result = $this->usersService->find(conditions: $conditions);

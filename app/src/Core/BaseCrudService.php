@@ -21,7 +21,7 @@ class BaseCrudService extends BaseService
     parent::__construct();
   }
   
-  public function find(?string $conditions): Result
+  public function find(?string $conditions = null): Result
   {
     $data = $this->repository->find(conditions: $conditions);
     return new Result(data: $data);

@@ -14,4 +14,3 @@ class SchemaOptions
   public function dialect(): string { return $this->dialect; }
 }
 
-?>

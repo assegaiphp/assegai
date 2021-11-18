@@ -5,6 +5,7 @@ use Assegai\Modules\Home\HomeModule;
 use Assegai\Modules\Tests\TestsModule;
 use Assegai\Modules\Users\UsersModule;
 use Assegai\Modules\Authentication\AuthenticationModule;
+use Assegai\Modules\Comments\CommentsModule;
 
 return [
   new Route(path: '/', module: HomeModule::class),
@@ -15,5 +16,5 @@ return [
   new Route(path: 'tests', module: TestsModule::class),
   new Route(path: 'users', module: UsersModule::class),
   new Route(path: 'authentication', module: AuthenticationModule::class),
+  new Route(path: 'comments', module: CommentsModule::class),
 ];
-

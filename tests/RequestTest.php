@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Assegai\Core\App;
 use Assegai\Core\Request;
+use Assegai\Core\Routing\Router;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
@@ -16,7 +17,7 @@ final class RequestTest extends TestCase
   public function testGetAppReference(): void
   {
     $request = new Request;
-    $app = new App( request: $request, config: require('app/config/default.php') );
+    $app = new App( request: $request, router: new Router, config: require('app/config/default.php') );
 
     $this->assertInstanceOf(App::class, $request->app(), 'Can get app reference');
   }
@@ -38,7 +39,7 @@ final class RequestTest extends TestCase
   public function testConvertToArray(): void
   {
     $request = new Request;
-    $app = new App( request: $request, config: require('app/config/default.php') );
+    $app = new App( request: $request, router: new Router, config: require('app/config/default.php') );
 
     $this->assertIsArray($request->toArray(), 'Can convert to array');
   }
@@ -46,7 +47,7 @@ final class RequestTest extends TestCase
   public function testConvertToJson(): void
   {
     $request = new Request;
-    $app = new App( request: $request, config: require('app/config/default.php') );
+    $app = new App( request: $request, router: new Router, config: require('app/config/default.php') );
 
     $this->assertJson($request->toJSON(), 'Can convert to array');
   }
@@ -54,7 +55,7 @@ final class RequestTest extends TestCase
   public function testConvertToString(): void
   {
     $request = new Request;
-    $app = new App( request: $request, config: require('app/config/default.php') );
+    $app = new App( request: $request, router: new Router, config: require('app/config/default.php') );
 
     $this->assertIsString(strval($request), 'Can convert to array');
   }

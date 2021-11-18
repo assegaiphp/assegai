@@ -7,6 +7,7 @@ use Assegai\Core\Responses\HttpStatus;
 use Assegai\Core\Responses\HttpStatusCode;
 use Assegai\Core\Responses\Response;
 use Assegai\Core\Responses\ResponseType;
+use Assegai\Core\Routing\Router;
 use PHPUnit\Framework\TestCase;
 
 final class ResponseTest extends TestCase
@@ -14,7 +15,7 @@ final class ResponseTest extends TestCase
   public function testCreateInstanceWithNoParams(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App( request: $request, config: require('app/config/default.php') );
+    $GLOBALS['app'] = new App( request: $request, router: new Router, config: require('app/config/default.php') );
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertInstanceOf(Response::class, new Response());
@@ -23,7 +24,7 @@ final class ResponseTest extends TestCase
   public function testGetPropertyNamedTotalOfTypeInt(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertClassHasAttribute('total', Response::class);
@@ -33,7 +34,7 @@ final class ResponseTest extends TestCase
   public function testGetPropertyNamedLimitOfTypeInt(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertClassHasAttribute('limit', Response::class);
@@ -43,7 +44,7 @@ final class ResponseTest extends TestCase
   public function testGetPropertyNamedSkipOfTypeInt(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertClassHasAttribute('skip', Response::class);
@@ -53,7 +54,7 @@ final class ResponseTest extends TestCase
   public function testGetNonNullPropertyNamedData(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertClassHasAttribute('data', Response::class);
@@ -63,7 +64,7 @@ final class ResponseTest extends TestCase
   public function testGetPropertyNamedStatusOfTypeHttpstatuscode(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertClassHasAttribute('status', Response::class);
@@ -73,7 +74,7 @@ final class ResponseTest extends TestCase
   public function testGetPropertyNamedStatusOfTypeType(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertClassHasAttribute('type', Response::class);
@@ -83,7 +84,7 @@ final class ResponseTest extends TestCase
   public function testConvertToArray(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertIsArray((new Response)->toArray());
@@ -92,7 +93,7 @@ final class ResponseTest extends TestCase
   public function testConvertToJson(): void
   {
     $request = new Request;
-    $GLOBALS['app'] = new App(request: $request, config: require('app/config/default.php'));
+    $GLOBALS['app'] = new App(request: $request, router: new Router, config: require('app/config/default.php'));
     $_GET = ['limit' => 100, 'skip' => 0];
 
     $this->assertJson((new Response)->toJSON());

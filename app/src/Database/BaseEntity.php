@@ -61,6 +61,11 @@ class BaseEntity implements IEntity
     return $this->tableName;
   }
 
+  public function database(): ?string
+  {
+    return $this->database;
+  }
+
   public static function newInstanceFromObject(stdClass $object): IEntity
   {
     $className = get_called_class();
@@ -257,7 +262,7 @@ class BaseEntity implements IEntity
 
   public function schema(string $dialect = 'mysql'): string
   {
-    $statement = "CREATE TABLE `$this->tableName` (";
+    $statement = "CREATE TABLE IF NOT EXISTS `$this->tableName` (";
     $reflection = new ReflectionClass(objectOrClass: $this);
     $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
 
@@ -301,4 +306,3 @@ class BaseEntity implements IEntity
   }
 }
 
-?>

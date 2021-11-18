@@ -9,7 +9,7 @@ use Assegai\Database\Attributes\Entity;
 use Assegai\Database\BaseEntity;
 use Assegai\Database\Queries\SQLDataTypes;
 
-#[Entity(tableName: 'tests')]
+#[Entity(tableName: 'tests', database: 'assegai_test')]
 class TestEntity extends BaseEntity
 {
   #[EmailColumn]

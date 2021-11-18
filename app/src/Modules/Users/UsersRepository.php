@@ -15,4 +15,3 @@ class UsersRepository extends BaseRepository
 {
 }
 
-?>

@@ -9,7 +9,7 @@ use Assegai\Database\Attributes\Entity;
 use Assegai\Database\BaseEntity;
 use Assegai\Database\Queries\SQLDataTypes;
 
-#[Entity(tableName: 'users')]
+#[Entity(tableName: 'users', database: 'assegai_test')]
 class UserEntity extends BaseEntity
 {
   #[Column(dataType: SQLDataTypes::VARCHAR, lengthOrValues: 60, isUnique: true)]
