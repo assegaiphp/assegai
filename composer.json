@@ -1,5 +1,5 @@
 {
-    "name": "amasiye/assegai",
+    "name": "assegaiphp/assegai",
     "description": "A simple REST API Web Framework written in PHP.",
     "type": "project",
     "require-dev": {
