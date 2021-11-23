@@ -14,6 +14,9 @@ use Attribute;
 final class OneToOne
 {
   public function __construct(
+    public string $type,
+    public ?string $name = null,
+    public ?string $alias = null,
     public ?RelationsOptions $options = null
   ) {
     if (is_null($this->options))

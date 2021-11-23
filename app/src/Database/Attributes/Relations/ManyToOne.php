@@ -8,6 +8,9 @@ use Attribute;
 final class ManyToOne
 {
   public function __construct(
+    public string $type,
+    public ?string $name = null,
+    public ?string $alias = null,
     public ?RelationsOptions $options = null
   ) {
     if (is_null($this->options))
