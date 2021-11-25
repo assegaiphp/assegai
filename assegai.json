@@ -5,5 +5,14 @@
   "projectType": "application",
   "root": "",
   "sourceRoot": "src",
-  "prefix": "app"
+  "prefix": "app",
+  "scripts": {
+    "test": "./vendor/bin/phpunit --testdox"
+  },
+  "development": {
+    "server": {
+      "host": "localhost",
+      "port": 5000
+    }
+  }
 }
