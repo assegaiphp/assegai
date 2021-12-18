@@ -9,7 +9,7 @@ use Assegai\Core\RequestMethod;
 #[Injectable]
 final class HttpService implements IService
 {
-  private ?string $id = null;
+  private ?string $id;
   protected static ?HttpService $instance = null;
 
   public function __construct(
@@ -78,7 +78,7 @@ final class HttpService implements IService
 
       default:
         curl_setopt(handle: $ch, option: CURLOPT_CUSTOMREQUEST, value: 'GET');
-    };
+    }
 
     # Return the transfer as a string
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -150,4 +150,3 @@ final class HttpService implements IService
   }
 }
 
-?>
