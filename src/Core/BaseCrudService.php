@@ -4,8 +4,8 @@ namespace Assegai\Core;
 
 use Assegai\Core\Attributes\Injectable;
 use Assegai\Core\Interfaces\ICRUDService;
+use Assegai\Database\BaseRepository;
 use Assegai\Database\Interfaces\IEntity;
-use Assegai\Database\Interfaces\IRepository;
 use stdClass;
 
 /**
@@ -16,12 +16,19 @@ use stdClass;
 class BaseCrudService extends BaseService implements ICRUDService
 {
   public function __construct(
-    protected IRepository $repository
+    protected BaseRepository $repository
   )
   {
     parent::__construct();
   }
-  
+
+  /**
+   * Finds all entities that meed the specified conditions
+   * 
+   * @param null|string $conditions The conditions for finding the entities.
+   * 
+   * @return Result Returns a `Result` object.
+   */
   public function find(?string $conditions = null): Result
   {
     $data = $this->repository->find(conditions: $conditions);
