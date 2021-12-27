@@ -3,7 +3,6 @@
   "description": "A simple REST API Web Framework written in PHP.",
   "type": "library",
   "require-dev": {
-    "php": "^8.1",
     "phpunit/phpunit": "^9.5",
     "overtrue/phplint": "^3.0"
   },
