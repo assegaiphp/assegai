@@ -6,7 +6,7 @@
         "phpunit/phpunit": "^9.5",
         "overtrue/phplint": "^3.0"
     },
-    "license": "GNU",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Assegai\\": "src/"
