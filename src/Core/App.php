@@ -8,7 +8,7 @@ use Assegai\Core\Responses\BadRequestErrorResponse;
 use Assegai\Core\Responses\HttpStatus;
 use Assegai\Core\Responses\Response;
 use Assegai\Core\Routing\Router;
-use Assegai\Modules\Home\HomeModule;
+use AssegaiPHP\Modules\Home\HomeModule;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionClass;
 use ReflectionException;

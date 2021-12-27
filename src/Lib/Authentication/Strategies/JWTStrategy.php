@@ -4,14 +4,14 @@ namespace Assegai\Lib\Authentication\Strategies;
 
 use Assegai\Core\App;
 use Assegai\Core\Config;
+use Assegai\Core\Interfaces\ICRUDService;
 use Assegai\Core\Interfaces\IService;
 use Assegai\Database\Interfaces\IEntity;
-use Assegai\Modules\Users\UsersService;
 
 final class JWTStrategy extends BaseAuthenticationStrategy
 {
   public function __construct(
-    protected UsersService $usersService,
+    protected ICRUDService $usersService,
     protected ?string $name = '',
     protected ?App $app = null,
     protected ?IService $authenticationService = null,
