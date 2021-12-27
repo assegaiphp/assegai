@@ -9,7 +9,7 @@
     "license": "GNU",
     "autoload": {
         "psr-4": {
-            "Assegai\\": "app/src/"
+            "Assegai\\": "src/"
         }
     },
     "authors": [
