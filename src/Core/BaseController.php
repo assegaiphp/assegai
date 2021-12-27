@@ -136,7 +136,7 @@ class BaseController implements IController
         {
           $attributeInstance = $attribute->newInstance();
 
-          $path = '/' . $this->prefix . '/' . $attributeInstance->path;
+          $path = '/' . $this->path . '/' . $attributeInstance->path;
           $path = str_replace('///', '/', $path);
           $path = str_replace('//', '/', $path);
           if ($path === '/')
