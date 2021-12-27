@@ -42,7 +42,7 @@ final class BaseEntityTest extends TestCase
   {
     $entity = new BaseEntity;
     $columns = [
-      'id',
+      'id'        => 'id',
       'createdAt' => 'created_at',
       'updatedAt' => 'updated_at',
       'deletedAt' => 'deleted_at'

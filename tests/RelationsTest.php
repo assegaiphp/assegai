@@ -1,6 +1,5 @@
 <?php
 
-use Assegai\Core\Attributes\Relations\OnDeleteType;
 use PHPUnit\Framework\TestCase;
 
 final class RelationsTest extends TestCase

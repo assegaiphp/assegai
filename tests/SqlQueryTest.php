@@ -328,7 +328,7 @@ final class SqlQueryTest extends TestCase
         ->on(searchCondition: 'ut.user_id = u.id')
         ->execute();
     $this->assertTrue(condition: $result->isOK());
-    $this->assertTrue(Schema::drop(entityClass: UserEntity::class, options: new SchemaOptions(dbName: 'assegai_test')));
+    // $this->assertTrue(Schema::drop(entityClass: UserEntity::class, options: new SchemaOptions(dbName: 'assegai_test')));
   }
 
   public function testRightJoinATable(): void
@@ -344,7 +344,7 @@ final class SqlQueryTest extends TestCase
         ->on(searchCondition: 'ut.user_id = u.id')
         ->execute();
     $this->assertTrue(condition: $result->isOK());
-    $this->assertTrue(Schema::drop(entityClass: UserEntity::class, options: new SchemaOptions(dbName: 'assegai_test')));
+    // $this->assertTrue(Schema::drop(entityClass: UserEntity::class, options: new SchemaOptions(dbName: 'assegai_test')));
   }
 }
 

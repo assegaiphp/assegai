@@ -9,6 +9,8 @@ storage/videos/*
 .idea/
 .vscode/
 .data/
+/app/src/config/
+/app/src/Modules/
 
 /vendor/
 /docs/
