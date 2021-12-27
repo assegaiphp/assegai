@@ -62,7 +62,7 @@ class App
   }
 
   #[NoReturn]
-  public function respond(Response $response): void
+  public function respond(Response $response): never
   {
     exit($response);
   }
