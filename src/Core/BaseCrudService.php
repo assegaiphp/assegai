@@ -3,6 +3,7 @@
 namespace Assegai\Core;
 
 use Assegai\Core\Attributes\Injectable;
+use Assegai\Core\Interfaces\ICRUDService;
 use Assegai\Database\Interfaces\IEntity;
 use Assegai\Database\Interfaces\IRepository;
 use stdClass;
@@ -12,7 +13,7 @@ use stdClass;
  */
 
 #[Injectable]
-class BaseCrudService extends BaseService
+class BaseCrudService extends BaseService implements ICRUDService
 {
   public function __construct(
     protected IRepository $repository
