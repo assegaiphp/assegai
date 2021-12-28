@@ -76,7 +76,7 @@ class Column
     if ($zeroFilled && !$signed)  { $this->value .= Column::ZEROFILL . ' '; }
     if (isset($defaultValue))
     {
-      if ((is_object($defaultValue) || is_string($defaultValue)) && property_exists($defaultValue, 'value'))
+      if (is_object($defaultValue) && property_exists($defaultValue, 'value'))
       {
         $defaultValue = $defaultValue->value;
       }
