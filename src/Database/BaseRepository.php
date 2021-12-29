@@ -105,11 +105,11 @@ class BaseRepository implements IRepository
       
       if (!empty($conditions))
       {
-        $statement = $statement->where(condition: $conditions)->and(condition: '`deleted_at` IS NOT NULL');
+        $statement = $statement->where(condition: $conditions)->and(condition: '`deleted_at` IS NULL');
       }
       else
       {
-        $statement = $statement->where(condition: '`deleted_at` IS NOT NULL');
+        $statement = $statement->where(condition: '`deleted_at` IS NULL');
       }
 
       if (isset($_GET['limit']))
@@ -150,7 +150,7 @@ class BaseRepository implements IRepository
         ->where(condition: $conditions);
     if ($filterDeleted)
     {
-      $statement = $statement->and(condition: "(deleted_at='1000-01-01 00:00:00' OR deleted_at=NULL)");
+      $statement = $statement->and(condition: "(deleted_at='1000-01-01 00:00:00' OR deleted_at IS NULL)");
     }
     $result = $statement->limit(limit: 1)->execute();
 
@@ -181,7 +181,7 @@ class BaseRepository implements IRepository
         ->all(columns: $this->entity::columns(exclude: ['password']))
         ->from(tableReferences: $this->tableName)
         ->where(condition: "deleted_at='1000-01-01 00:00:00'")
-        ->or(condition: 'deleted_at=NULL')
+        ->or(condition: 'deleted_at IS NULL')
         ->limit( limit: $limit, offset: $skip)
         ->execute();
 
