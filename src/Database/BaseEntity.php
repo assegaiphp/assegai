@@ -199,6 +199,10 @@ class BaseEntity implements IEntity
           }
         }
       }
+      if (is_object($value) && property_exists($value, 'value'))
+      {
+        $value = $value->value;
+      }
       array_push($values, $value);
     }
 
