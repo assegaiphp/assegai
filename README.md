@@ -6,7 +6,7 @@
 
 ## Description
 
-Assegai is a framework for building effecient, scalable <a href="https://php.net" target="blank">PHP</a> server-side applications. It uses modern PHP (~ PHP 8.1) and combines elements of OOP (Object Oriented Programming) and FP (Functional Programming).
+Assegai is a framework for building efficient, scalable <a href="https://php.net" target="blank">PHP</a> server-side applications. It uses modern PHP (~ PHP 8.1) and combines elements of OOP (Object Oriented Programming) and FP (Functional Programming).
 
 ## Philosophy
 
