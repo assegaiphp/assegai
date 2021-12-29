@@ -13,14 +13,14 @@ final class SQLJoinExpression
   ) {
     if (is_null($this->joinType))
     {
-      $this->joinType = JoinType::JOIN();
+      $this->joinType = JoinType::JOIN;
     }
 
-    $queryString = match(strval($this->joinType)) {
-      strval(JoinType::LEFT_JOIN()) => "LEFT JOIN $joinTableReferences",
-      strval(JoinType::RIGHT_JOIN()) => "RIGHT JOIN $joinTableReferences",
-      strval(JoinType::INNER_JOIN()) => "INNER JOIN $joinTableReferences",
-      strval(JoinType::OUTER_JOIN()) => "OUTER JOIN $joinTableReferences",
+    $queryString = match($this->joinType) {
+      JoinType::LEFT_JOIN => "LEFT JOIN $joinTableReferences",
+      JoinType::RIGHT_JOIN => "RIGHT JOIN $joinTableReferences",
+      JoinType::INNER_JOIN => "INNER JOIN $joinTableReferences",
+      JoinType::OUTER_JOIN => "OUTER JOIN $joinTableReferences",
       default => "JOIN $joinTableReferences"
     };
 
