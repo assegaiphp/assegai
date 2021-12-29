@@ -81,7 +81,7 @@ class BaseRepository implements IRepository
 
   public function commit(): bool
   {
-    # TODO: Implement commit message
+    # TODO: #13 Implement commit message @amasiye
     return false;
   }
 
@@ -119,7 +119,7 @@ class BaseRepository implements IRepository
         $statement->limit(limit: $limit, offset: $skip);
       }
 
-      # TODO: Implement orderBy
+      # TODO: #14 Implement orderBy @amasiye
 
       $result = $statement->execute();
 
@@ -325,7 +325,7 @@ class BaseRepository implements IRepository
 
   public function updateRange(array $changeList): array|false
   {
-    # TODO: Implement updateRange
+    # TODO: #15 Implement updateRange @amasiye
     return false;
   }
 
