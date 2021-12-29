@@ -2,6 +2,7 @@
 
 namespace Assegai\Database;
 
+use Assegai\Core\Debugger;
 use Assegai\Database\Attributes\Columns\CreateDateColumn;
 use Assegai\Database\Attributes\Columns\DeleteDateColumn;
 use Assegai\Database\Attributes\Columns\PrimaryGeneratedColumn;
@@ -233,7 +234,15 @@ class BaseEntity implements IEntity
 
   public function toArray(array $exclude = []): array
   {
-    $columnAttributeTypes = require('app/src/Database/Attributes/Columns/ColumnTypes.php');
+    $columnAttributeTypesPath = dirname(__FILE__) . '/Attributes/Columns/ColumnTypes.php';
+
+    $columnAttributeTypes = file_exists($columnAttributeTypesPath)
+      ? require($columnAttributeTypesPath)
+      : [];
+    if (empty($columnAttributeTypes))
+    {
+      Debugger::log("Empty column attribute types in " . __FILE__ . ' ('. __LINE__ . ')');
+    }
     $vars = get_object_vars($this);
     $array = [];
     if (!empty($this->protected))
