@@ -2,6 +2,7 @@
 
 namespace Assegai\Core;
 
+use Assegai\Core\Interfaces\ICanActivate;
 use Assegai\Core\Interfaces\IController;
 use Assegai\Core\Interfaces\IModule;
 use Assegai\Core\Responses\BadRequestErrorResponse;
@@ -103,6 +104,26 @@ class App
   public function url(): array
   {
     return $this->url;
+  }
+
+  /**
+   * 
+   */
+  public function useGlobalGuards(array $guards): void
+  {
+    $GLOBALS['guards'] = [];
+    foreach ($guards as $guard)
+    {
+      if ($guard instanceof ICanActivate)
+      {
+        $GLOBALS['guards'][] = $guard;
+      }
+    }
+  }
+
+  public function getGlobalGuards(): array
+  {
+    return $GLOBALS['guards'];
   }
 
   private function getActivatedModule(): IModule
