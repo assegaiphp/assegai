@@ -132,12 +132,12 @@ class Request
 
   public function limit(): int
   {
-    return $_GET['limit'] ?? Config::get('request')['DEFAULT_LIMIT'];
+    return $_GET['limit'] ?? Config::get('request')['DEFAULT_LIMIT'] ?? 10;
   }
 
   public function skip(): int
   {
-    return $_GET['skip'] ?? Config::get('request')['DEFAULT_SKIP'];
+    return $_GET['skip'] ?? Config::get('request')['DEFAULT_SKIP'] ?? 0;
   }
 
   public function body(): mixed

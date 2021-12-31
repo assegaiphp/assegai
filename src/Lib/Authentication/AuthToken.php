@@ -13,7 +13,7 @@ class AuthToken implements IToken
 
   public function value(): string
   {
-    exit(new NotImplementedErrorResponse(message: get_called_class()));
+    exit(new NotImplementedErrorResponse(message: 'Not Implemented: ' . get_called_class()));
     return '';
   }
 }
