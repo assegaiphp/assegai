@@ -14,7 +14,7 @@ class Request
   protected array $allHeaders = [];
   protected ?App $app = null;
 
-  protected static Request $instance;
+  protected static ?Request $instance = null;
 
   public function __construct() {
     $this->body = match ($this->method()) {
@@ -48,6 +48,10 @@ class Request
 
   public static function instance(): Request
   {
+    if (!Request::$instance)
+    {
+      Request::$instance = new Request;
+    }
     return Request::$instance;
   }
 
