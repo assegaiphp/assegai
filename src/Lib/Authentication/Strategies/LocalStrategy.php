@@ -7,6 +7,7 @@ use Assegai\Core\Config;
 use Assegai\Core\Interfaces\ICRUDService;
 use Assegai\Core\Interfaces\IService;
 use Assegai\Core\Responses\NotFoundErrorResponse;
+use Assegai\Core\Responses\UnauthorizedErrorResponse;
 use Assegai\Database\Interfaces\IEntity;
 
 final class LocalStrategy extends BaseAuthenticationStrategy
@@ -47,12 +48,21 @@ final class LocalStrategy extends BaseAuthenticationStrategy
 
     if ($result->isOK())
     {
+      $errorMessage = "Incorrect $usernameField and/or $passwordField. Please try again.";
+
       if (empty($result->value()))
       {
-        exit(new NotFoundErrorResponse(message: "Incorrect $usernameField and/or $passwordField. Please try again."));
+        exit(new NotFoundErrorResponse(message: $errorMessage));
       }
 
-      return $entity::newInstanceFromObject(object: $result->value()[0]);
+      $entity = $entity::newInstanceFromObject(object: $result->value()[0]);
+
+      if (!password_verify($password, $entity->$passwordField))
+      {
+        exit(new UnauthorizedErrorResponse(message: $errorMessage));
+      }
+
+      return $entity;
     }
 
     return false;
