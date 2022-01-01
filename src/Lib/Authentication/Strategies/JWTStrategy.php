@@ -6,6 +6,8 @@ use Assegai\Core\App;
 use Assegai\Core\Config;
 use Assegai\Core\Interfaces\ICRUDService;
 use Assegai\Core\Interfaces\IService;
+use Assegai\Core\Responses\NotFoundErrorResponse;
+use Assegai\Core\Responses\UnauthorizedErrorResponse;
 use Assegai\Database\Interfaces\IEntity;
 
 final class JWTStrategy extends BaseAuthenticationStrategy
@@ -35,9 +37,32 @@ final class JWTStrategy extends BaseAuthenticationStrategy
     $entityClassName = Config::get('authentication')['jwt']['entityClassName'];
     $entity = new $entityClassName;
 
-    // $this->usersService->find
+    $usernameField = isset(Config::get('authentication')['jwt']['entityIdFieldname'])
+      ? Config::get('authentication')['jwt']['entityIdFieldname']
+      : 'username';
+    $passwordField = isset(Config::get('authentication')['jwt']['entityPasswordFieldname'])
+      ? Config::get('authentication')['jwt']['entityPasswordFieldname']
+      : 'password';
 
-    return $entity;
+    $result = $this->usersService->findOne(conditions: "`$usernameField`='$username'");
+
+    if ($result->isOK())
+    {
+      $errorMessage = "Incorrect $usernameField and/or $passwordField. Please try again.";
+      if (empty($result->value()))
+      {
+        exit(new NotFoundErrorResponse(message: $errorMessage));
+      }
+
+      if (!password_verify($password, $entity->$passwordField))
+      {
+        exit(new UnauthorizedErrorResponse(message: $errorMessage));
+      }
+
+      return $entity::newInstanceFromObject(object: $result->value()[0]);
+    }
+
+    return false;
   }
 }
 
