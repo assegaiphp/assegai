@@ -41,7 +41,7 @@ final class LocalStrategy extends BaseAuthenticationStrategy
       : 'username';
     $passwordField = isset(Config::get('authentication')['jwt']['entityPasswordFieldname'])
       ? Config::get('authentication')['jwt']['entityPasswordFieldname']
-      : 'username';
+      : 'password';
 
     $result = $this->usersService->findOne(conditions: "`$usernameField`='$username'");
 
