@@ -13,7 +13,8 @@ class AuthToken implements IToken
 
   public function value(): string
   {
-    exit(new NotImplementedErrorResponse(message: 'Not Implemented: ' . get_called_class()));
+    # TODO: #32 Implement AuthToken::value
+    exit(new NotImplementedErrorResponse(message: get_called_class()));
     return '';
   }
 }
