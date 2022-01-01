@@ -55,7 +55,7 @@ class BaseEntity implements IEntity
   public string $updatedAt = '';
   
   #[DeleteDateColumn]
-  public string $deletedAt = '';
+  public ?string $deletedAt = null;
 
   public function tableName(): ?string
   {
