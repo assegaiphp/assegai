@@ -21,9 +21,13 @@ final class AuthResponse extends Response
   public function __construct(
     protected mixed $data = [],
     protected ?ResponseType $type = null,
-    protected ?HttpStatusCode $status = HttpStatus::Created()
+    protected ?HttpStatusCode $status = null
   )
   {
+    if (is_null($status))
+    {
+      $status = HttpStatus::Created();
+    }
     parent::__construct(data: $data, type: $type, status: $status, dataOnly: true);
     $this->accessToken = match(gettype($this->data)) {
       'array' => isset($this->data['accessToken']) ? $this->data['accessToken'] : '',
