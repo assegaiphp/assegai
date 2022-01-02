@@ -6,6 +6,7 @@ use Assegai\Core\Attributes\Injectable;
 use Assegai\Core\Interfaces\ICRUDService;
 use Assegai\Database\BaseRepository;
 use Assegai\Database\Interfaces\IEntity;
+use Assegai\Database\Queries\FindOptions;
 use stdClass;
 
 /**
@@ -29,7 +30,7 @@ class BaseCrudService extends BaseService implements ICRUDService
    * 
    * @return Result Returns a `Result` object.
    */
-  public function find(?string $conditions = null): Result
+  public function find(?string $conditions = null, FindOptions $options = new FindOptions()): Result
   {
     $data = $this->repository->find(conditions: $conditions);
     return new Result(data: $data);
@@ -42,7 +43,7 @@ class BaseCrudService extends BaseService implements ICRUDService
    * 
    * @return Result Returns a `Result` object.
    */
-  public function findOne(string $conditions): Result
+  public function findOne(string $conditions, FindOptions $options = new FindOptions()): Result
   {
     $data = $this->repository->find(conditions: $conditions);
     $data = array_slice(array: $data, offset: 0, length: 1);

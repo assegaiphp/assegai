@@ -12,6 +12,7 @@ use Assegai\Database\Attributes\Columns\Column;
 use Assegai\Database\Attributes\Repository;
 use Assegai\Database\Interfaces\IEntity;
 use Assegai\Database\Interfaces\IRepository;
+use Assegai\Database\Queries\FindOptions;
 use Assegai\Database\Queries\SQLDataTypes;
 use Assegai\Database\Queries\SQLQuery;
 use Exception;
@@ -85,7 +86,7 @@ class BaseRepository implements IRepository
     return false;
   }
 
-  public function find(?string $conditions): array
+  public function find(?string $conditions, FindOptions $options = new FindOptions()): array
   {
     $entities = [];
 
@@ -140,7 +141,7 @@ class BaseRepository implements IRepository
     return $entities;
   }
 
-  public function findOne(string $conditions, bool $filterDeleted = true): null|IEntity|stdClass
+  public function findOne(string $conditions, FindOptions $options = new FindOptions(), bool $filterDeleted = true): null|IEntity|stdClass
   {
     $statement =
       $this->query
@@ -170,7 +171,7 @@ class BaseRepository implements IRepository
     return null;
   }
 
-  public function findAll(?int $limit = null, ?int $skip = null ): array
+  public function findAll(FindOptions $options = new FindOptions(), ?int $limit = null, ?int $skip = null): array
   {
     $limit  = is_null($limit) ? Config::get('request')['DEFAULT_LIMIT'] : $limit;
     $skip   = is_null($skip)  ? Config::get('request')['DEFAULT_SKIP']  : $skip;
