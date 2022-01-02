@@ -16,7 +16,7 @@ final class LocalStrategy extends BaseAuthenticationStrategy
 {
   public function __construct(
     protected ICRUDService $usersService,
-    protected ?string $name = '',
+    protected ?string $name = 'local',
     protected ?App $app = null,
     protected ?IService $authenticationService = null,
   )
