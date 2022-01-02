@@ -13,8 +13,8 @@ class AuthToken implements IToken
 
   public function value(): string
   {
-    exit(new NotImplementedErrorResponse(message: get_called_class()));
-    return '';
+    # TODO: #32 Implement AuthToken::value
+    return uniqid(prefix: 'dsafsdaf-');
   }
 }
 

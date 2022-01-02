@@ -40,16 +40,30 @@ class Config
 
     if (!isset($GLOBALS['config']))
     {
-      $config = require('app/config/default.php');
+      $defaultConfigPath = 'app/config/default.php';
+      $localConfigPath = 'app/config/local.php';
+      $productionConfigPath = 'app/config/production.php';
+
+      $config = file_exists($defaultConfigPath)
+        ? require($defaultConfigPath)
+        : [];
 
       if (Config::environment('ENVIRONMENT') === 'PROD' && file_exists('app/config/production.php'))
       {
-        $config = array_merge($config, require('app/config/production.php'));
+        $productionConfig =
+          file_exists($productionConfigPath)
+            ? require($productionConfigPath)
+            : [];
+        $config = array_merge($config, $productionConfig);
       }
 
       if (file_exists('app/config/local.php'))
       {
-        $config = array_merge($config, require('app/config/local.php'));
+        $localConfigPath =
+          file_exists($localConfigPathPath)
+          ? require($localConfigPathPath)
+          : [];
+        $config = array_merge($config, require($localConfigPath));
       }
 
       $GLOBALS['config'] = $config;

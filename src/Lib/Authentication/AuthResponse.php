@@ -3,6 +3,7 @@
 namespace Assegai\Lib\Authentication;
 
 use Assegai\Core\Config;
+use Assegai\Core\Responses\HttpStatus;
 use Assegai\Core\Responses\HttpStatusCode;
 use Assegai\Core\Responses\Response;
 use Assegai\Core\Responses\ResponseType;
@@ -20,7 +21,7 @@ final class AuthResponse extends Response
   public function __construct(
     protected mixed $data = [],
     protected ?ResponseType $type = null,
-    protected ?HttpStatusCode $status = null
+    protected ?HttpStatusCode $status = HttpStatus::Created()
   )
   {
     parent::__construct(data: $data, type: $type, status: $status, dataOnly: true);
