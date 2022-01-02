@@ -2,6 +2,7 @@
 
 namespace Assegai\Database\Interfaces;
 
+use Assegai\Database\Queries\FindOptions;
 use stdClass;
 
 /**
@@ -19,14 +20,14 @@ interface IRepository {
    * @return array Returns a list of entities that meet the specified 
    * conditions.
    */
-  public function find(?string $conditions): array;
+  public function find(?string $conditions, FindOptions $options = new FindOptions()): array;
 
   /**
    * Finds all entities in the repository.
    * 
    * @return array Returns a list of all entities in the repository. 
    */
-  public function findAll(): array;
+  public function findAll(FindOptions $options = new FindOptions()): array;
 
   /**
    * Finds one entity that meets the specified conditions.
@@ -36,7 +37,7 @@ interface IRepository {
    * @return null|IEntity|stdClass Returns an instance of the entity if found 
    * otherwise `null`.
    */
-  public function findOne(string $conditions): null|IEntity|stdClass;
+  public function findOne(string $conditions, FindOptions $options = new FindOptions()): null|IEntity|stdClass;
 
   /**
    * Persists a new entity to the repository store.
