@@ -32,7 +32,7 @@ class BaseCrudService extends BaseService implements ICRUDService
    */
   public function find(?string $conditions = null, FindOptions $options = new FindOptions()): Result
   {
-    $data = $this->repository->find(conditions: $conditions);
+    $data = $this->repository->find(conditions: $conditions, options: $options);
     return new Result(data: $data);
   }
 
@@ -45,7 +45,7 @@ class BaseCrudService extends BaseService implements ICRUDService
    */
   public function findOne(string $conditions, FindOptions $options = new FindOptions()): Result
   {
-    $data = $this->repository->find(conditions: $conditions);
+    $data = $this->repository->find(conditions: $conditions, options: $options);
     $data = array_slice(array: $data, offset: 0, length: 1);
     return new Result(data: $data);
   }

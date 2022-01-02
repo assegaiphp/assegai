@@ -9,6 +9,7 @@ use Assegai\Core\Interfaces\IService;
 use Assegai\Core\Responses\NotFoundErrorResponse;
 use Assegai\Core\Responses\UnauthorizedErrorResponse;
 use Assegai\Database\Interfaces\IEntity;
+use Assegai\Database\Queries\FindOptions;
 
 final class LocalStrategy extends BaseAuthenticationStrategy
 {
@@ -44,7 +45,11 @@ final class LocalStrategy extends BaseAuthenticationStrategy
       ? Config::get('authentication')['jwt']['entityPasswordFieldname']
       : 'password';
 
-    $result = $this->usersService->findOne(conditions: "`$usernameField`='$username'");
+    $result =
+      $this->usersService->findOne(
+        conditions: "`$usernameField`='$username'",
+        options: new FindOptions(exclude: [])
+      );
 
     if ($result->isOK())
     {
