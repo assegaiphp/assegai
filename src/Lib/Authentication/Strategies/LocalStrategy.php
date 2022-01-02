@@ -7,6 +7,7 @@ use Assegai\Core\Config;
 use Assegai\Core\Interfaces\ICRUDService;
 use Assegai\Core\Interfaces\IService;
 use Assegai\Core\Responses\NotFoundErrorResponse;
+use Assegai\Core\Responses\NotImplementedErrorResponse;
 use Assegai\Core\Responses\UnauthorizedErrorResponse;
 use Assegai\Database\Interfaces\IEntity;
 use Assegai\Database\Queries\FindOptions;
@@ -30,7 +31,7 @@ final class LocalStrategy extends BaseAuthenticationStrategy
 
   public function authenticate(mixed $data, mixed $params): mixed
   {
-
+    exit(new NotImplementedErrorResponse(message: 'Not implemented: LocalStrategy::authenticate() on line ' . __LINE__));
   }
 
   public function validate(string $username, string $password): IEntity|false
