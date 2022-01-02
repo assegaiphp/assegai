@@ -101,7 +101,7 @@ class BaseRepository implements IRepository
       $statement = 
         $this->query
           ->select()
-          ->all(columns: $this->entity::columns(exclude: ['password']))
+          ->all(columns: $this->entity::columns(exclude: $options->exclude))
           ->from(tableReferences: $this->tableName);
       
       if (!empty($conditions))
@@ -146,7 +146,7 @@ class BaseRepository implements IRepository
     $statement =
       $this->query
         ->select()
-        ->all(columns: $this->entity::columns(exclude: ['password']))
+        ->all(columns: $this->entity::columns(exclude: $options->exclude))
         ->from(tableReferences: $this->tableName)
         ->where(condition: $conditions);
     if ($filterDeleted)
@@ -179,7 +179,7 @@ class BaseRepository implements IRepository
     $result =
       $this->query
         ->select()
-        ->all(columns: $this->entity::columns(exclude: ['password']))
+        ->all(columns: $this->entity::columns(exclude: $options->exclude))
         ->from(tableReferences: $this->tableName)
         ->where(condition: "deleted_at='1000-01-01 00:00:00'")
         ->or(condition: 'deleted_at IS NULL')
