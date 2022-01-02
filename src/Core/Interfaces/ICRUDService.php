@@ -4,15 +4,16 @@ namespace Assegai\Core\Interfaces;
 
 use Assegai\Core\Result;
 use Assegai\Database\Interfaces\IEntity;
+use Assegai\Database\Queries\FindOptions;
 use stdClass;
 
 interface ICRUDService extends IService
 {
   public static function instance(): IService|null;
 
-  public function find(?string $conditions = null): Result;
+  public function find(?string $conditions = null, FindOptions $options = new FindOptions()): Result;
 
-  public function findOne(string $conditions): Result;
+  public function findOne(string $conditions, FindOptions $options = new FindOptions()): Result;
 
   public function create(IEntity $entity): Result;
 
