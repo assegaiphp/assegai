@@ -16,7 +16,7 @@ final class JWTStrategy extends BaseAuthenticationStrategy
 {
   public function __construct(
     protected ICRUDService $usersService,
-    protected ?string $name = '',
+    protected ?string $name = 'jwt',
     protected ?App $app = null,
     protected ?IService $authenticationService = null,
   )
@@ -34,7 +34,7 @@ final class JWTStrategy extends BaseAuthenticationStrategy
     exit(new NotImplementedErrorResponse(message: 'Not implemented: JWTStrategy::authenticate() on line ' . __LINE__));
   }
 
-  public function validate(string $username, string $password): IEntity
+  public function validate(string $username, string $password): IEntity|false
   {
     $entityClassName = Config::get('authentication')['jwt']['entityClassName'];
     $entity = new $entityClassName;
