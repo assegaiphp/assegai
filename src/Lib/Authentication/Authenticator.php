@@ -7,6 +7,7 @@ use Assegai\Lib\Authentication\Interfaces\IAuthStrategy;
 use Assegai\Lib\Authentication\Strategies\JWTStrategy;
 use Assegai\Lib\Authentication\Strategies\LocalStrategy;
 use Assegai\Lib\Authentication\Strategies\OAuthStrategy;
+use ReflectionClass;
 
 /**
  * The `Authenticator` class houses methods for granging and managing user 
@@ -28,9 +29,21 @@ final class Authenticator
     $this->strategies = array_merge($this->strategies, $strategies);
   }
 
-  public function getStrategy(string $name): IAuthStrategy|false
+  /**
+   * Returns an instance of an AuthStrategy
+   */
+  public function getStrategy(string $name, array $args = []): IAuthStrategy|false
   {
-    return $this->strategies[$name] ?? false;
+    $strategyClass = $this->strategies[$name] ?? false;
+
+    if (is_bool($strategyClass))
+    {
+      return $strategyClass;
+    }
+    
+    $reflectionClass = new ReflectionClass($strategyClass);
+
+    return $reflectionClass->newInstanceArgs(args: $args);
   }
 }
 
