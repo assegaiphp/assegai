@@ -12,16 +12,23 @@ class UseGuards
   /**
    * @param array<int, ICanActivate> $guards The list of Guards to use. 
    */
-  public function __construct(array $guards)
+  public function __construct(array|string $guards)
   {
     $actualGuards = [];
 
-    foreach ($guards as $guard)
+    if (is_array($guards))
     {
-      if ($guard instanceof ICanActivate)
+      foreach ($guards as $guard)
       {
-        $actualGuards[] = $guard;
+        if (is_string($guard))
+        {
+          $actualGuards[] = $guard;
+        }
       }
+    }
+    else
+    {
+      $actualGuards[] = $guards;
     }
 
     $this->guards = $actualGuards;

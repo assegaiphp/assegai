@@ -61,8 +61,7 @@ final class DBFactory
         {
           $errorMessage .= "\n" . $e->getMessage();
         }
-  
-        die($errorMessage);
+        die("$errorMessage\n");
       }
     }
 
@@ -104,7 +103,7 @@ final class DBFactory
           $errorMessage .= "\n" . $e->getMessage();
         }
   
-        die($errorMessage);
+        die("$errorMessage\n");
       }
     }
 
@@ -133,7 +132,7 @@ final class DBFactory
           $errorMessage .= "\n" . $e->getMessage();
         }
   
-        die($errorMessage);
+        die("$errorMessage\n");
       }
     }
 
@@ -160,7 +159,7 @@ final class DBFactory
           $errorMessage .= "\n" . $e->getMessage();
         }
   
-        die($errorMessage);
+        die("$errorMessage\n");
       }
     }
 
