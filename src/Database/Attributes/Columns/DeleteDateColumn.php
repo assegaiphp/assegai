@@ -22,7 +22,7 @@ class DeleteDateColumn extends Column
       alias: $alias,
       comment: $comment,
       dataType: SQLDataTypes::DATETIME,
-      allowNull: false,
+      allowNull: true,
       defaultValue: NULL,
     );
   }
