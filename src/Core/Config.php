@@ -85,6 +85,13 @@ class Config
     $GLOBALS['config'][$name] = $value;
   }
 
+  public static function asObject(string $name): mixed
+  {
+    $config = Config::get(name: $name);
+
+    return is_array($config) ? json_decode(json_encode($config)) : $config;
+  }
+
   /**
    * Gets an environment configuration value from the workspace file, `.env`.
    * 
