@@ -51,6 +51,33 @@ class BaseRepository implements IRepository
       $this->readOnlyFields = $instance->readOnlyFields;
     }
 
+    $databases = Config::get('databases');
+    # TODO: Validate database types (possibly move this some where general)
+    $databaseTypes = array_keys($databases);
+
+    # TODO: Warn that databaseType is not set
+    $this->databaseType = match($this->databaseType) {
+      'mysql'       => 'mysql',
+      'pgsql'       => 'pgsql',
+      'postgresql'  => 'postgresql',
+      'sqlite'      => 'sqlite',
+      'mongodb'     => 'mongodb',
+      default       => 'mysql'
+    };
+
+    if (empty($this->databaseName))
+    {
+      # TODO: Warn that this is not set
+      if (!empty($databases))
+      {
+        $defaultDatabase = array_pop($databases[$this->databaseType]);
+        if (isset($defaultDatabase['name']))
+        {
+          $this->databaseName = $defaultDatabase['name'];
+        }
+      }
+    }
+
     if (empty($this->dbContext))
     {
       if (isset($instance))
