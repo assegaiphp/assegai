@@ -23,7 +23,7 @@ function isMatch(string $pattern, string $subject, string $delimiter = '/'): boo
   {
     if ( ( isset($patternTokens[$index]) && $sToken === $patternTokens[$index] ) || $sToken === '*')
     {
-      $score++;
+      ++$score;
     }
   }
 

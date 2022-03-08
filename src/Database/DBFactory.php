@@ -14,10 +14,10 @@ use PDO;
 final class DBFactory
 {
   private static array $connections = [
-    'mysql' => [],
+    'mysql'   => [],
     'mariadb' => [],
-    'pgsql' => [],
-    'sqlite' => [],
+    'pgsql'   => [],
+    'sqlite'  => [],
     'mongodb' => [],
   ];
 
@@ -38,7 +38,18 @@ final class DBFactory
     if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
     {
       $config = Config::get('databases')[$type][$dbName];
-  
+
+      if (empty($config))
+      {
+        # Attempt to get the first config we find
+        $databases = Config::get('databases')[$type];
+
+        if (!empty($databases))
+        {
+          $config = array_pop($databases);
+        }
+      }
+
       try
       {
         $host = null;
