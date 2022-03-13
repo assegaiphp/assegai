@@ -12,7 +12,8 @@ final class ManyToOne
     public ?string $name = null,
     public ?string $alias = null,
     public ?RelationsOptions $options = null
-  ) {
+  )
+  {
     if (is_null($this->options))
     {
       $this->options = new RelationsOptions();
