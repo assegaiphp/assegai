@@ -7,7 +7,10 @@ use Exception;
 use ReflectionClass;
 
 /**
- * The `Schema` class provides a database agnostic way of manipulating tables. It works well with all the databases supported by [Assegai](https://assegai.io/docs/supported-databases), and has a unified API across all of these systems.
+ * The `Schema` class provides a database agnostic way of manipulating tables. 
+ * It works well with all the databases supported by 
+ * [Assegai](https://assegai.io/docs/supported-databases), and has a unified 
+ * API across all of these systems.
  */
 class Schema implements ISchema
 {

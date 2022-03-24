@@ -3,6 +3,7 @@
 namespace Assegai\Database;
 
 use Assegai\Core\Debugger;
+use Assegai\Core\Responses\NotImplementedErrorResponse;
 use Assegai\Database\Attributes\Columns\CreateDateColumn;
 use Assegai\Database\Attributes\Columns\DeleteDateColumn;
 use Assegai\Database\Attributes\Columns\PrimaryGeneratedColumn;
@@ -288,7 +289,7 @@ class BaseEntity implements IEntity
 
           foreach ($attributes as $attribute)
           {
-            if (str_ends_with($attribute->getName(), 'Column'))
+            if (str_ends_with($attribute->getName(), 'Column') && !str_ends_with($attribute->getName(), 'JoinColumn'))
             {
               $instance = $attribute->newInstance();
               if (empty($instance->name))
@@ -300,6 +301,11 @@ class BaseEntity implements IEntity
             }
           }
         }
+        break;
+
+      case 'pgsql':
+      case 'postgres':
+        exit(new NotImplementedErrorResponse(message: 'PostreSQL schemas not yet supported'));
         break;
     }
     $statement = trim($statement, ', ');
