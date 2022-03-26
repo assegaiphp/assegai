@@ -2,6 +2,7 @@
 
 namespace Assegai\Database\Attributes\Columns;
 
+use Assegai\Core\Debugger;
 use Attribute;
 use Assegai\Database\Queries\SQLColumnDefinition;
 use Assegai\Database\Queries\SQLDataTypes;
@@ -33,7 +34,8 @@ class Column
     public string $uniqueKey = '',
     public bool $isPrimaryKey = false,
     public string $comment = '',
-    public bool $canUpdate = true
+    public bool $canUpdate = true,
+    public string $enum = ''
   )
   {
 
@@ -45,6 +47,24 @@ class Column
         SQLDataTypes::DECIMAL => '16,2',
         default => null
       };
+    }
+
+    if ($this->dataType === SQLDataTypes::ENUM && !empty($this->enum))
+    {
+      if (enum_exists($this->enum))
+      {
+        $this->lengthOrValues = [];
+        $cases = $this->enum::cases();
+
+        foreach ($cases as $case)
+        {
+          if (!isset($case->value))
+          {
+            Debugger::logWarning('Enum ' . $this->enum . ' is NOT backed.');
+          }
+          $this->lengthOrValues[] = $case->value;
+        }
+      }
     }
 
     $this->sqlDefinition = new SQLColumnDefinition(
