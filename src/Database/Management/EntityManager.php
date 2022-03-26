@@ -1,6 +1,6 @@
 <?php
 
-namespace Assegai\Database;
+namespace Assegai\Database\Management;
 
 use Assegai\Core\Exceptions\NotImplmentedException;
 use Assegai\Database\Attributes\Repository;
@@ -102,6 +102,8 @@ final class EntityManager
   }
 
   /**
+   * Find entites that match the given `FindOptions`
+   * 
    * @param string $entityType
    * @return IEntity|array<IEntity>|null
    */
