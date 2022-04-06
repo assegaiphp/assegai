@@ -23,7 +23,21 @@ class Debugger
     echo "</pre>";
   }
 
+  /**
+   * @param mixed ...$message
+   * 
+   * @deprecated 1.0.0 No longer used by internal code and not recommended.
+   * @see Debugger::logError 
+   */
   public static function log_error(...$message): void
+  {
+    call_user_func_array([self::class, 'logError'], $message);
+  }
+
+  /**
+   * @param mixed ...$message
+   */
+  public static function logError(...$message): void
   {
     foreach ($message as $logMessage)
     {
@@ -33,6 +47,11 @@ class Debugger
         'object' => json_encode( $logMessage ), 
       });
     }
+  }
+
+  public static function logWarning(...$message): void
+  {
+
   }
 
   public static function print(...$args): void
@@ -53,7 +72,25 @@ class Debugger
     }
   }
 
+  /**
+   * @param bool $return
+   * 
+   * @deprecated 1.0.0 No longer used by internal code and not recommended.
+   */
   public static function print_json_error(bool $return = false): ?string
+  {
+    return self::printJSONError(return: $return);
+  }
+
+  /**
+   * @param bool $return If you would like to capture the output of printJSONError(), 
+   * use the return parameter. When this parameter is set to true, printJSONError() 
+   * will return the information rather than print it.
+   * 
+   * @return null|string Returns the error information if the $return parameter is 
+   * set to true, otherwise null.
+   */
+  public static function printJSONError(bool $return = false): ?string
   {
     $message = match (json_last_error()) {
       JSON_ERROR_NONE           => ' - No errors',

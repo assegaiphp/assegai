@@ -2,7 +2,9 @@
 
 namespace Assegai\Lib\Authentication\JWT;
 
+use Assegai\Lib\Authentication\AuthToken;
 use Assegai\Lib\Authentication\Interfaces\IToken;
+use stdClass;
 
 final class JWTToken implements IToken
 {
@@ -31,6 +33,24 @@ final class JWTToken implements IToken
   public function __toString(): string
   {
     return $this->value();
+  }
+
+  public static function parse(string $tokenString, bool $returnArray = false): false|stdClass|array
+  {
+    $segments = explode('.', $tokenString);
+    
+    if (count($segments) !== 3)
+    {
+      return false;
+    }
+
+    $parts = [];
+    for ($x = 0; $x < 2; $x++)
+    {
+      $parts[] = json_decode(base64_decode($segments[$x]));
+    }
+
+    return $returnArray ? $parts : (object) $parts;
   }
 }
 
