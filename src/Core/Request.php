@@ -2,7 +2,9 @@
 
 namespace Assegai\Core;
 
+use Assegai\Lib\Authentication\JWT\JWTToken;
 use JetBrains\PhpStorm\Pure;
+use stdClass;
 
 /**
  * The **Request** class represents the HTTP request and has properties for 
@@ -183,6 +185,49 @@ class Request
   public function query(): string
   {
     return $_SERVER['QUERY_STRING'] ?? '';
+  }
+
+  /**
+   * Returns the access token provided with the request.
+   * 
+   * @param bool $deconstruct If set to TRUE, then an object will be return on success.
+   * 
+   * @return null|string|stdClass|false Returns the access token provided with the 
+   * request, null if non was set and false if the supplied token is invalid.
+   */
+  public function accessToken(bool $deconstruct = false): null|string|stdClass|false
+  {
+    $accessToken = $this->header('Authorization');
+
+    if (empty($accessToken))
+    {
+      return NULL;
+    }
+
+    if (!str_contains($accessToken, 'BEARER'))
+    {
+      return NULL;
+    }
+
+    $matches = [];
+    if (!preg_match('/Bearer (.*)/', $accessToken, $matches))
+    {
+      return false;
+    }
+
+    if (count($matches) < 2)
+    {
+      return false;
+    }
+
+    $tokenString = $matches[1];
+
+    if ($deconstruct)
+    {
+      return (object) JWTToken::parse(tokenString: $tokenString, returnArray: true);
+    }
+
+    return $tokenString;
   }
 }
 
