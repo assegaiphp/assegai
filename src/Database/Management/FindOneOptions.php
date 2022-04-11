@@ -2,9 +2,10 @@
 
 namespace Assegai\Database\Management;
 
+use Assegai\Database\Queries\FindOptions;
 use stdClass;
 
-final class FindOptions
+final class FindOneOptions extends FindOptions
 {
   public function __construct(
     public readonly null|stdClass|array $select = null,
@@ -14,21 +15,4 @@ final class FindOptions
     public readonly ?int $skip = null,
     public readonly ?int $limit = null,
   ) { }
-
-  public function __toString(): string
-  {
-    $output = strval($this->where);
-
-    if (!empty($limit))
-    {
-      $output .= " LIMIT $limit";
-
-      if (!empty($skip))
-      {
-        $output .= " OFFSET $skip";
-      }
-    }
-
-    return trim($output);
-  }
 }
