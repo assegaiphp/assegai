@@ -24,7 +24,7 @@ final class SQLQuery
   ) {
     if (empty($this->passwordHashAlgorithm))
     {
-      $this->passwordHashAlgorithm = Config::get('default_password_hash_algo');
+      $this->passwordHashAlgorithm = Config::get('default_password_hash_algo') ?? '2y';
 
       if (empty($this->passwordHashAlgorithm))
       {
