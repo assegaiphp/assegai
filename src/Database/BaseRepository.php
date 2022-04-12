@@ -52,10 +52,10 @@ class BaseRepository implements IRepository
     }
 
     $databases = Config::get('databases');
-    # TODO: Validate database types (possibly move this some where general)
+    // TODO: #78 Validate database types (possibly move this some where general) @amasiye
     $databaseTypes = array_keys($databases);
 
-    # TODO: Warn that databaseType is not set
+    // TODO: #79 Warn that databaseType is not set @amasiye
     $this->databaseType = match($this->databaseType) {
       'mysql'       => 'mysql',
       'pgsql'       => 'pgsql',
