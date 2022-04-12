@@ -2,7 +2,7 @@
 
 namespace Assegai\Database\Management;
 
-class FindManyOptions
+class FindManyOptions extends FindOneOptions
 {
   public function __construct(
     public readonly ?int $skip = null,
