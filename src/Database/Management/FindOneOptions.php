@@ -2,7 +2,6 @@
 
 namespace Assegai\Database\Management;
 
-use Assegai\Database\Queries\FindOptions;
 use stdClass;
 
 /**
@@ -28,6 +27,7 @@ class FindOneOptions extends FindOptions
     public readonly null|stdClass|array $order = null,
     public readonly ?int $skip = null,
     public readonly ?int $limit = null,
-    public readonly ?JoinOptions $join = null,
+    public readonly null|array|JoinOptions $join = null,
+    public readonly array $exclude = ['password'],
   ) { }
 }
