@@ -213,7 +213,7 @@ final class SQLQuery
     }
   }
 
-  public function debug(): void
+  public function debug(): never
   {
     exit($this);
   }
