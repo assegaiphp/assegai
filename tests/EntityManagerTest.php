@@ -16,8 +16,8 @@ use Assegai\Database\Queries\SQLDataTypes;
 use Assegai\Database\Types\DataSourceType;
 use PHPUnit\Framework\TestCase;
 
-define('DATABASE_NAME', 'assegai_test');
-define('TABLE_NAME', 'tests');
+defined('DATABASE_NAME') or define('DATABASE_NAME', 'assegai_test');
+defined('TABLE_NAME') or define('TABLE_NAME', 'tests');
 
 #[Entity(tableName: TABLE_NAME, database: DATABASE_NAME)]
 class MockEntity extends BaseEntity implements IEntity
@@ -65,7 +65,7 @@ final class EntityManagerTest extends TestCase
       host: $config['host'] ?? 'localhost',
       port: $config['port'] ?? 3306,
       database: $config['database'] ?? DATABASE_NAME,
-      username: $config['username'] ?? 'root',
+      username: $config['user'] ?? 'root',
       password: $config['password'] ?? ''
     );
   }
