@@ -2,6 +2,7 @@
 
 namespace Assegai\Database\Interfaces;
 
+use Assegai\Database\Types\SQLDialect;
 use stdClass;
 
 /**
@@ -96,11 +97,11 @@ interface IEntity {
   /**
    * Generates an SQL table schema for the entity of the given dialect.
    * 
-   * @param string $dialect The SQL dialect for which the schema should be generated.
+   * @param string|SQLDialect $dialect The SQL dialect for which the schema should be generated.
    * 
    * @return string Returns an SQL table schema.
    */
-  public function schema(string $dialect = 'mysql'): string;
+  public function schema(string|SQLDialect $dialect = 'mysql'): string;
 
   /**
    * Returns the name of the database table associated with the entity.

@@ -107,7 +107,7 @@ final class EntityManager
    * 
    * @throws ClassNotFoundException
    */
-  private function validateEntityName(string $entityClass): void
+  public static function validateEntityName(string $entityClass): void
   {    
     if (!class_exists($entityClass))
     {
