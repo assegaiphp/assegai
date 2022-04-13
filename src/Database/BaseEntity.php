@@ -10,6 +10,7 @@ use Assegai\Database\Attributes\Columns\PrimaryGeneratedColumn;
 use Assegai\Database\Attributes\Columns\UpdateDateColumn;
 use Assegai\Database\Attributes\Entity;
 use Assegai\Database\Interfaces\IEntity;
+use Assegai\Database\Types\SQLDialect;
 use ReflectionClass;
 use ReflectionProperty;
 use stdClass;
@@ -274,13 +275,21 @@ class BaseEntity implements IEntity
     return json_encode($this->toArray());
   }
 
-  public function schema(string $dialect = 'mysql'): string
+  public function toPlainObject(): stdClass
   {
-    $statement = "CREATE TABLE IF NOT EXISTS `$this->tableName` (";
+    return json_decode($this->toJSON());
+  }
+
+  public function schema(string|SQLDialect $dialect = 'mysql'): string
+  {
+    $statement = '';
     $reflection = new ReflectionClass(objectOrClass: $this);
     $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
 
-    switch ($dialect) {
+    $statement = "CREATE TABLE IF NOT EXISTS `$this->tableName` (";
+
+    switch ($dialect)
+    {
       case 'mysql':
       default:
         foreach ($properties as $property)
@@ -312,6 +321,21 @@ class BaseEntity implements IEntity
     $statement .= ")";
 
     return trim($statement);
+  }
+
+  public function tableExists(DataSource $dataSource): bool
+  {
+    return Schema::dbTableExists(
+      dataSource: $dataSource,
+      databaseName: $this->database,
+      tableName: $this->tableName,
+      dialect: $dataSource->type
+    );
+  }
+
+  public function getTableName(): string
+  {
+    return $this->tableName;
   }
 
   public function __toString(): string

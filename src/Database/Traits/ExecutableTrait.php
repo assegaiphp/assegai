@@ -11,7 +11,7 @@ trait ExecutableTrait
     return $this->query->execute();
   }
 
-  public function debug(): void
+  public function debug(): never
   {
     $this->query->debug();
   }

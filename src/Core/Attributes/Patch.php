@@ -56,12 +56,8 @@ class Patch
     }
 
     $valid_actions = [Patch::UPDATE_ACTION, Patch::DELETE_ACTION, Patch::RESTORE_ACTION];
-    if (!isset($_GET['action']))
-    {
-      exit(new BadRequestErrorResponse(message: 'Missing action parameter'));
-    }
 
-    $action = strtoupper($_GET['action']);
+    $action = isset($_GET['action']) ? strtoupper($_GET['action']) : Patch::UPDATE_ACTION;
 
     if (in_array($action, $valid_actions))
     {

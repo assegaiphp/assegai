@@ -23,7 +23,7 @@ final class SQLAssignmentList
       }
       $queryString .= is_numeric($value)
         ? "`$key`=${value}${separator}"
-        : "`$key`='$value'${separator}";
+        : (is_null($value) ? "`$key`=NULL" : "`$key`='$value'${separator}");
     }
     $queryString = trim($queryString, $separator);
     $this->query->appendQueryString( tail: $queryString );
