@@ -12,9 +12,11 @@ class DataSource
 {
   public readonly EntityManager $manager;
   public readonly PDO $db;
+  public readonly string $type;
 
   public function __construct(DataSourceOptions $options)
   {
+    $this->type = $options->type;
     // TODO: #80 Check if the specified databases is in config @amasiye
     if (
       !empty($options->database) &&
@@ -27,7 +29,7 @@ class DataSource
       $name = $options->database;
       $port = $options->getPort();
 
-      $dsn = match ($options->type) {
+      $dsn = match ($this->type) {
         DataSourceType::MYSQL,
         DataSourceType::MYSQL => "mysql:host=$host;port=$port;dbname=$name",
         DataSourceType::POSTGRESQL => "pgsql:host=$host;port=$port;dbname=$name",
@@ -40,7 +42,7 @@ class DataSource
     }
     else
     {
-      $this->db = match ($options->type) {
+      $this->db = match ($this->type) {
         DataSourceType::POSTGRESQL  => DBFactory::getPostgreSQLConnection(dbName: $options->database),
         DataSourceType::SQLITE      => DBFactory::getSQLiteConnection(dbName: $options->database),
         DataSourceType::MONGODB     => DBFactory::getMongoDbConnection(dbName: $options->database),

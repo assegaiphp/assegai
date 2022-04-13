@@ -10,6 +10,7 @@ use Assegai\Database\Attributes\Columns\PrimaryGeneratedColumn;
 use Assegai\Database\Attributes\Columns\UpdateDateColumn;
 use Assegai\Database\Attributes\Entity;
 use Assegai\Database\Interfaces\IEntity;
+use Assegai\Database\Types\SQLDialect;
 use ReflectionClass;
 use ReflectionProperty;
 use stdClass;
@@ -279,84 +280,57 @@ class BaseEntity implements IEntity
     return json_decode($this->toJSON());
   }
 
-  public function schema(string $dialect = 'mysql'): string
+  public function schema(string|SQLDialect $dialect = 'mysql'): string
   {
     $statement = '';
     $reflection = new ReflectionClass(objectOrClass: $this);
     $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
 
-    if ($this->tableExists(tableName: $this->tableName))
-    {
-      // Alter the table
-      $statement = "ALTER TABLE `$this->tableName`";
-      
-      switch ($dialect)
-      {
-        case 'mysql':
-        default:
-          foreach ($properties as $property)
-          {
-            $attributes = $property->getAttributes();
+    $statement = "CREATE TABLE IF NOT EXISTS `$this->tableName` (";
 
-            foreach ($attributes as $attribute)
+    switch ($dialect)
+    {
+      case 'mysql':
+      default:
+        foreach ($properties as $property)
+        {
+          $attributes = $property->getAttributes();
+
+          foreach ($attributes as $attribute)
+          {
+            if (str_ends_with($attribute->getName(), 'Column') && !str_ends_with($attribute->getName(), 'JoinColumn'))
             {
-              if (str_ends_with($attribute->getName(), 'Column'))
+              $instance = $attribute->newInstance();
+              if (empty($instance->name))
               {
-                $instance = $attribute->newInstance();
-                
-                $statement .= $instance->sqlDefinition . ", ";
+                $propName = $property->getName();
+                $statement .= "`$propName`" . " ";
               }
+              $statement .= $instance->sqlDefinition . ", ";
             }
           }
-          break;
-      }
+        }
+        break;
+
+      case 'pgsql':
+      case 'postgres':
+        exit(new NotImplementedErrorResponse(message: 'PostreSQL schemas not yet supported'));
+        break;
     }
-    else
-    {
-      // Create the table
-      $statement = "CREATE TABLE IF NOT EXISTS `$this->tableName` (";
-
-      switch ($dialect)
-      {
-        case 'mysql':
-        default:
-          foreach ($properties as $property)
-          {
-            $attributes = $property->getAttributes();
-
-            foreach ($attributes as $attribute)
-            {
-              if (str_ends_with($attribute->getName(), 'Column') && !str_ends_with($attribute->getName(), 'JoinColumn'))
-              {
-                $instance = $attribute->newInstance();
-                if (empty($instance->name))
-                {
-                  $propName = $property->getName();
-                  $statement .= "`$propName`" . " ";
-                }
-                $statement .= $instance->sqlDefinition . ", ";
-              }
-            }
-          }
-          break;
-
-        case 'pgsql':
-        case 'postgres':
-          exit(new NotImplementedErrorResponse(message: 'PostreSQL schemas not yet supported'));
-          break;
-      }
-      $statement = trim($statement, ', ');
-      $statement .= ")";
-
-    }
+    $statement = trim($statement, ', ');
+    $statement .= ")";
 
     return trim($statement);
   }
 
-  private function tableExists(string $tableName): bool
+  public function tableExists(DataSource $dataSource): bool
   {
-    // TODO: Check if table exists
-    return false;
+    return Schema::dbTableExists(
+      dataSource: $dataSource,
+      databaseName: $this->database,
+      tableName: $this->tableName,
+      dialect: $dataSource->type
+    );
   }
 
   public function getTableName(): string
