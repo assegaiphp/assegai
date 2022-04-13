@@ -40,7 +40,6 @@ class Schema implements ISchema
       }
 
       $query = $instance->schema(dialect: $options->dialect());
-      exit($query . PHP_EOL);
       $statement = $db->prepare(query: $query);
 
       return $statement->execute();
