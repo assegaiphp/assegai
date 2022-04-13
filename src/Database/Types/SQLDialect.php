@@ -19,7 +19,7 @@ enum SQLDialect: string
       'mssql' => self::MSSQL,
       'mariadb' => self::MARIADB,
       'sqlite' => self::SQLITE,
-      'unknown',
+      'unknown' => self::UNKNOWN,
       default => self::UNKNOWN
     };
   }
