@@ -15,3 +15,4 @@ storage/videos/*
 /vendor/
 /docs/
 composer-installer
+/tests/data/

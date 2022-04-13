@@ -15,19 +15,29 @@ final class SQLWhereClause
     private string $condition
   )
   {
-    $this->query->appendQueryString("WHERE $condition");
+    if (!empty($condition))
+    {
+      $this->query->appendQueryString("WHERE $condition");
+    }
   }
 
   public function or(string $condition): SQLWhereClause
   {
-    $this->query->appendQueryString("OR $condition");
+    $operator = $this->filterOperator('OR');
+    $this->query->appendQueryString("$operator $condition");
     return $this;
   }
 
   public function and(string $condition): SQLWhereClause
   {
-    $this->query->appendQueryString("AND $condition");
+    $operator = $this->filterOperator('AND');
+    $this->query->appendQueryString("$operator $condition");
     return $this;
+  }
+
+  private function filterOperator(string $operator): string
+  {
+    return str_contains((string)$this->query, 'WHERE') ? $operator : 'WHERE';
   }
 }
 

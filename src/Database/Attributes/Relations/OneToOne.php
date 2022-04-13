@@ -2,6 +2,7 @@
 
 namespace Assegai\Database\Attributes\Relations;
 
+use Assegai\Core\Exceptions\ClassNotFoundException;
 use Attribute;
 
 /**
@@ -22,6 +23,11 @@ final class OneToOne
     if (is_null($this->options))
     {
       $this->options = new RelationsOptions();
+    }
+
+    if (!class_exists($type))
+    {
+      throw new ClassNotFoundException(className: $type);
     }
   }
 }
