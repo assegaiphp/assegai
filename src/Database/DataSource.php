@@ -16,7 +16,7 @@ class DataSource
 
   public function __construct(DataSourceOptions $options)
   {
-    $this->type = $options->type;
+    $this->type = $options->type->value;
     // TODO: #80 Check if the specified databases is in config @amasiye
     if (
       !empty($options->database) &&
