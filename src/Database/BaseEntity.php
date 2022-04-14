@@ -9,6 +9,11 @@ use Assegai\Database\Attributes\Columns\DeleteDateColumn;
 use Assegai\Database\Attributes\Columns\PrimaryGeneratedColumn;
 use Assegai\Database\Attributes\Columns\UpdateDateColumn;
 use Assegai\Database\Attributes\Entity;
+use Assegai\Database\Attributes\Relations\JoinColumn;
+use Assegai\Database\Attributes\Relations\ManyToMany;
+use Assegai\Database\Attributes\Relations\ManyToOne;
+use Assegai\Database\Attributes\Relations\OneToMany;
+use Assegai\Database\Attributes\Relations\OneToOne;
 use Assegai\Database\Interfaces\IEntity;
 use Assegai\Database\Types\SQLDialect;
 use ReflectionClass;
@@ -308,6 +313,24 @@ class BaseEntity implements IEntity
               }
               $statement .= $instance->sqlDefinition . ", ";
             }
+            else if ($this->isRelationAttribute(attributeName: $attribute->getName()))
+            {
+              switch($attribute->getName())
+              {
+                case OneToOne::class:
+                  # If this 
+                  break;
+
+                case OneToMany::class:
+                  break;
+
+                case ManyToOne::class:
+                  break;
+
+                case ManyToMany::class:
+                  break;
+              }
+            }
           }
         }
         break;
@@ -346,6 +369,40 @@ class BaseEntity implements IEntity
   public function __serialize(): array
   {
     return $this->toArray();
+  }
+
+  private function isRelationAttribute(string $attributeName): bool
+  {
+    return in_array($attributeName, [
+      OneToOne::class,
+      OneToMany::class,
+      ManyToOne::class,
+      ManyToMany::class,
+    ]);
+  }
+
+  /**
+   * @param string $attributeClassName The name of the attribute cl
+   */
+  private function hasAttribute(string $attributeClassName, array $attributes): bool
+  {
+    return in_array($attributeClassName, $attributes);
+  }
+
+  /**
+   * @param ReflectionAttribute[] $attributes
+   */
+  private function hasJoinColumnAttribute(array $attributes): bool
+  {
+    return in_array(JoinColumn::class, $attributes);
+  }
+
+  /**
+   * @param ReflectionAttribute[] $attributes
+   */
+  private function hasJoinTAttribute(array $attributes): bool
+  {
+    return in_array(JoinColumn::class, $attributes);
   }
 }
 
