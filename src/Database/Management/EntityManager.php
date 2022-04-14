@@ -8,6 +8,7 @@ use Assegai\Core\Exceptions\GeneralSQLQueryException;
 use Assegai\Core\Exceptions\IllegalTypeException;
 use Assegai\Core\Exceptions\NotImplmentedException;
 use Assegai\Core\Exceptions\SaveException;
+use Assegai\Core\Responses\NotFoundErrorResponse;
 use Assegai\Core\Result;
 use Assegai\Database\Attributes\Repository;
 use Assegai\Database\DataSource;
@@ -74,9 +75,20 @@ final class EntityManager
 
     if ($targetOrEntity instanceof IEntity)
     {
-      $saveResult = ($entity = $this->findBy($targetOrEntity::class, new FindWhereOptions(conditions: ['id' => $targetOrEntity->id])))
-        ? $this->update(entityClass: $targetOrEntity::class, conditions: ['id' => $targetOrEntity->id], entity: $targetOrEntity)
-        : $this->insert(entityClass: $targetOrEntity::class, entity: $targetOrEntity);
+      $saveResult = new SQLQueryResult(data: [], isOK: false);
+
+      if (empty($targetOrEntity->id))
+      {
+        $saveResult = $this->insert(entityClass: $targetOrEntity::class, entity: $targetOrEntity);
+      }
+      else if ($entity = $this->findBy($targetOrEntity::class, new FindWhereOptions(conditions: ['id' => $targetOrEntity->id])))
+      {
+        $saveResult = $this->update(entityClass: $targetOrEntity::class, conditions: ['id' => $targetOrEntity->id], entity: $targetOrEntity);
+      }
+      else
+      {
+        exit(new NotFoundErrorResponse(message: "The resouce with ID #{$targetOrEntity->id} could not be found"));
+      }
 
       // TODO: Check if errors occured
       if ($saveResult->isError())
