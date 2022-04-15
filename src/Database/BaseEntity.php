@@ -4,6 +4,7 @@ namespace Assegai\Database;
 
 use Assegai\Core\Debugger;
 use Assegai\Core\Exceptions\ClassNotFoundException;
+use Assegai\Core\Exceptions\GeneralSQLQueryException;
 use Assegai\Core\Exceptions\IllegalTypeException;
 use Assegai\Core\Responses\NotImplementedErrorResponse;
 use Assegai\Database\Attributes\Columns\CreateDateColumn;
@@ -339,6 +340,7 @@ class BaseEntity implements IEntity
                     $joinColumnName = TextFormatter::toCamelCase($name, $referencedColumn);
 
                     $referencedTable = $this->getReferencedTableName(entityClass: $instance->type);
+                    $statement .= "`$joinColumnName` " . $this->getReferencedColumnDefinition(entityClass: $instance->type, property: $referencedColumn);
 
                     $hash = md5($joinColumnName . time());
                     $generatedKeyName = "IDX_{$hash}";
@@ -439,7 +441,17 @@ class BaseEntity implements IEntity
    */
   private function hasJoinColumnAttribute(array $attributes): bool
   {
-    return in_array(JoinColumn::class, $attributes);
+    $found = false;
+
+    foreach ($attributes as $attribute)
+    {
+      if ($attribute->getName() === JoinColumn::class)
+      {
+        $found = true;
+      }
+    }
+
+    return $found;
   }
 
   /**
@@ -460,6 +472,32 @@ class BaseEntity implements IEntity
     $entity = new $entityClass;
 
     return $entity->getTableName();
+  }
+
+  private function getReferencedColumnDefinition(string $entityClass, string $property): string
+  {
+    $definition = '';
+    if (!property_exists($entityClass, $property))
+    {
+      throw new GeneralSQLQueryException();
+    }
+
+    $reflection = new ReflectionClass($entityClass);
+    $reflectionProp = $reflection->getProperty($property);
+
+    $attributes = $reflectionProp->getAttributes();
+
+    foreach ($attributes as $attribute)
+    {
+      if (str_ends_with($attribute->getName(), 'Column') && !str_ends_with($attribute->getName(), 'JoinColumn'))
+      {
+        $instance = $attribute->newInstance();
+
+        $definition .= $instance->sqlDefinition . ", ";
+      }
+    }
+
+    return preg_replace('/(PRIMARY KEY)|(AUTO_INCREMENT\s*)/', '', substr($definition, strpos($definition, '` ') + 2));
   }
 }
 
