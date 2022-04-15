@@ -3,6 +3,8 @@
 namespace Assegai\Database;
 
 use Assegai\Core\Debugger;
+use Assegai\Core\Exceptions\ClassNotFoundException;
+use Assegai\Core\Exceptions\IllegalTypeException;
 use Assegai\Core\Responses\NotImplementedErrorResponse;
 use Assegai\Database\Attributes\Columns\CreateDateColumn;
 use Assegai\Database\Attributes\Columns\DeleteDateColumn;
@@ -16,6 +18,7 @@ use Assegai\Database\Attributes\Relations\OneToMany;
 use Assegai\Database\Attributes\Relations\OneToOne;
 use Assegai\Database\Interfaces\IEntity;
 use Assegai\Database\Types\SQLDialect;
+use Assegai\Util\TextFormatter;
 use ReflectionClass;
 use ReflectionProperty;
 use stdClass;
@@ -287,6 +290,8 @@ class BaseEntity implements IEntity
 
   public function schema(string|SQLDialect $dialect = 'mysql'): string
   {
+    $keys = [];
+    $constraints = [];
     $statement = '';
     $reflection = new ReflectionClass(objectOrClass: $this);
     $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
@@ -303,9 +308,10 @@ class BaseEntity implements IEntity
 
           foreach ($attributes as $attribute)
           {
+            $instance = $attribute->newInstance();
+
             if (str_ends_with($attribute->getName(), 'Column') && !str_ends_with($attribute->getName(), 'JoinColumn'))
             {
-              $instance = $attribute->newInstance();
               if (empty($instance->name))
               {
                 $propName = $property->getName();
@@ -313,12 +319,35 @@ class BaseEntity implements IEntity
               }
               $statement .= $instance->sqlDefinition . ", ";
             }
-            else if ($this->isRelationAttribute(attributeName: $attribute->getName()))
+            else if ($this->isRelationAttribute(attributeClassName: $attribute->getName()))
             {
               switch($attribute->getName())
               {
                 case OneToOne::class:
-                  # If this 
+                  if ($this->hasJoinColumnAttribute(attributes: $attributes))
+                  {
+                    $joinColumnAttr = $property->getAttributes(name: JoinColumn::class)[0] ?? null;
+
+                    if (empty($joinColumnAttr))
+                    {
+                      throw new ClassNotFoundException(className: JoinColumn::class);
+                    }
+
+                    $joinColumnAttrInstance = $joinColumnAttr->newInstance();
+                    $name = $joinColumnAttrInstance->name ?? $property->getName();
+                    $referencedColumn = $joinColumnAttrInstance->referencedColumn ?? 'id';
+                    $joinColumnName = TextFormatter::toCamelCase($name, $referencedColumn);
+
+                    $referencedTable = $this->getReferencedTableName(entityClass: $instance->type);
+
+                    $hash = md5($joinColumnName . time());
+                    $generatedKeyName = "IDX_{$hash}";
+                    $generatedFKName = "FK_{$hash}";
+                    # If this is join column, create column and add index
+                    $keys[] = "KEY `$generatedKeyName` (`$joinColumnName`)";
+                    # Create constraint
+                    $constraints[] = "CONSTRAINT `$generatedFKName` FOREIGN KEY (`$joinColumnName`) REFERENCES `$referencedTable` (`$referencedColumn`)";
+                  }
                   break;
 
                 case OneToMany::class:
@@ -333,11 +362,27 @@ class BaseEntity implements IEntity
             }
           }
         }
+
+        # Append keys and indexes
+        foreach ($keys as $key)
+        {
+          $statement .= "$key, ";
+        }
+
+        # Append constraints
+        foreach ($constraints as $constraint)
+        {
+          $statement .= "$constraint, ";
+        }
         break;
 
       case 'pgsql':
       case 'postgres':
         exit(new NotImplementedErrorResponse(message: 'PostreSQL schemas not yet supported'));
+        break;
+
+      case 'sqlite':
+        exit(new NotImplementedErrorResponse(message: 'SQLite schemas not yet supported'));
         break;
     }
     $statement = trim($statement, ', ');
@@ -371,9 +416,9 @@ class BaseEntity implements IEntity
     return $this->toArray();
   }
 
-  private function isRelationAttribute(string $attributeName): bool
+  private function isRelationAttribute(string $attributeClassName): bool
   {
-    return in_array($attributeName, [
+    return in_array($attributeClassName, [
       OneToOne::class,
       OneToMany::class,
       ManyToOne::class,
@@ -403,6 +448,18 @@ class BaseEntity implements IEntity
   private function hasJoinTAttribute(array $attributes): bool
   {
     return in_array(JoinColumn::class, $attributes);
+  }
+
+  private function getReferencedTableName(string $entityClass): string
+  {
+    if (!is_a($entityClass, IEntity::class, true))
+    {
+      throw new IllegalTypeException(expected: IEntity::class, actual: $entityClass);
+    }
+
+    $entity = new $entityClass;
+
+    return $entity->getTableName();
   }
 }
 
