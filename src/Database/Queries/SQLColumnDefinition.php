@@ -109,8 +109,8 @@ class SQLColumnDefinition
         // 'string'  => ( !in_array($this->dataType, $temporalDatatypes) ) ? "'" . $this->defaultValue . "'" : $this->defaultValue,
         'string'  => !in_array($this->defaultValue, $stringExamptions) ? "'" . $this->defaultValue . "'" : (
           match($this->defaultValue) {
-            Column::CURRENT_DATE => date('Y-m-d'),
-            Column::CURRENT_TIME => date('H:i:s'),
+            Column::CURRENT_DATE => "'" . date('Y-m-d') . "'",
+            Column::CURRENT_TIME => "'" . date('H:i:s') . "'",
             default => $this->defaultValue
           }),
         default   => $this->defaultValue
