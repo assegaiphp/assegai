@@ -2,6 +2,8 @@
 
 namespace Assegai\Database\Queries;
 
+use Assegai\Database\Attributes\Columns\Column;
+
 class SQLColumnDefinition
 {
   private string $queryString = "";
@@ -105,9 +107,16 @@ class SQLColumnDefinition
         'object'  => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue),
         'boolean' => intval($this->defaultValue),
         // 'string'  => ( !in_array($this->dataType, $temporalDatatypes) ) ? "'" . $this->defaultValue . "'" : $this->defaultValue,
-        'string'  => !in_array($this->defaultValue, $stringExamptions) ? "'" . $this->defaultValue . "'" : $this->defaultValue,
+        'string'  => !in_array($this->defaultValue, $stringExamptions) ? "'" . $this->defaultValue . "'" : (
+          match($this->defaultValue) {
+            Column::CURRENT_DATE => date('Y-m-d'),
+            Column::CURRENT_TIME => date('H:i:s'),
+            default => $this->defaultValue
+          }),
         default   => $this->defaultValue
       } . " ";
+
+      
     }
     if ($this->autoIncrement && SQLDataTypes::isNumeric($this->dataType))
     {
