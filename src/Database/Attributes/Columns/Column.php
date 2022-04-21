@@ -42,15 +42,6 @@ class Column
   {
 
     # Build definition string
-    $sqlLengthOrValues = $this->lengthOrValues;
-    if (is_null($sqlLengthOrValues)) {
-      $sqlLengthOrValues = match ($this->dataType) {
-        SQLDataTypes::VARCHAR => '10',
-        SQLDataTypes::DECIMAL => '16,2',
-        default => null
-      };
-    }
-
     if ($this->dataType === SQLDataTypes::ENUM && !empty($this->enum))
     {
       if (enum_exists($this->enum))
@@ -67,6 +58,15 @@ class Column
           $this->lengthOrValues[] = $case->value;
         }
       }
+    }
+
+    $sqlLengthOrValues = $this->lengthOrValues;
+    if (is_null($sqlLengthOrValues)) {
+      $sqlLengthOrValues = match ($this->dataType) {
+        SQLDataTypes::VARCHAR => '10',
+        SQLDataTypes::DECIMAL => '16,2',
+        default => null
+      };
     }
 
     $this->sqlDefinition = new SQLColumnDefinition(
