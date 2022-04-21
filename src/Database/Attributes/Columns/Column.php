@@ -14,6 +14,7 @@ class Column
   const UNSIGNED = 'UNSIGNED';
   const ZEROFILL = 'ZEROFILL';
   const NOW = 'NOW';
+  const CURRENT_DATE = 'CURRENT_DATE';
   const CURRENT_TIMESTAMP = 'CURRENT_TIMESTAMP';
 
   public string $value;

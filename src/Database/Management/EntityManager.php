@@ -301,12 +301,21 @@ final class EntityManager
     };
 
     $instance = $this->create(entityClass: $entityClass, plainObjectOrObjects: $plainObjectOrObjects);
+    $assignmentList = [];
+
+    foreach ($entity as $prop => $value)
+    {
+      if (in_array($prop, $instance->columns(exclude: $this->readonlyColumns)))
+      {
+        $assignmentList[$prop] = $value;
+      }
+    }
 
     $result =
       $this
         ->query
         ->update(tableName: $instance->getTableName())
-        ->set(assignmentList: $instance->columnValuePairs(exclude: $this->readonlyColumns))
+        ->set(assignmentList: $assignmentList)
         ->where(condition: $conditionString)
         ->execute();
 
