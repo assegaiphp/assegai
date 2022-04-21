@@ -100,7 +100,7 @@ class SQLColumnDefinition
         // SQLDataTypes::DATE,
         SQLDataTypes::DATETIME
       ];
-      $stringExamptions = ['CURRENT_TIMESTAMP', 'CURRENT_DATE', 'CURRENT_TIME', 'JSON_ARRAY()'];
+      $stringExamptions = ['CURRENT_TIMESTAMP', 'CURRENT_DATE()', 'CURRENT_TIME()', 'JSON_ARRAY()'];
       $queryString .= "DEFAULT " . match(gettype($this->defaultValue)) {
         'object'  => method_exists($this->defaultValue, '__toString') ? strval($this->defaultValue) : json_encode($this->defaultValue),
         'boolean' => intval($this->defaultValue),
