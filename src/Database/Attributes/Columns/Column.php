@@ -61,7 +61,8 @@ class Column
     }
 
     $sqlLengthOrValues = $this->lengthOrValues;
-    if (is_null($sqlLengthOrValues)) {
+    if (is_null($sqlLengthOrValues))
+    {
       $sqlLengthOrValues = match ($this->dataType) {
         SQLDataTypes::VARCHAR => '10',
         SQLDataTypes::DECIMAL => '16,2',
