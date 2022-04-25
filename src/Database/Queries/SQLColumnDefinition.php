@@ -3,6 +3,7 @@
 namespace Assegai\Database\Queries;
 
 use Assegai\Database\Attributes\Columns\Column;
+use Assegai\Database\Types\SQLDialect;
 
 class SQLColumnDefinition
 {
@@ -20,6 +21,7 @@ class SQLColumnDefinition
     private string $uniqueKey = "",
     private bool $isPrimaryKey = false,
     private string $comment = "",
+    private SQLDialect $dialect = SQLDialect::MYSQL,
   )
   {
     $queryString = !empty($this->name) ? "`$this->name` " : '';

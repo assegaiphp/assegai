@@ -294,8 +294,7 @@ class BaseEntity implements IEntity
     $keys = [];
     $constraints = [];
     $statement = '';
-    $reflection = new ReflectionClass(objectOrClass: $this);
-    $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
+    $properties = $this->getSortedProperties();
 
     $statement = "CREATE TABLE IF NOT EXISTS `$this->tableName` (";
 
@@ -498,6 +497,32 @@ class BaseEntity implements IEntity
     }
 
     return preg_replace('/(PRIMARY KEY)|(AUTO_INCREMENT\s*)/', '', substr($definition, strpos($definition, '` ') + 2));
+  }
+
+  /**
+   * @return array<ReflectionProperty> Returns an array of `ReflectionProperty` objects. 
+   */
+  private function getSortedProperties(): array
+  {
+    $reflection = new ReflectionClass(objectOrClass: $this);
+    $props = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
+
+    $results = [];
+    $tail = [];
+
+    foreach ($props as $prop)
+    {
+      if ($prop->getName() !== 'id')
+      {
+        $tail[] = $prop;
+      }
+      else
+      {
+        $results[] = $prop;
+      }
+    }
+
+    return array_merge($results, $tail);
   }
 }
 
