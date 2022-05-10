@@ -10,6 +10,7 @@ use Assegai\Core\Responses\HttpStatus;
 use Assegai\Core\Responses\Response;
 use Assegai\Core\Routing\Router;
 use AssegaiPHP\Modules\Home\HomeModule;
+use Exception;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionClass;
 use ReflectionException;
@@ -172,11 +173,9 @@ class App
 
     try
     {
-      $reflection = new ReflectionClass($activatedController);
-
-      return $reflection->newInstanceArgs( args: $dependencies );
+      return $this->router->injector->get($activatedController);
     }
-    catch (ReflectionException $exception)
+    catch (Exception $exception)
     {
       exit($exception->getMessage());
     }
