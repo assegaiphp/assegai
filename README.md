@@ -10,7 +10,7 @@ Assegai is a framework for building efficient, scalable <a href="https://php.net
 
 ## Philosophy
 
-<p>In recent years, PHP has gained a lot of features out the box that make it a really compelling language for developers. Assegai aims to take advantage of these wonderful features and provide an application architecture which allows for the effortless creation of highly testable, scalable, loosely coupled and esily maintainable applications. The architecture is heavily inspired by Nestjs.</p>
+<p>In recent years, PHP has gained a lot of features out the box that make it a really compelling language for developers. Assegai aims to take advantage of these wonderful features and provide an application architecture which allows for the effortless creation of highly testable, scalable, loosely coupled and easily maintainable applications. The architecture is heavily inspired by Nestjs.</p>
 
 ## Getting started
 
