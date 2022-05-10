@@ -2,12 +2,16 @@
 
 namespace Assegai\Core\Routing;
 
+use Assegai\Core\Interfaces\IContainer;
+use Psr\Container\ContainerInterface;
+
 final class Router
 {
   private ?Route $activatedRoute = null;
 
   public function __construct(
-    private ?array $routes = null
+    private ?array $routes = null,
+    public readonly ContainerInterface|IContainer $injector
   ) { }
 
   public function activatedRoute(): ?Route

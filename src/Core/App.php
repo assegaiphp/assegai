@@ -10,6 +10,7 @@ use Assegai\Core\Responses\HttpStatus;
 use Assegai\Core\Responses\Response;
 use Assegai\Core\Routing\Router;
 use AssegaiPHP\Modules\Home\HomeModule;
+use Exception;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionClass;
 use ReflectionException;
@@ -24,7 +25,7 @@ class App
     private Router $router,
     private array $config = [],
   ) {
-    $request->set_app(app: $this);
+    $request->setApp(app: $this);
     if ($this->request->method() === RequestMethod::OPTIONS)
     {
       http_response_code(HttpStatus::OK()->code());
@@ -162,7 +163,7 @@ class App
 
     if (is_null($activatedController))
     {
-      Debugger::log_error('Missing controller: ' . get_called_class());
+      Debugger::logError('Missing controller: ' . get_called_class());
       exit(new BadRequestErrorResponse());
     }
 
@@ -172,11 +173,9 @@ class App
 
     try
     {
-      $reflection = new ReflectionClass($activatedController);
-
-      return $reflection->newInstanceArgs( args: $dependencies );
+      return $this->router->injector->get($activatedController);
     }
-    catch (ReflectionException $exception)
+    catch (Exception $exception)
     {
       exit($exception->getMessage());
     }
