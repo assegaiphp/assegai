@@ -162,7 +162,7 @@ class App
 
     if (is_null($activatedController))
     {
-      Debugger::log_error('Missing controller: ' . get_called_class());
+      Debugger::logError('Missing controller: ' . get_called_class());
       exit(new BadRequestErrorResponse());
     }
 
