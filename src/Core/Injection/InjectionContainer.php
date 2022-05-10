@@ -12,23 +12,23 @@ class InjectionContainer implements IContainer
     public readonly array $entries = []
   ) { }
 
-  public function get(string $entryIdentifier): mixed
+  public function get(string $entryId): mixed
   {
-    if ( $this->has(entryIdentifier: $entryIdentifier) )
+    if ( $this->has(entryId: $entryId) )
     {
-      return $this->entries[$entryIdentifier];
+      return $this->entries[$entryId];
     }
 
     
   }
 
-  public function has(string $entryIdentifier): bool
+  public function has(string $entryId): bool
   {
-    if ( ! key_exists($entryIdentifier, $this->entries) )
+    if ( ! key_exists($entryId, $this->entries) )
     {
-      throw new ClassNotFoundException(className: $entryIdentifier);
+      throw new ClassNotFoundException(className: $entryId);
     }
 
-    return isset($this->entries[$entryIdentifier]);
+    return isset($this->entries[$entryId]);
   }
 }
