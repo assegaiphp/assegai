@@ -24,7 +24,7 @@ class App
     private Router $router,
     private array $config = [],
   ) {
-    $request->set_app(app: $this);
+    $request->setApp(app: $this);
     if ($this->request->method() === RequestMethod::OPTIONS)
     {
       http_response_code(HttpStatus::OK()->code());
