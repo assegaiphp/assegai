@@ -24,7 +24,7 @@ class App
     private Router $router,
     private array $config = [],
   ) {
-    $request->set_app(app: $this);
+    $request->setApp(app: $this);
     if ($this->request->method() === RequestMethod::OPTIONS)
     {
       http_response_code(HttpStatus::OK()->code());
@@ -162,7 +162,7 @@ class App
 
     if (is_null($activatedController))
     {
-      Debugger::log_error('Missing controller: ' . get_called_class());
+      Debugger::logError('Missing controller: ' . get_called_class());
       exit(new BadRequestErrorResponse());
     }
 

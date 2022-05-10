@@ -62,7 +62,7 @@ class Request
     return $this->app;
   }
 
-  public function set_app(App $app): void
+  public function setApp(App $app): void
   {
     $this->app = $app;
   }
@@ -76,9 +76,9 @@ class Request
       'cookies'   => $this->cookies(),
       'fresh'     => $this->fresh(),
       'headers'   => $this->allHeaders(),
-      'host_name' => $this->host_name(),
+      'host_name' => $this->hostName(),
       'method'    => $this->method(),
-      'remote_ip' => $this->remote_ip(),
+      'remote_ip' => $this->remoteIp(),
       'uri'       => $this->uri(),
       'protocol'  => $this->protocol()
     ];
@@ -157,7 +157,7 @@ class Request
     return false; 
   }
 
-  public function host_name(): string
+  public function hostName(): string
   {
     return $_SERVER['HTTP_HOST'] ?? 'localhost';
   }
@@ -167,12 +167,12 @@ class Request
     return $_SERVER['REQUEST_METHOD'] ?? 'GET';
   }
 
-  public function remote_ip(): string
+  public function remoteIp(): string
   {
     return $_SERVER['REMOTE_ADDR'] ?? '::1';
   }
 
-  public function remote_ips(): string
+  public function remoteIps(): string
   {
     return ''; 
   }
