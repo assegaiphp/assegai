@@ -10,8 +10,8 @@ final class Router
   private ?Route $activatedRoute = null;
 
   public function __construct(
+    public readonly ContainerInterface|IContainer $injector,
     private ?array $routes = null,
-    public readonly ContainerInterface|IContainer $injector
   ) { }
 
   public function activatedRoute(): ?Route

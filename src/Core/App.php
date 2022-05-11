@@ -52,7 +52,7 @@ class App
   }
 
   #[NoReturn]
-  public function run(): void
+  public function run(): never
   {
     $this->parseURL();
 

@@ -4,7 +4,7 @@ namespace Assegai\Core\Injection;
 
 use Assegai\Core\Exceptions\ClassNotFoundException;
 use Assegai\Core\Exceptions\Container\ContainerException;
-use Assegai\Core\Exceptions\Container\ResloveException;
+use Assegai\Core\Exceptions\Container\ResolveException;
 use Assegai\Core\Interfaces\IContainer;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -32,12 +32,12 @@ class Inyeleti implements IContainer
 
   public function has(string $entryId): bool
   {
-    if ( ! key_exists($entryId, $this->entries) )
-    {
-      throw new ClassNotFoundException(className: $entryId);
-    }
-
     return isset($this->entries[$entryId]);
+  }
+
+  public function set(string $entryId, callable $concrete): void
+  {
+    $this->entries[$entryId] = $concrete;
   }
 
   public function resolve(string $id): mixed
@@ -85,12 +85,12 @@ class Inyeleti implements IContainer
 
       if (! $paramType )
       {
-        throw new ResloveException(id: $id, message: "$resolveErrorPrefix - Illegal type: Undefined");
+        throw new ResolveException(id: $id, message: "$resolveErrorPrefix — Illegal type — Undefined");
       }
 
       if ($paramType instanceof ReflectionUnionType)
       {
-        throw new ResloveException(id: $id, message: "$resolveErrorPrefix - Illegal type: Union");
+        throw new ResolveException(id: $id, message: "$resolveErrorPrefix — Illegal type — Union");
       }
 
       if ($paramType instanceof ReflectionNamedType && ! $paramType->isBuiltin())
