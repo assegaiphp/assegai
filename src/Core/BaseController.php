@@ -96,15 +96,12 @@ class BaseController implements IController
 
   protected function getActivatedHandler(): Handler|null
   {
-    global $app;
-
     if (!isset($this->request))
     {
-      $this->request = $app->request();
+      $this->request = Request::instance();
     }
 
-    # Check if forbidden method
-    if (in_array($this->request->method(), $this->forbiddenMethods))
+    if ($this->isForbiddenMethod($this->request->method()))
     {
       $this->respond(new MethodNotAllowedErrorResponse());
     }
@@ -182,5 +179,10 @@ class BaseController implements IController
   public function respond(Response $response): void
   {
     exit($response);
+  }
+
+  protected function isForbiddenMethod(string $methodName): bool
+  {
+    return in_array($methodName, $this->forbiddenMethods);
   }
 }
