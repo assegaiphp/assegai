@@ -33,11 +33,11 @@ class BaseController implements IController
   protected Handler $handler;
   protected array $forbiddenMethods = [];
 
-  public function __construct(
-    protected Request $request
-  ) {
+  public function init(): void
+  {
     $reflection = new ReflectionClass(objectOrClass: $this);
     $attributes = $reflection->getAttributes(Controller::class);
+    $request = Request::instance();
     
     foreach ($attributes as $attribute)
     {
@@ -175,8 +175,7 @@ class BaseController implements IController
     return false;
   }
 
-  #[NoReturn]
-  public function respond(Response $response): void
+  public function respond(Response $response): never
   {
     exit($response);
   }
