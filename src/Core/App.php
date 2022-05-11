@@ -51,19 +51,18 @@ class App
     return $this->config = !is_null($config) ? $config : [];
   }
 
-  #[NoReturn]
   public function run(): never
   {
     $this->parseURL();
 
     $activatedModule      = $this->getActivatedModule();
     $activatedController  = $this->getActivatedController( module: $activatedModule );
+    $activatedController->init();
     $response             = $activatedController->handleRequest( url: $this->url );
 
     $this->respond(response: $response);  
   }
 
-  #[NoReturn]
   public function respond(Response $response): never
   {
     exit($response);
