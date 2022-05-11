@@ -33,11 +33,11 @@ class BaseController implements IController
   protected Handler $handler;
   protected array $forbiddenMethods = [];
 
-  public function __construct(
-    protected Request $request
-  ) {
+  public function init(): void
+  {
     $reflection = new ReflectionClass(objectOrClass: $this);
     $attributes = $reflection->getAttributes(Controller::class);
+    $request = Request::instance();
     
     foreach ($attributes as $attribute)
     {
@@ -96,15 +96,12 @@ class BaseController implements IController
 
   protected function getActivatedHandler(): Handler|null
   {
-    global $app;
-
     if (!isset($this->request))
     {
-      $this->request = $app->request();
+      $this->request = Request::instance();
     }
 
-    # Check if forbidden method
-    if (in_array($this->request->method(), $this->forbiddenMethods))
+    if ($this->isForbiddenMethod($this->request->method()))
     {
       $this->respond(new MethodNotAllowedErrorResponse());
     }
@@ -178,9 +175,13 @@ class BaseController implements IController
     return false;
   }
 
-  #[NoReturn]
-  public function respond(Response $response): void
+  public function respond(Response $response): never
   {
     exit($response);
+  }
+
+  protected function isForbiddenMethod(string $methodName): bool
+  {
+    return in_array($methodName, $this->forbiddenMethods);
   }
 }

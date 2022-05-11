@@ -18,7 +18,8 @@ class Request
 
   protected static ?Request $instance = null;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->body = match ($this->method()) {
       RequestMethod::GET      => $_GET,
       RequestMethod::POST     => !empty($_POST) ? $_POST : ( !empty($_FILES) ? $_FILES : file_get_contents('php://input') ),
@@ -42,7 +43,7 @@ class Request
       }
     }
 
-    if (isset(Request::$instance) || empty(Request::$instance))
+    if (! isset(Request::$instance) || empty(Request::$instance))
     {
       Request::$instance = $this;
     }
