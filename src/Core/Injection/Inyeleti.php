@@ -27,7 +27,7 @@ class Inyeleti implements IContainer
       return $entry($this);
     }
 
-    
+    return $this->resolve($entryId);
   }
 
   public function has(string $entryId): bool
