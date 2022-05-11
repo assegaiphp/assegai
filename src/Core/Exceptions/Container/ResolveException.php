@@ -2,7 +2,7 @@
 
 namespace Assegai\Core\Exceptions\Container;
 
-class ResloveException extends ContainerException
+class ResolveException extends ContainerException
 {
   public function __construct(string $id, string $message)
   {
