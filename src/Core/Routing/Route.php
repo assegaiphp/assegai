@@ -14,8 +14,8 @@ class Route
    * Default is 'prefix'.
    * @param IModule|string|null $module The module to load when the path matches.
    * @param string|null $redirectTo
-   * @param array $canActivate A list of Guards to check
-   * @param array $children
+   * @param \Assegai\Core\Interfaces\ICanActivate[] $canActivate A list of Guards to check
+   * @param Route[] $children A list of child routes
    */
   public function __construct(
     protected ?string $path = null,
@@ -64,6 +64,9 @@ class Route
     return !is_null($this->redirectTo);
   }
 
+  /**
+   * Returns `true` if the current route is activateable. A
+   */
   protected function canActivate(): bool
   {
     $canActivate = true;

@@ -92,9 +92,11 @@ class Inyeleti implements IContainer
       {
         throw new ResolveException(id: $id, message: "$resolveErrorPrefix — Illegal type — Union");
       }
-
+      
       if ($paramType instanceof ReflectionNamedType && ! $paramType->isBuiltin())
       {
+        # Check if param has Injectable class or attribute
+
         return $this->get($paramType->getName());
       }
     }, $parameters);
