@@ -119,7 +119,7 @@ class Response
     {
       $data =
         is_array($this->data()) && count($this->data()) === 1 
-        ? $this->data()[0]
+        ? array_pop($this->data())
         : $this->data();
       return json_encode( $data );
     }
