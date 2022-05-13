@@ -117,10 +117,12 @@ class Response
   {
     if ($this->dataOnly)
     {
-      $data =
-        is_array($this->data()) && count($this->data()) === 1 
-        ? array_pop($this->data())
-        : $this->data();
+      $data = $this->data();
+      if (is_array($data) && count($data) === 1)
+      {
+        $data = array_pop($data);
+      }
+
       return json_encode( $data );
     }
 
