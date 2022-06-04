@@ -135,12 +135,24 @@ class Request
 
   public function limit(): int
   {
-    return $_GET['limit'] ?? Config::get('request')['DEFAULT_LIMIT'] ?? 10;
+    $limit = $_GET['limit'] ?? Config::get('request')['DEFAULT_LIMIT'] ?? 10;
+
+    return match(true) {
+      is_int($limit) => $limit,
+      is_numeric($limit) => intval($limit),
+      default => 100
+    };
   }
 
   public function skip(): int
   {
-    return $_GET['skip'] ?? Config::get('request')['DEFAULT_SKIP'] ?? 0;
+    $skip = $_GET['skip'] ?? Config::get('request')['DEFAULT_SKIP'] ?? 0;
+
+    return match (true) {
+      is_int($skip) => $skip,
+      is_numeric($skip) => intval($skip),
+      default => 0
+    };
   }
 
   public function body(): mixed
