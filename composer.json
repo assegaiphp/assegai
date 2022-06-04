@@ -1,6 +1,6 @@
 {
   "name": "assegaiphp/assegai",
-  "description": "A simple REST API Web Framework written in PHP.",
+  "description": "A progressive PHP framework for building effecient and scalable server-side applications.",
   "type": "library",
   "require-dev": {
     "phpunit/phpunit": "^9.5",
