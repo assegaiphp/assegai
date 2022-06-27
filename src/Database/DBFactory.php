@@ -4,6 +4,7 @@ namespace Assegai\Database;
 
 use Assegai\Core\Config;
 use Assegai\Core\Responses\InternalServerErrorResponse;
+use AssegaiPHP\Resources\Values;
 use Exception;
 use PDO;
 
@@ -35,6 +36,13 @@ final class DBFactory
   public static function getMySQLConnection(string $dbName): PDO
   {
     $type = 'mysql';
+
+    if (empty($dbName))
+    {
+      # TODO: Remove this check when repository support is added
+      $dbName = Values::DEFAULT_DB_NAME;      
+    }
+
     if (!isset(DBFactory::$connections[$type][$dbName]) || empty(DBFactory::$connections[$type][$dbName]))
     {
       $config = Config::get('databases')[$type][$dbName];
